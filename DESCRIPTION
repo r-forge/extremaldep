@@ -1,0 +1,11 @@
+Package: ExtremalDep
+Version: 0.1-1
+Date: 2014-12-03
+Title: Bernstein (Polynomial) Estimation of Extremal Dependence
+Author: Giulia Marcon <giulia.marcon@phd.unibocconi.it>, Simone Padoan <simone.padoan@unibocconi.it>
+Maintainer: Simone Padoan <simone.padoan@unibocconi.it>
+Depends: R (>= 3.0.0),quadprog,evd,gtools,copula
+Description: A nonparametric framework based on Bernstein polynomials in order to estimate and simulate multivariate extremal dependence structures is provided
+License: GPL (>= 2)
+URL: http://faculty.unibocconi.it/simonepadoan/
+Packaged: 2014-10-22 15:01:15 UTC; Padoan
