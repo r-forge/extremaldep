@@ -49,36 +49,3 @@ madogram <- function(w,data){
   A <- ((cst + ans) / (1 - cst - ans))
   return(A)
 }
-
-
-##########################################################
-# Bivariate Case
-
-madogram2 <- function(x,data){
-  ans <- lmadogram2(x,data)
-  w <- cbind(x,1-x)  
-  W <- w/(1+w)
-  cst <- apply(W,1,mean)
-  A <- ((cst + ans) / (1 - cst - ans))
-  return(A)
-}
-
-lmadogram2 <- function(x,data){
-  d <- ncol(data)
-  w <- cbind(x,1-x)
-  ans <- numeric(nrow(w))
-  u <- matrix(NA,nrow(data),d)
-  
-  for (i in 1:nrow(w)){
-    for (j in 1:d){
-      e <- ecdf(data[,j])
-      u[,j] <- e(data[,j])
-      u[,j] <- u[,j]^(1/w[i,j])  
-    }
-    ma <- apply(u,1,max)
-    me <- apply(u,1,mean)
-    ans[i] <- mean(ma-me)
-  }
-  
-  return(ans)
-}

@@ -13,8 +13,8 @@
 ####################################################
 
 # Subroutine that computes resampled estimates
-beed.boot <- function(data, x, d, est = c("ht", "md", "cfg"),
-                      margin = c(NULL, "exp-frechet", "frechet-exp"),
+beed.boot <- function(data, x, d=3, est = c("ht", "md", "cfg"),
+                      margin = c("emp","Gev"),
                       k = 13, nboot = 200, y = NULL, matrix = FALSE,
                       print = FALSE){
   nx <- nrow(x)
@@ -47,9 +47,9 @@ beed.boot <- function(data, x, d, est = c("ht", "md", "cfg"),
 }
 
 # Main routine that computes the confidence bands
-beed.confband <- function(data, x, d, est = c("ht", "cfg", "md"), 
-                          margin = c(NULL, "exp-frechet", "frechet-exp"),
-                          k = 13, y = NULL, nboot = 200, conf = 0.95,
+beed.confband <- function(data, x, d=3, est = c("ht", "md", "cfg"), 
+                          margin = c("emp","Gev"),
+                          k = 13, nboot = 200, y = NULL, conf = 0.95,
                           matrix = FALSE, plot = FALSE, print = FALSE){
   nx <- nrow(x)
   ndata <- nrow(data)
@@ -119,13 +119,13 @@ beed.confband <- function(data, x, d, est = c("ht", "cfg", "md"),
         for(i in 0:(numg-2))
           mat[i+2,1:(numg-(i+1))] <- A.tilde[((i+1)*numg-i*(i-1)/2+1-i):((i+2)*numg-i*(i+1)/2-(i+1))]
         
-        matup[1,1:numg] <- A.up.tilde[1:numg]
+        matup[1,1:numg] <- A.up.beta[1:numg]
         for(i in 0:(numg-2))
-          matup[i+2,1:(numg-(i+1))] <- A.up.tilde[((i+1)*numg-i*(i-1)/2+1-i):((i+2)*numg-i*(i+1)/2-(i+1))]
+          matup[i+2,1:(numg-(i+1))] <- A.up.beta[((i+1)*numg-i*(i-1)/2+1-i):((i+2)*numg-i*(i+1)/2-(i+1))]
         
-        matlow[1,1:numg] <- A.low.tilde[1:numg]
+        matlow[1,1:numg] <- A.low.beta[1:numg]
         for(i in 0:(numg-2))
-          matlow[i+2,1:(numg-(i+1))] <- A.low.tilde[((i+1)*numg-i*(i-1)/2+1-i):((i+2)*numg-i*(i+1)/2-(i+1))]
+          matlow[i+2,1:(numg-(i+1))] <- A.low.beta[((i+1)*numg-i*(i-1)/2+1-i):((i+2)*numg-i*(i+1)/2-(i+1))]
       }
       plot(xy, xy, type='n', xlab='w1', ylab='w2')
       image(x=xy, y=xy, z=mat, col=heat.colors(numg),add=TRUE)

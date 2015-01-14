@@ -32,8 +32,8 @@
 #   If it's missing, it is estimated 
 ####################################################################
 
-beed <- function(data, x, d, est = c("ht","cfg","md"), 
-                 margin = 'emp', k = 13, y = NULL, beta = NULL, 
+beed <- function(data, x, d=3, est = c("ht","cfg","md"), 
+                 margin = c("emp","Gev"), k = 13, y = NULL, beta = NULL, 
                  matrix = FALSE, plot = FALSE){
   ddata <- ncol(data)
   
@@ -95,22 +95,29 @@ beed <- function(data, x, d, est = c("ht","cfg","md"),
     
     # Preliminary Estimation if missing
     if(is.null(y)){
-
+      
+      if(length(est)>1) stop("invalid argument for `est'")
+      if(length(margin)>1) stop("invalid argument for `margin'")
+      
       if(margin=='emp'){
         # as x is dimension d with NaN
         data_emp <- apply(data, 2, rank, na.last = "keep")
         nasm <- apply(data_emp, 2, function(x) sum(!is.na(x)))
         data_emp <- data_emp/rep(nasm + 1, each = nrow(data_emp))
+        data <- data_emp
+      }
+      if(margin=='Gev'){
+        data <- Dist2Dist(data,from='Gev',to='sFrechet')
       }
       
       if(d==2)
         y <- switch(est, ht = abvnonpar(x=xx, data=data, method="pickands", d=d, madj=2, epmar = TRUE), 
-                  md = madogram(w = X, data = data_emp),
-                  cfg=abvnonpar(x=xx, data=data, method="cfg", epmar = TRUE)
+                  md = madogram(w = X, data = data),
+                  cfg = abvnonpar(x=xx, data=data, method="cfg", epmar = TRUE)
       )
       else
         y <- switch(est, ht = amvnonpar(x=X, data=data, d=d, madj=2, epmar = TRUE),
-                    md = madogram(w = X, data = data_emp),
+                    md = madogram(w = X, data = data),
                     cfg = An(x = data, w = X)$CFG
         )
     }
@@ -135,7 +142,7 @@ beed <- function(data, x, d, est = c("ht","cfg","md"),
     
     # Convexity
       
-      Aconvx <- Convexity(v = vb, d = d)
+      Aconvx <- convexity(v = vb, d = d)
       aconvx <- rep(0,nrow(Aconvx))
       A = rbind(A2,A4,A3,Aconvx)
       b0 = c(a2,a4,a3,aconvx) 
@@ -168,22 +175,27 @@ beed <- function(data, x, d, est = c("ht","cfg","md"),
   
   if (plot == TRUE){
     if(d == 2){
-      plot(x[,2],x[,1],type='n',xlab='w1',ylab='w2',ylim=c(.5,1))
+      plot(x[,1],x[,2],type='n',xlab='w',ylab='A(w)',ylim=c(.5,1))
       polygon(c(0, 0.5, 1), c(1, 0.5, 1), lty = 1, lwd = 1, border = 'grey')
-      lines(x[,2],y.tilde,lty=1,col=1)
+      lines(x[,1],y.tilde,lty=1,col=1)
     }
     if(d == 3){
       numg <- sqrt(nx)
       xy <- seq(0,1,length=numg)
       mat <- matrix(y.tilde, numg, numg)
-      plot(xy, xy, type='n', xlab='w1', ylab='w2')
+      plot(xy, xy, type='n', xlab=expression(w[1]), ylab=expression(w[2]))
       image(x=xy, y=xy, z=mat, col=heat.colors(numg),add=TRUE)
-      contour(x=xy, y=xy, z=mat, add=T,col='black',labcex=.6,lty=1)
+      contour(x=xy, y=xy, z=mat, add=TRUE,col='black',labcex=.6,lty=1)
     }
     if (d >= 4) 
       stop("cannot plot in high dimensions")
   }
-  out <- list(beta=beta.tilde,A=y.tilde, Anonconvex=y)
+  
+  med <- matrix(rep(1/d,d),ncol=d)
+  Zmed <- bp(med,vb,k)
+  extind <- as.numeric( d * (Zmed%*%beta.tilde) )
+  
+  out <- list(beta=beta.tilde,A=y.tilde, Anonconvex=y, extind=extind)
   return(out)
 }
 

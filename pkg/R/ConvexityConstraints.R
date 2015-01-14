@@ -15,7 +15,7 @@
 
 # Main routine that provides a matrix of CONSTRAINTS that garanties
 # the CONVEXITY. 
-Convexity <- function(v, d){
+convexity <- function(v, d){
   
   combn_eqk <- v
   q <- nrow(v)
@@ -55,7 +55,7 @@ Convexity <- function(v, d){
   if(d>3){  
     
     sumvb <- apply(v,1,sum)
-    leqk_2 <- which(sumv<=k-2)
+    leqk_2 <- which(sumvb<=k-2)
     combn_leqk_2 <- as.matrix(v[leqk_2,])
         
     ##########################
