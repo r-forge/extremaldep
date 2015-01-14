@@ -19,7 +19,7 @@ The estimation procedure is based on the madogram as proposed in Marcon et al. (
 
 \eqn{
 \nu(\bold{w}) =
-\mathbb{E} \left(\
+\bold{E} \left(\
 \bigvee_{i=1,\dots,d}\left \lbrace F^{1/w_i}_{i}\left(X_{i}\right)  \right\rbrace -
 \frac{1}{d}\sum_{i=1,\dots,d}F^{1/w_i}_{i}\left(X_{i}\right).
 \right),

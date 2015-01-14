@@ -2,7 +2,7 @@
 \alias{bp}
 \title{Univariate and Multivariate Bernstein Polynomials}
 \description{
-  Compute an uni- or multi-variate Bernstein polynomials of oreder \code{k}.
+  Compute an uni- or multi-variate Bernstein polynomials of order \code{k}.
 }
 \usage{
   bp(x, v, k)
@@ -25,7 +25,7 @@ S_d := { (w_1,..., w_{d-1}) in [0,1]^{d-1}: \sum_{i=1}^{d-1} w_i <= 1}.
 The Bernstein basis polynomial of degree \code{k} is defined by the following continuous function with values in \eqn{[0,1]},
 
 \eqn{
-b(\bold{w};k):= \binom{k}{\bold{\alpha}_l} \;\bold{w}^{\bold{\alpha}_l} \;(1-\Sigma_{\bold{w}})^{k-\Sigma_{\bold{\alpha}_l}},
+b(\bold{w};k):= binom(k){\bold{\alpha}_l} \;\bold{w}^{\bold{\alpha}_l} \;(1-\Sigma_{\bold{w}})^{k-\Sigma_{\bold{\alpha}_l}},
 }{
 b(w;k):= \binom{k}{\alpha_l} w^{\alpha_l} (1-\Sigma_{w})^{k-\Sigma_{\alpha_l}},
 }
@@ -33,7 +33,7 @@ b(w;k):= \binom{k}{\alpha_l} w^{\alpha_l} (1-\Sigma_{w})^{k-\Sigma_{\alpha_l}},
 where \eqn{\bold{w}}{w} is a point in the \code{d}-dimensional unit simplex \eqn{S_d} and, 
 
 \eqn{
-\binom{k}{\bold{\alpha}_l} = \frac{k!}{\bold{\alpha}_l! (k-\Sigma_{\bold{\alpha}_l})!}, \qquad \bold{\alpha}_l! = j_1! \cdots j_{d-1}\,!,  \qquad \bold{w}^{\bold{\alpha}_l} = \prod_{i=1}^{d-1} w_i^{j_i}.
+binom(k){\bold{\alpha}_l} = \frac{k!}{\bold{\alpha}_l! (k-\Sigma_{\bold{\alpha}_l})!}, \qquad \bold{\alpha}_l! = j_1! \cdots j_{d-1}\,!,  \qquad \bold{w}^{\bold{\alpha}_l} = \prod_{i=1}^{d-1} w_i^{j_i}.
 }{
 \binom{k}{\alpha_l} = \frac{k!}{\alpha_l! (k-\Sigma_{\alpha_l})!}, 
 \alpha_l! = j_1!...j_{d-1}!, w^{\alpha_l} = \prod_{i=1}^{d-1} w_i^{j_i}.
@@ -47,14 +47,12 @@ B_f(\bold{w};k) = \sum_{l \in L_k} \beta_l b_l (\bold{w};k).
 B_f(w;k) = \sum_{l \in L_k} beta_l b_l (w;k).
 }
 }
-
-%\note{
   
-  \value{
-    A vector/matrix with the Bernstein polynomial basis.
-  }
+\value{
+A vector/matrix with the Bernstein polynomial basis.
+}
   
-  \references{
+\references{
 Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. (2014)
 Multivariate Nonparametric Estimation of the Pickands Dependence
 Function using Bernstein Polynomials.
