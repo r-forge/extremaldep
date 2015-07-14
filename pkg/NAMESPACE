@@ -1,0 +1,6 @@
+import(mvtnorm)
+import(numDeriv)
+import(matrixcalc)
+import(evd)
+exportPattern("^[^\\.]")
+export(matrix.sqrt)
