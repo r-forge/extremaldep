@@ -72,66 +72,78 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 
 ## Using the PNS dataset
 
-# est.pb.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Pairwise',Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
+# est.pb.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Pairwise',
+# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
 # est.pb.PNS$emp.mean
 # est.pb.PNS$emp.sd
 # est.pb.PNS$BIC
 
-# est.hr.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.hr.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
 # est.hr.PNS$emp.mean
 # est.hr.PNS$emp.sd
 # est.hr.PNS$BIC
 
-# est.di.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Dirichlet',Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+# est.di.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Dirichlet',
+# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
 # est.di.PNS$emp.mean
 # est.di.PNS$emp.sd
 # est.di.PNS$BIC
 
-# est.et.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Extremalt',Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
+# est.et.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Extremalt',
+# Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
 # est.et.PNS$emp.mean
 # est.et.PNS$emp.sd
 # est.et.PNS$BIC
 
 ## Using the NSN dataset
 
-# est.pb.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN,Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35, model='Pairwise',seed=14342)
+# est.pb.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN,model='Pairwise',
+# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
 # est.pb.NSN$emp.mean
 # est.pb.NSN$emp.sd
 # est.pb.NSN$BIC
 
-# est.hr.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.hr.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
 # est.hr.NSN$emp.mean
 # est.hr.NSN$emp.sd
 # est.hr.NSN$BIC
 
-# est.di.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Dirichlet',Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+# est.di.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Dirichlet',
+# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
 # est.di.NSN$emp.mean
 # est.di.NSN$emp.sd
 # est.di.NSN$BIC
 
-# est.et.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Extremalt',Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
+# est.et.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Extremalt',
+# Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
 # est.et.NSN$emp.mean
 # est.et.NSN$emp.sd
 # est.et.NSN$BIC
 
 ## Using the PNN dataset
 
-# est.pb.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN,Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35, model='Pairwise',seed=14342)
+# est.pb.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN,model='Pairwise',
+# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
 # est.pb.PNN$emp.mean
 # est.pb.PNN$emp.sd
 # est.pb.PNN$BIC
 
-# est.hr.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.hr.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
 # est.hr.PNN$emp.mean
 # est.hr.PNN$emp.sd
 # est.hr.PNN$BIC
 
-# est.di.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Dirichlet',Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+# est.di.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Dirichlet',
+# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
 # est.di.PNN$emp.mean
 # est.di.PNN$emp.sd
 # est.di.PNN$BIC
 
-# est.et.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Extremalt',Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
+# est.et.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Extremalt',
+# Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
 # est.et.PNN$emp.mean
 # est.et.PNN$emp.sd
 # est.et.PNN$BIC
@@ -145,16 +157,20 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 
 # Using the PNNS dataset
 
-# est.pb.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS,Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35, model='Pairwise',seed=14342)
+# est.pb.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS,model='Pairwise',
+#Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
 # est.pb.PNNS$BIC
 
-# est.hr.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.hr.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
 # est.hr.PNNS$BIC
 
-# est.di.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Dirichlet',Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+# est.di.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Dirichlet',
+# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
 # est.di.PNNS$BIC
 
-# est.et.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Extremalt',Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
+# est.et.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Extremalt',
+# Hpar=list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3), MCpar=0.35,seed=14342)
 # est.et.PNNS$BIC	
 }
 
