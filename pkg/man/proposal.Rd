@@ -55,34 +55,44 @@
 }
 
 \examples{
-## Not run; proposal(model="Pairwise", type="r", cur.par=rep(1,4), MCpar=0.35)
-## End not run;
+# Not run 
+# proposal(model="Pairwise", type="r", cur.par=rep(1,4), MCpar=0.35)
+# End not run
 
-## Not run; proposal(model="Pairwise", type="d", cur.par=rep(1,4), prop.par=rep(1.2,4), MCpar=0.35, log=TRUE)
-## End not run;
+# Not run 
+# proposal(model="Pairwise", type="d", cur.par=rep(1,4), prop.par=rep(1.2,4), MCpar=0.35, log=TRUE)
+# End not run
 
-## Not run; proposal(model="Husler", type="r", cur.par=rep(1,4), MCpar=0.35)
-## End not run;
+# Not run 
+# proposal(model="Husler", type="r", cur.par=rep(1,4), MCpar=0.35)
+# End not run
 
-## Not run; proposal(model="Husler", type="d", cur.par=rep(1,4), prop.par=c(1.2,4), MCpar=0.35, log=TRUE)
-## End not run;
+# Not run 
+# proposal(model="Husler", type="d", cur.par=rep(1,4), prop.par=c(1.2,4), MCpar=0.35, log=TRUE)
+# End not run
 
-## Not run; proposal(model="Dirichlet", type="r", cur.par=rep(1,3), MCpar=0.35)
-## End not run;
+# Not run 
+# proposal(model="Dirichlet", type="r", cur.par=rep(1,3), MCpar=0.35)
+# End not run
 
-## Not run; proposal(model="Dirichlet", type="d", cur.par=rep(1,3), prop.par=c(1.2,3), MCpar=0.35, log=TRUE)
-## End not run;
+# Not run 
+# proposal(model="Dirichlet", type="d", cur.par=rep(1,3), prop.par=c(1.2,3), MCpar=0.35, log=TRUE)
+# End not run
 
-## Not run; proposal(model="Extremalt", type="r", cur.par=rep(1,3), MCpar=0.35)
-## End not run;
+# Not run 
+# proposal(model="Extremalt", type="r", cur.par=rep(1,3), MCpar=0.35)
+# End not run
 
-## Not run; proposal(model="Extremalt", type="d", cur.par=c(rep(0.9,3),3), prop.par=c(rep(0.8,3),2), MCpar=0.35, log=TRUE)
-## End not run;
+# Not run 
+# proposal(model="Extremalt", type="d", cur.par=c(rep(0.9,3),3), prop.par=c(rep(0.8,3),2), MCpar=0.35, log=TRUE)
+# End not run
 
-## Not run; proposal(model="Asymmetric", type="r", cur.par=c(rep(1,4),rep(0.1,9)), MCpar=0.35)
-## End not run;
+# Not run 
+# proposal(model="Asymmetric", type="r", cur.par=c(rep(1,4),rep(0.1,9)), MCpar=0.35)
+# End not run
 
-## Not run; proposal(model="Asymmetric", type="d", cur.par=c(rep(1,4),rep(0.1,9)), prop.par=c(rep(1.2,4),rep(0.1,9)), MCpar=0.35, log=TRUE)
-## End not run;
-	
+# Not run 
+# proposal(model="Asymmetric", type="d", cur.par=c(rep(1,4),rep(0.1,9)), prop.par=c(rep(1.2,4),rep(0.1,9)), 
+# MCpar=0.35, log=TRUE)
+# End not run
 }
