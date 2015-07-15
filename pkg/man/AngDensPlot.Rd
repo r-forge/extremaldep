@@ -100,31 +100,49 @@ AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=TRUE, data=NULL,
 
 ## PNS Data
 
-# est.pb.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Pairwise',Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
-# est.hr.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
-# est.di.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Dirichlet',Hpar=list(mean.alpha=0,sd.alpha=3), MCpar=0.35,seed=14342)
+# est.pb.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Pairwise',
+# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
+# est.hr.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.di.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Dirichlet',
+# Hpar=list(mean.alpha=0,sd.alpha=3), MCpar=0.35,seed=14342)
 
-# AngDensPlot(model="Pairwise", para=est.pb.PNS$emp.mean, log=TRUE, data=PNS, contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Husler", para=est.hr.PNS$emp.mean, log=TRUE, data=PNS, contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Dirichlet", para=est.di.PNS$emp.mean, log=TRUE, data=PNS, contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
+# AngDensPlot(model="Pairwise", para=est.pb.PNS$emp.mean, log=TRUE, data=PNS, 
+# contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
+# AngDensPlot(model="Husler", para=est.hr.PNS$emp.mean, log=TRUE, data=PNS, 
+# contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
+# AngDensPlot(model="Dirichlet", para=est.di.PNS$emp.mean, log=TRUE, data=PNS, 
+# contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
 
 ## NSN data
 
-# est.pb.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN,Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35, model='Pairwise',seed=14342)
-# est.hr.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
-# est.di.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Dirichlet',Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+# est.pb.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN,model='Pairwise',
+# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
+# est.hr.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.di.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Dirichlet',
+# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
 
-# AngDensPlot(model="Pairwise", para=est.pb.NSN, log=TRUE$emp.mean, data=NSN, contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Husler", para=est.hr.NSN, log=TRUE$emp.mean, data=NSN, contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Dirichlet", para=est.di.NSN, log=TRUE$emp.mean, data=NSN, contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
+# AngDensPlot(model="Pairwise", para=est.pb.NSN, log=TRUE$emp.mean, data=NSN, 
+# contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
+# AngDensPlot(model="Husler", para=est.hr.NSN, log=TRUE$emp.mean, data=NSN, 
+# contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
+# AngDensPlot(model="Dirichlet", para=est.di.NSN, log=TRUE$emp.mean, data=NSN, 
+# contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
 
 ## PNN data
 
-# est.pb.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN,Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35, model='Pairwise',seed=14342)
-# est.hr.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
-# est.di.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Dirichlet',Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+# est.pb.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN,model='Pairwise',
+# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
+# est.hr.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.di.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Dirichlet',
+# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
 
-# AngDensPlot(model="Pairwise", para=est.pb.PNN$emp.mean, log=TRUE, data=PNN, contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
-# AngDensPlot(model="Husler", para=est.hr.PNN$emp.mean, log=TRUE, data=PNN, contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
-# AngDensPlot(model="Dirichlet", para=est.di.PNN$emp.mean, log=TRUE, data=PNN, contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
+# AngDensPlot(model="Pairwise", para=est.pb.PNN$emp.mean, log=TRUE, data=PNN, 
+# contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
+# AngDensPlot(model="Husler", para=est.hr.PNN$emp.mean, log=TRUE, data=PNN, 
+# contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
+# AngDensPlot(model="Dirichlet", para=est.di.PNN$emp.mean, log=TRUE, data=PNN, 
+#contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
 }
