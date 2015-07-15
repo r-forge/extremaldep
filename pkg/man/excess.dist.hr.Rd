@@ -38,6 +38,7 @@ excess.dist.hr(X, par)
 ## Load datasets
 # data(pollution) 
 
-# est.hr.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Husler',Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
+# est.hr.PNNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNNS, model='Husler',
+# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
 # excess.dist.hr(rep(1,4), est.hr.PNNS$emp.mean)
 }
