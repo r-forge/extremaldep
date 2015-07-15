@@ -22,7 +22,7 @@ excess.dist.hr(X, par)
 
 \author{
   Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.bocconi.it/simonepadoan};
+	\url{http://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
