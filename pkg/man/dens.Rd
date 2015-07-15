@@ -106,7 +106,7 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.bocconi.it/simonepadoan};
+	\url{http://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
