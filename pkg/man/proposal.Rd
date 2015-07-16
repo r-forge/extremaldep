@@ -84,7 +84,8 @@
 # End not run
 
 # Not run 
-# proposal(model="Extremalt", type="d", cur.par=c(rep(0.9,3),3), prop.par=c(rep(0.8,3),2), MCpar=0.35, log=TRUE)
+# proposal(model="Extremalt", type="d", cur.par=c(rep(0.9,3),3), 
+#??prop.par=c(rep(0.8,3),2), MCpar=0.35, log=TRUE)
 # End not run
 
 # Not run 
@@ -92,7 +93,8 @@
 # End not run
 
 # Not run 
-# proposal(model="Asymmetric", type="d", cur.par=c(rep(1,4),rep(0.1,9)), prop.par=c(rep(1.2,4),rep(0.1,9)), 
+# proposal(model="Asymmetric", type="d", cur.par=c(rep(1,4),rep(0.1,9)), 
+# prop.par=c(rep(1.2,4),rep(0.1,9)), 
 # MCpar=0.35, log=TRUE)
 # End not run
 }
