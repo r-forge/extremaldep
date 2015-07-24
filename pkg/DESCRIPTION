@@ -2,9 +2,7 @@ Package: ExtremalDep
 Version: 0.1-2
 Date: 2015-07-23
 Title: Extremal Dependence Modeling
-Author: Giulia Marcon[aut] <giulia.marcon@phd.unibocconi.it>, 
-Boris Beranger[aut] <borisberanger@gmail.com>, 
-Simone Padoan[aut, cre] <simone.padoan@unibocconi.it>
+Author: Giulia Marcon[aut] <giulia.marcon@phd.unibocconi.it>, Boris Beranger[aut] <borisberanger@gmail.com>, Simone Padoan[aut, cre] <simone.padoan@unibocconi.it>
 Maintainer: Simone Padoan <simone.padoan@unibocconi.it>
 Depends: R (>= 2.13)
 Suggests: quadprog, evd, gtools, copula, CompRandFld, matrixcalc, mvtnorm, numDeriv
