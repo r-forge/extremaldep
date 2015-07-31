@@ -4,8 +4,8 @@ Date: 2015-07-23
 Title: Extremal Dependence Modeling
 Author: Giulia Marcon[aut] <giulia.marcon@phd.unibocconi.it>, Boris Beranger[aut] <borisberanger@gmail.com>, Simone Padoan[aut, cre] <simone.padoan@unibocconi.it>
 Maintainer: Simone Padoan <simone.padoan@unibocconi.it>
-Depends: R (>= 2.13), evd, quadprog, gtools, CompRandFld, mvtnorm
-Imports: matrixcalc, numDeriv, copula
+Depends: R (>= 2.13), quadprog, gtools, mvtnorm
+Imports: evd (== 2.3-0), matrixcalc (== 1.0-3), numDeriv, CompRandFld (== 1.0.3-4), copula
 Description: A set of procedures for modeling parametrically or non-parametrically the dependence structure of extreme values is provided. The statistical inference is performed with non-parametric estimators, likelihood based and Bayesian techniques. 
 License: GPL (>= 2)
 URL: http://faculty.unibocconi.it/simonepadoan/
