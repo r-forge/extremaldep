@@ -47,10 +47,12 @@
 \seealso{\code{\link{beed}}, \code{\link{beed.confband}}.}
 
 \examples{
-# w <- seq(0 , 1, length = 100)
-# data <- rbvevd(50, dep = 0.4, model = 'log', mar1 = c(1,1,1))
-#  
-# boot <- beed.boot(data, cbind(w, 1-w), 2, 'md', 'emp', 20, 500)  
-#
+\dontrun{	
+w <- seq(0 , 1, length = 100)
+data <- rbvevd(50, dep = 0.4, model = 'log', mar1 = c(1,1,1))
+  
+boot <- beed.boot(data, cbind(w, 1-w), 2, 'md', 'emp', 20, 500)  
 }
+}
+
 \keyword{bootstrap}

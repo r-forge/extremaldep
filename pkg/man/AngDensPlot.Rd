@@ -1,6 +1,5 @@
 \name{AngDensPlot}
 \alias{AngDensPlot}
-\alias{print.AngDensPlot}
 
 \title{3-D plot of parametric angular densities.}
 \description{Plot (log)-angular densities on the three-dimensional simplex. Contour levels and data points (optional) are represented.}
@@ -35,7 +34,7 @@ AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=TRUE, data=NULL,
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan/};
+	\url{http://faculty.bocconi.it/simonepadoan};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
@@ -43,6 +42,11 @@ AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=TRUE, data=NULL,
 	Beranger, B. and Padoan, S. A. (2015).
 	Extreme dependence models, chapater of the book \emph{Extreme Value Modeling and Risk Analysis: Methods and Applications},
   \bold{Chapman Hall/CRC}.
+  
+  	Beranger, B., Padoan, S. A. and Sisson, S. A. (2016).
+	Models for extremal dependence derived from skew-symmetric families.
+	\emph{Scandinavian Journal of Statistics}, \bold{To appear}.	
+  
 }
 
 \examples{
@@ -56,38 +60,48 @@ AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=TRUE, data=NULL,
 
 # Asymmetric Logistic
 
-# AngDensPlot(model='Asymmetric', para=c(5.75,0.5,0.5,0.5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Asymmetric', para=c(1.01,0.9,0.9,0.9), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Asymmetric', para=c(1.25,0.5,0.5,0.5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Asymmetric', para=c(1.4,0.7,0.15,0.15), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+\dontrun{	
+AngDensPlot('Asymmetric', c(rep(1,3),5.75, rep(0,6), 0.5,0.5,0.5), FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot('Asymmetric', c(rep(1,3),1.01, rep(0,6), 0.9,0.9,0.9), FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot('Asymmetric', c(rep(1,3),1.25, rep(0,6), 0.5,0.5,0.5), FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot('Asymmetric', c(rep(1,3),1.4, rep(0,6),0.7,0.15,0.15), FALSE, cex.lab=1.5, cex.cont=1.3)
+}
 
 # Tilted Dirichlet
 
-# AngDensPlot(model='Dirichlet', para=c(2,2,2), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Dirichlet', para=c(0.5,0.5,0.5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Dirichlet', para=c(2,2.5,30), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Dirichlet', para=c(0.1,0.25,0.95), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+\dontrun{	
+AngDensPlot(model='Dirichlet', para=c(2,2,2), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Dirichlet', para=c(0.5,0.5,0.5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Dirichlet', para=c(2,2.5,30), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Dirichlet', para=c(0.1,0.25,0.95), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+}
 
 # Pairwise Beta
 
-# AngDensPlot(model='Pairwise', para=c(2,2,2,4), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Pairwise', para=c(1,1,1,0.5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Pairwise', para=c(10,10,10,1), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+\dontrun{	
+AngDensPlot(model='Pairwise', para=c(2,2,2,4), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Pairwise', para=c(1,1,1,0.5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Pairwise', para=c(10,10,10,1), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+}
 
 # Husler-Reiss
 
-# AngDensPlot(model='Husler', para=c(0.3,0.3,0.3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Husler', para=c(1.4,1.4,1.4), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Husler', para=c(1.7,0.7,1.1), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Husler', para=c(0.52,0.71,0.52), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+\dontrun{	
+AngDensPlot(model='Husler', para=c(0.3,0.3,0.3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Husler', para=c(1.4,1.4,1.4), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Husler', para=c(1.7,0.7,1.1), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Husler', para=c(0.52,0.71,0.52), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+}
 
 # Extremal-t
 
-# AngDensPlot(model='Extremalt', para=c(0.95,0.95,0.95,2), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Extremalt', para=c(-0.3,-0.3,-0.3,5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Extremalt', para=c(0.52,0.71,0.52,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
-# AngDensPlot(model='Extremalt', para=c(0.52,0.71,0.52,2), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+\dontrun{	
+AngDensPlot(model='Extremalt', para=c(0.95,0.95,0.95,2), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Extremalt', para=c(-0.3,-0.3,-0.3,5), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Extremalt', para=c(0.52,0.71,0.52,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Extremalt', para=c(0.52,0.71,0.52,2), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+}
 
 ################################################
 # The following esamples provide the plots of
@@ -96,53 +110,69 @@ AngDensPlot(model='Pairwise', para=c(2,4,15,1), log=TRUE, data=NULL,
 ################################################
 
 ## Load datasets
-# data(pollution) 
+data(pollution) 
+
+Nsim <- 50e+4 
+Nbin <- 30e+4
+MCpar <- 0.35
+Hpar.pb <- 	list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3)
+Hpar.hr <- list(mean.lambda=0, sd.lambda=3)
+Hpar.di <- list(mean.alpha=0, sd.alpha=3)
+Hpar.et <- list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3)
 
 ## PNS Data
 
-# est.pb.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Pairwise',
-# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
-# est.hr.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Husler',
-# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
-# est.di.PNS <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNS, model='Dirichlet',
-# Hpar=list(mean.alpha=0,sd.alpha=3), MCpar=0.35,seed=14342)
+\dontrun{	
+est.pb.PNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNS, seed=14342, model='Pairwise')
+est.hr.PNS <- posteriorMCMC(Nsim, Nbin, Hpar.hr, MCpar, PNS, seed=14342, model='Husler')
+est.di.PNS <- posteriorMCMC(Nsim, Nbin, Hpar.di, MCpar, PNS, seed=14342, model='Dirichlet')
 
-# AngDensPlot(model="Pairwise", para=est.pb.PNS$emp.mean, log=TRUE, data=PNS, 
-# contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Husler", para=est.hr.PNS$emp.mean, log=TRUE, data=PNS, 
-# contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Dirichlet", para=est.di.PNS$emp.mean, log=TRUE, data=PNS, 
-# contour=TRUE,labels=c("PM10","NO","SO2"),cex.dat=0.8)
+lab1 <- c("PM10","NO","SO2")
+AngDensPlot("Pairwise", est.pb.PNS$emp.mean, data=PNS, labels=lab1, cex.dat=0.8)
+AngDensPlot("Husler", est.hr.PNS$emp.mean, data=PNS, labels=lab1, cex.dat=0.8)
+AngDensPlot("Dirichlet", est.di.PNS$emp.mean, data=PNS, labels=lab1, cex.dat=0.8)
+}
 
 ## NSN data
 
-# est.pb.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN,model='Pairwise',
-# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
-# est.hr.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Husler',
-# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
-# est.di.NSN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= NSN, model='Dirichlet',
-# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+\dontrun{	
+est.pb.NSN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, NSN, seed=14342, model='Pairwise')
+est.hr.NSN <- posteriorMCMC(Nsim, Nbin, Hpar.hr, MCpar, NSN, seed=14342, model='Husler')
+est.di.NSN <- posteriorMCMC(Nsim, Nbin, Hpar.di, MCpar, NSN, seed=14342, model='Dirichlet')
 
-# AngDensPlot(model="Pairwise", para=est.pb.NSN, log=TRUE$emp.mean, data=NSN, 
-# contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Husler", para=est.hr.NSN, log=TRUE$emp.mean, data=NSN, 
-# contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
-# AngDensPlot(model="Dirichlet", para=est.di.NSN, log=TRUE$emp.mean, data=NSN, 
-# contour=TRUE,labels=c("NO2","NO","SO2"),cex.dat=0.8)
+lab2 <- c("NO2","NO","SO2")
+AngDensPlot("Pairwise", est.pb.NSN$emp.mean, data=NSN, labels=lab2, cex.dat=0.8)
+AngDensPlot("Husler", est.hr.NSN$emp.mean, data=NSN, labels=lab2, cex.dat=0.8)
+AngDensPlot("Dirichlet", est.di.NSN$emp.mean, data=NSN, labels=lab2, cex.dat=0.8)
+}
 
 ## PNN data
 
-# est.pb.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN,model='Pairwise',
-# Hpar=list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3), MCpar=0.35,seed=14342)
-# est.hr.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Husler',
-# Hpar=list(mean.lambda=0, sd.lambda=3), MCpar=0.35,seed=14342)
-# est.di.PNN <- posteriorMCMC(Nsim=50e+4,Nbin=30e+4,dat= PNN, model='Dirichlet',
-# Hpar=list(mean.alpha=0, sd.alpha=3), MCpar=0.35,seed=14342)
+\dontrun{	
+est.pb.PNN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNN, seed=14342, model='Pairwise')
+est.hr.PNN <- posteriorMCMC(Nsim, Nbin, Hpar.hr, MCpar, PNN, seed=14342, model='Husler')
+est.di.PNN <- posteriorMCMC(Nsim, Nbin, Hpar.di, MCpar, PNN, seed=14342, model='Dirichlet')
 
-# AngDensPlot(model="Pairwise", para=est.pb.PNN$emp.mean, log=TRUE, data=PNN, 
-# contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
-# AngDensPlot(model="Husler", para=est.hr.PNN$emp.mean, log=TRUE, data=PNN, 
-# contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
-# AngDensPlot(model="Dirichlet", para=est.di.PNN$emp.mean, log=TRUE, data=PNN, 
-#contour=TRUE,labels=c("PM10","NO","NO2"),cex.dat=0.8)
+lab3 <- c("PM10","NO","NO2")
+AngDensPlot("Pairwise", est.pb.PNN$emp.mean, data=PNN, labels=lab3, cex.dat=0.8)
+AngDensPlot("Husler", est.hr.PNN$emp.mean, data=PNN, labels=lab3, cex.dat=0.8)
+AngDensPlot("Dirichlet", est.di.PNN$emp.mean, data=PNN, labels=lab3, cex.dat=0.8)
+}
+
+################################################
+# The following esamples provide the plots of
+# the supplementary material for
+# Beranger, Padoan and Sisson (2016)
+################################################
+
+\dontrun{	
+AngDensPlot(model='Skewt', para=c(0.6,0.8,0.7,0,0,0,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Skewt', para=c(0.6,0.8,0.7,-3,-3,7,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Skewt', para=c(0.6,0.8,0.7,7,-10,3,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+
+AngDensPlot(model='Skewt', para=c(0.7,0.7,0.7,0,0,0,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Skewt', para=c(0.7,0.7,0.7,-3,-3,7,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+AngDensPlot(model='Skewt', para=c(0.7,0.7,0.7,7,-10,3,3), log=FALSE, cex.lab=1.5, cex.cont=1.3)
+}
+
 }

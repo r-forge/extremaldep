@@ -37,8 +37,11 @@
 \seealso{\code{\link{beed}}, \code{\link{bp}}, \link{beed.confband}.}
 
 \examples{
+
 v <- as.matrix(0:8, ncol = 1)
 convexity(v, d = 2)
+
 }
+
 
 \keyword{Convexity, Bernstein polynomials}

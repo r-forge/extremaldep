@@ -19,7 +19,7 @@ The estimation procedure is based on the madogram as proposed in Marcon et al. (
 
 \eqn{
 \nu(\bold{w}) =
-\bold{E} \left(\
+{\rm E} \left(\
 \bigvee_{i=1,\dots,d}\left \lbrace F^{1/w_i}_{i}\left(X_{i}\right)  \right\rbrace -
 \frac{1}{d}\sum_{i=1,\dots,d}F^{1/w_i}_{i}\left(X_{i}\right).
 \right),
@@ -83,4 +83,5 @@ Amd.bp <- beed(data, cbind(w,1-w), 2, 'md', 'emp', 20, plot=TRUE)
       
 lines(w, Amd, lty = 1, col = 2)
 }
+
 \keyword{madogram}

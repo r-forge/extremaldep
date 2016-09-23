@@ -85,6 +85,7 @@ With the estimated polynomial coefficients, the extremal coefficient, i.e. \eqn{
 \seealso{\code{\link{beed.confband}}.}
 
 \examples{
+
 w <- seq(0, 1, length = 100)  
 data <- rbvevd(50, dep = 0.4, model = 'log', mar1 = c(1,1,1))
     
@@ -97,22 +98,24 @@ lines(w, Acfg$A, lty = 1, col = 2)
 
 ##################################
 # Trivariate case
-#
-# w <- seq(0, 1, length = 30)
-# xx <- expand.grid(w, w)
-# xx <- cbind(xx, 1 - rowSums(xx))
-# os <- rowSums(xx[,1:2])>1
-# xx[os,] <- rep(NA,3)
-# x <- as.matrix(xx)
-#
-# data <- rmvevd(50, dep = 0.8, model = "log", d = 3, mar = c(1,1,1))
-#
-# par(mfrow=c(1,3))
-# Amd <- beed(data, x, 3, 'md', 'emp', 18, plot=TRUE)
-# Acfg <- beed(data, x, 3, 'cfg', 'emp', 18, plot=TRUE)
-# Aht <- beed(data, x, 3, 'ht', 'emp', 18, plot=TRUE)
-#
 ##################################
+
+\dontrun{
+w <- seq(0, 1, length = 30)
+xx <- expand.grid(w, w)
+xx <- cbind(xx, 1 - rowSums(xx))
+os <- rowSums(xx[,1:2])>1
+xx[os,] <- rep(NA,3)
+x <- as.matrix(xx)
+
+data <- rmvevd(50, dep = 0.8, model = "log", d = 3, mar = c(1,1,1))
+
+par(mfrow=c(1,3))
+Amd <- beed(data, x, 3, 'md', 'emp', 18, plot=TRUE)
+Acfg <- beed(data, x, 3, 'cfg', 'emp', 18, plot=TRUE)
+Aht <- beed(data, x, 3, 'ht', 'emp', 18, plot=TRUE)
+}
+
 }
 
 \keyword{Nonparametric}

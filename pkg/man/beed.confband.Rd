@@ -61,18 +61,21 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
   
 
 \examples{
+\dontrun{
 w <- seq(0, 1, length = 100)  
 data <- rbvevd(50, dep = 0.4, model = 'log', mar1 = c(1,1,1))
 
 # Note you should consider 500 bootstrap replications. 
-# In order to obtain fastest results we used 30!
-cb <- beed.confband(data, cbind(w, 1-w), 2, 'md', 'emp', 20, 30) 
+# In order to obtain fastest results we used 50!
+cb <- beed.confband(data, cbind(w, 1-w), 2, 'md', 'emp', 20, 50) 
                     
 plot(w, w, type='n', xlab="w", ylab="A(w)", ylim=c(.5,1))
 polygon(c(0, 0.5, 1), c(1, 0.5, 1), lty=1, lwd=1, border='grey')
 lines(w, cb$A, lty=1)
 lines(w, cb$A.up.beta, lty=2)
 lines(w, cb$A.low.beta, lty=2)
+
+}
 }
   
 \keyword{Bootstrap confidence bands}

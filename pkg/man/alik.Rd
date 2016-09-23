@@ -1,6 +1,5 @@
 \name{alik}
 \alias{alik}
-\alias{print.alik}
 
 \title{Approximate likelihood estimation of extremal dependence models.}
 
@@ -8,7 +7,7 @@
 	standard errors and TIC.}
   
 \usage{
-alik(data, model, parastart, trace=0, sig=3)
+alik(data, model, parastart, c=NULL, trace=0, sig=3)
 }
 
 \arguments{
@@ -17,6 +16,8 @@ alik(data, model, parastart, trace=0, sig=3)
 	\item{model}{A string with the name of the parametric model to be estimated. See \bold{Details}.}	
 	\item{parastart}{A vector containing the starting values of the model's parameters for the maximisation of
 		the log-approximate likelihood. See \bold{Details}.}	
+	\item{c}{A real such that \eqn{0<=c<=1}{0<=c<=1}, providing the decision rule to allocate a data point to a subset of the simplex.
+		Only required for the Extremal-t, Extremal Skew-t and Asymmetric Logistic models.}
 	\item{trace}{Non-negative integer. See \code{\link{optim}} for details. \code{trace=0}
 		is the default.}
 	\item{sig}{Non-negative integer. Provides the number of decimal places for the returned object.
@@ -26,13 +27,14 @@ alik(data, model, parastart, trace=0, sig=3)
 \details{
 The available parametric extremal dependence models are:
 \itemize{
-\item The \bold{Pairwise Beta}, that can be called with \code{model="Pairwise"}. The number of dependence parameters is
+\item The \bold{Pairwise Beta}, called with \code{model="Pairwise"}. The number of parameters is
 \code{choose(d,2)+1};
-\item The \bold{Husler-Reiss}, that can be called with \code{model="Husler"}. The number of dependence parameters is 
+\item The \bold{Husler-Reiss}, called with \code{model="Husler"}. The number of parameters is 
 \code{choose(d,2)};
-\item The \bold{Tilted Dirichlet}, that can be called with \code{model="Dirichlet"}. The number of dependence parameters is 
+\item The \bold{Tilted Dirichlet}, called with \code{model="Dirichlet"}. The number of parameters is 
 \eqn{d}{d};
-\item The \bold{Extremal-t}, that can be called with \code{model="Extremalt"}. The number of dependence parameters is \code{choose(d,2)+1};
+\item The \bold{Extremal-t}, called with \code{model="Extremalt"}. The number of parameters is \code{choose(d,2)+1};
+\item The \bold{Extremal Skew-t}, called with \code{model="Skewt"}. The number of parameters is \code{choose(d,2)+d+1};
 \item The \bold{Asymmetric Logistic}, that can be called with \code{model="Asymmetric"}. The number of dependence parameters is \eqn{2^{d-1}(d+2)-(2d+1)}{2^{d-1}(d+2)-(2d+1)}.
 }
 See \bold{References} and the references therein.
@@ -47,7 +49,7 @@ Standard errors are calculated using the sandwich (Godambe) information matrix.
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan/};
+	\url{http://faculty.bocconi.it/simonepadoan};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
@@ -55,6 +57,10 @@ Standard errors are calculated using the sandwich (Godambe) information matrix.
 	Beranger, B. and Padoan, S. A. (2015).
 	Extreme dependence models, chapater of the book \emph{Extreme Value Modeling and Risk Analysis: Methods and Applications},
   \bold{Chapman Hall/CRC}.
+  
+  	Beranger, B., Padoan, S. A. and Sisson, S. A. (2016).
+	Models for extremal dependence derived from skew-symmetric families.
+	\emph{Scandinavian Journal of Statistics}, \bold{To appear}.	
 }
 
 \examples{
@@ -66,41 +72,45 @@ Standard errors are calculated using the sandwich (Godambe) information matrix.
 ################################################
 
 ## Load datsets
-# data(pollution) 
+data(pollution) 
 
 
 ## Dataset PM10-NO-SO2 (PNS)
- 
-#alik(PNS,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
-#alik(PNS,model="Husler",rep(1,3),trace=2,sig=2)
-#alik(PNS,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
-#alik(PNS,model="Extremalt",c(-0.5,-0.4,-0.5,1),trace=2,sig=2)
-#alik(PNS,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),trace=2,sig=2)
 
+\dontrun{	 
+alik(PNS,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
+alik(PNS,model="Husler",rep(1,3),trace=2,sig=2)
+alik(PNS,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
+alik(PNS,model="Extremalt",c(-0.5,-0.4,-0.5,1),c=0.01,trace=2,sig=2)
+alik(PNS,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),c=0.01,trace=2,sig=2)
+}
 
 ## Dataset NO2-SO2-NO (NSN)
 
-#alik(NSN,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
-#alik(NSN,model="Husler",rep(1,3),trace=2,sig=2)
-#alik(NSN,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
-#alik(NSN,model="Extremalt",c(-0.5,-0.4,-0.5,1),trace=2,sig=2)
-#alik(NSN,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),trace=2,sig=2)
-
+\dontrun{	
+alik(NSN,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
+alik(NSN,model="Husler",rep(1,3),trace=2,sig=2)
+alik(NSN,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
+alik(NSN,model="Extremalt",c(-0.5,-0.4,-0.5,1),c=0.01,trace=2,sig=2)
+alik(NSN,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),c=0.01,trace=2,sig=2)
+}
 
 ## Dataset PM10-NO-NO2 (PNN)
 
-#alik(PNN,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
-#alik(PNN,model="Husler",rep(1,3),trace=2,sig=2)
-#alik(PNN,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
-#alik(PNN,model="Extremalt",c(-0.5,-0.4,-0.5,1),trace=2,sig=2)
-#alik(PNN,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),trace=2,sig=2)
-
+\dontrun{	
+alik(PNN,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
+alik(PNN,model="Husler",rep(1,3),trace=2,sig=2)
+alik(PNN,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
+alik(PNN,model="Extremalt",c(-0.5,-0.4,-0.5,1),c=0.01,trace=2,sig=2)
+alik(PNN,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),c=0.01,trace=2,sig=2)
+}
 
 ## Dataset PM10-NO-NO2-SO2 (PNNS)
 
-#alik(PNNS,model="Pairwise",rep(1,choose(ncol(PNNS),2)+1),trace=2,sig=2)
-#alik(PNNS,model="Husler",rep(1,choose(ncol(PNNS),2)),trace=2,sig=2)
-#alik(PNNS,model="Dirichlet",rep(1,ncol(PNNS)),trace=2,sig=2)
-#alik(PNNS,model="Extremalt",c(rep(-0.1,choose(ncol(PNNS),2)),1),trace=2,sig=2)
-#alik(PNNS,model="Asymmetric",c(rep(1.1,11),rep(0.1,28)),trace=2,sig=2)
+\dontrun{	
+alik(PNNS,model="Pairwise",rep(1,choose(ncol(PNNS),2)+1),trace=2,sig=2)
+alik(PNNS,model="Husler",rep(1,choose(ncol(PNNS),2)),trace=2,sig=2)
+alik(PNNS,model="Dirichlet",rep(1,ncol(PNNS)),trace=2,sig=2)
+}
+
 }

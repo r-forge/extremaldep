@@ -1,13 +1,12 @@
 \name{dens}
 \alias{dens}
-\alias{print}
 
 \title{Angular density and likelihood function for some extremal dependence models}
 \description{Evaluate the angular density or calculates the likelihood function
-	of the Pairwise Beta, Husler-Reiss, Dirichlet, Extremal-$t$ and Asymmetric Logistic models
+	of the Pairwise Beta, Husler-Reiss, Dirichlet, Extremal-$t$, Extremal Skew-$t$ and Asymmetric Logistic models
 	at one or more locations on the unit simplex. }
 \usage{
-dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
+dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4), c, 
         log=FALSE, vectorial=TRUE)
 }
 \arguments{
@@ -17,10 +16,12 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 		\eqn{3}{3}-dimensional simplex.}
 	\item{model}{A string with the name of the parametric model to be estimated. Models are
 		Pairwise Beta (\code{"Pairwise"}), Husler-Reiss	(\code{"Husler"}),
-		Dirichlet (\code{"Dirichlet"}), Extremal-t (\code{"Extremalt"}) and
+		Dirichlet (\code{"Dirichlet"}), Extremal-t (\code{"Extremalt"}), Extremal Skew-t (\code{"Skewt"}) and
 		Asymmetric Logistic (\code{"Asymmetric"}).}
 	\item{par}{A vector containing the parameters of the model. See \bold{Details}.}	
-	\item{log}{Logical; if \code{TRUE} the log-density is return. \code{FALSE}
+	\item{c}{A real such that \eqn{0<=c<=1}{0<=c<=1}, providing the decision rule to allocate a data point to a subset of the simplex.
+		Only required for the Extremal-t, Extremal Skew-t and Asymmetric Logistic models.}
+	\item{log}{Logical; if \code{TRUE} the log-density is returned. \code{FALSE}
 		is the default.}
 	\item{vectorial}{Logical; if \code{TRUE} when \eqn{n>1}{n>1} the different densities
 		are returned as a vector of length \eqn{n}{n}. If \code{FALSE} the likelihood
@@ -28,7 +29,7 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 }
 
 \details{
-	The Extremal-$t$ and Asymmetric Logistic models are available up to 4 dimensions;
+	The Extremal-$t$ and Asymmetric Logistic models are available up to 3 dimensions;
 	mass on all the subsets of the simplex is included.
 	
 	For the Pairwise Beta model, the parameter vector is decomposed as:
@@ -49,13 +50,20 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 	\item{rho}{A vector of size \code{choose(d,2)} representing the corrleation parameters.}
 	\item{mu}{A positive integer, \eqn{\mu \geq 1}, representing the degree of freedom.}		
 	}
+
+	For the Extremal Skew-$t$ model, the parameter vector is decomposed as:
+	\describe{
+	\item{rho}{A vector of size \code{choose(d,2)} representing the corrleation parameters.}
+	\item{alpha}{A vector of size \code{d} representing the shape parameters.}
+	\item{mu}{A positive integer, \eqn{\mu \geq 1}, representing the degree of freedom.}		
+	}
 	
 	For the Asymmetric Logistic model,  the parameter vector is decomposed as:
 	\describe{
-	\item{alpha}{A vector of size \eqn{1,4}{1,4} or \eqn{11}{11} depending whether \eqn{d=2,3}{d=2,3}
-		or \eqn{4}{4}.}
-	\item{beta}{A vector of size \eqn{2,9}{2,9} or \eqn{28}{28} depending whether \eqn{d=2,3}{d=2,3}
-		or \eqn{4}{4}.}		
+	\item{alpha}{A vector of size \eqn{1}{1} or \eqn{4}{4} depending whether \eqn{d=2}{d=2}
+		or \eqn{3}{3}.}
+	\item{beta}{A vector of size \eqn{2}{2} or \eqn{9}{9} depending whether \eqn{d=2}{d=2}
+		or \eqn{3}{3}.}		
 	}
 	
 	If \code{log=TRUE} and \code{vectorial=FALSE} then the log-likelihood function is
@@ -65,7 +73,6 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 \value{
 	Returns a \eqn{n}{n}-dimensional vector if \code{vectorial=TRUE} or a single value
 	if \code{vectorial=FALSE}.
-	The dimension of the location cannot be less than \eqn{3}{3}.
 }
 
 \references{
@@ -97,6 +104,10 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 	Extreme dependence models, chapater of the book \emph{Extreme Value Modeling and Risk Analysis: Methods and Applications},
 	\bold{Chapman Hall/CRC}.
 	
+	Beranger, B., Padoan, S. A. and Sisson, S. A. (2016).
+	Models for extremal dependence derived from skew-symmetric families.
+	\emph{Scandinavian Journal of Statistics}, \bold{To appear}.	
+	
 	Tawn, J. A. (1990),
 	Modelling Multivariate Extreme Value Distributions,
 	\emph{Biometrika}, \bold{77}, 245--253.
@@ -106,12 +117,12 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4),
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan/};
+	\url{http://faculty.bocconi.it/simonepadoan};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
 \examples{
-
+\dontrun{
 ### Pairwise Beta :
 
 
@@ -198,48 +209,81 @@ log=FALSE, vectorial=TRUE)
 # Example on the 2-dimensional simplex
 # Returns the log-likelihood
 
-dens(x=rbind(c(0.4,0.6),c(0.3,0.7)), model="Extremalt", par=c(0.7,2), 
+dens(x=rbind(c(0.4,0.6),c(0.3,0.7)), model="Extremalt", par=c(0.7,2), c=0.1,
 log=TRUE, vectorial=FALSE)
+
+# Density in the corner
+
+dens(x=c(0.08,0.92), model="Extremalt", par=c(0.7,2), c=0.1,
+log=FALSE, vectorial=FALSE)
+
 
 # Example on the 3-dimensional simplex
 # Returns the log-likelihood
 
-dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Extremalt", par=c(rep(0.1,3),2),
+dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Extremalt", par=c(rep(0.1,3),2), c=0.03,
 log=FALSE, vectorial=FALSE)
 
-# returns the evalutaion of the bivariate angular density at three locations:
+# Returns the evalutaion of the angular density at three locations:
 # The first one is set to be on the edge linking the second and third components
 # The second one is set to be on the interior of the simplex
 # The third one is set to be on the corner near the third component
 
+\dontrun{
 dens(x=rbind(c(0.001,0.3,0.699),c(0.1,0.2,0.7),c(0.001,0.001,0.998)), 
-model="Extremalt", par=c(rep(0.1,3),2), log=FALSE, vectorial=TRUE)
+model="Extremalt", par=c(rep(0.1,3),2), c=0.01, log=FALSE, vectorial=TRUE)
+}
 
-# Example on the 4-dimensional simplex
-# Returns the evaluation of the 4-variate angular density at two locations.
+### Extremal Skew-t
 
-dens(x=rbind(c(0.1,0.3,0.3,0.3),c(0.1,0.2,0.4,0.3)), model="Extremalt", par=c(rep(0.1,6),2),
-log=FALSE, vectorial=TRUE)
+
+# Example on the 2-dimensional simplex
+# Returns the log-likelihood
+
+dens(x=rbind(c(0.4,0.6),c(0.3,0.7)), model="Skewt", par=c(0.7,0,0,2), c=0.1,
+log=TRUE, vectorial=FALSE)
+
+dens(x=rbind(c(0.4,0.6),c(0.3,0.7)), model="Skewt", par=c(0.7,2,-1,2), c=0.1,
+log=TRUE, vectorial=FALSE)
+
+# Density in the corner
+
+dens(x=c(0.08,0.92), model="Skewt", par=c(0.7,0,0,2), c=0.1,
+log=FALSE, vectorial=FALSE)
+
+dens(x=c(0.08,0.92), model="Skewt", par=c(0.7,-1,2,2), c=0.1,
+log=FALSE, vectorial=FALSE)
+
+# Example on the 3-dimensional simplex
+# Returns the log-likelihood
+
+dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Skewt", par=c(rep(0.1,3),rep(0,3),2), c=0.03,
+log=FALSE, vectorial=FALSE)
+
+# Returns the evalutaion of the angular density at three locations:
+# The first one is set to be on the edge linking the second and third components
+# The second one is set to be on the interior of the simplex
+# The third one is set to be on the corner near the third component
+
+\dontrun{
+dens(x=rbind(c(0.001,0.3,0.699),c(0.1,0.2,0.7),c(0.001,0.001,0.998)), 
+model="Skewt", par=c(rep(0.1,3),rep(0,3),2), c=0.01, log=FALSE, vectorial=TRUE)
+}
 
 
 ### Asymmetric Logistic
 
 # Example on the 3-dimensional simplex
-# Returns the bivariate angular density at three points:
+# Returns the angular density at three points:
 # The first one is set to be on the edge linking the second and third components
 # The second one is set to be on the interior of the simplex
 # The third one is set to be on the corner near the third component
 
-dens(x=rbind(c(0.001,0.3,0.699),c(0.1,0.2,0.7),c(0.001,0.001,0.998)), 
+dens(x=rbind(c(0.001,0.3,0.699),c(0.1,0.2,0.7),c(0.001,0.001,0.998)), c=0.05,
 model="Asymmetric", par=c(1.2,1.8,4,2,rep(0.3,9)), log=FALSE, vectorial=TRUE)
 
-# Example on the 4-dimensional simplex
-# Returns the log-likelihood of the 4-dim angular density evaluated at two points
 
-dens(x=rbind(c(0.1,0.3,0.5,0.1),c(0.1,0.2,0.5,0.2)), 
-model="Asymmetric", par=c(rep(1.2,11),rep(0.12,28)), log=TRUE, vectorial=FALSE)
-
-
+}
 }
 
 

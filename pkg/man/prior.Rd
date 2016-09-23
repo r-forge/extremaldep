@@ -1,6 +1,5 @@
 \name{prior}
 \alias{prior}
-\alias{print.prior}
 
 \title{Prior parameter distribution for parametric models}
 \description{Density and generating function for the prior distribution. }
@@ -57,39 +56,28 @@
 }
 
 \examples{
+MCpar <- 0.35
+Hpar.pb <- 	list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3)
+Hpar.hr <- list(mean.lambda=0, sd.lambda=3)
+Hpar.di <- list(mean.alpha=0, sd.alpha=3)
+Hpar.et <- list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3)
+Hpar.alm <- list(mean.alpha=0, mean.beta=0, sd.alpha=3, sd.beta=3)	
+	
+prior(model="Pairwise", type="r", n=5, Hpar=Hpar.pb, dimData=3)
+prior(model="Pairwise", type="d", par=rep(1,choose(4,2)+1), Hpar=Hpar.pb, log=TRUE, dimData=3)
 
-# Not run 
-# prior(model="Pairwise", type="r", n=5, Hpar=list(mean.alpha=0, mean.beta=0, 
-# sd.alpha=3, sd.beta=3), dimData=3)
-# Not run 
-# prior(model="Pairwise", type="d", par=rep(1,choose(4,2)+1), Hpar=list(mean.alpha=0, mean.beta=0, 
-# sd.alpha=3, sd.beta=3), log=TRUE dimData=3)
+prior(model="Husler", type="r", n=5, Hpar=Hpar.hr, dimData=3)
+prior(model="Husler", type="d", par=rep(1,choose(4,2)), Hpar=Hpar.hr, log=TRUE, dimData=3)
 
-# Not run 
-# prior(model="Husler", type="r", n=5, Hpar=list(mean.lambda=0, sd.lambda=3), dimData=3)
-# Not run 
-# prior(model="Husler", type="d", par=rep(1,choose(4,2)), Hpar=list(mean.lambda=0, sd.lambda=3),
-# log=TRUE, dimData=3)
+prior(model="Dirichlet", type="r", n=5, Hpar=Hpar.di, dimData=3)
+prior(model="Dirichlet", type="d", par=rep(1,3), Hpar=Hpar.di, log=TRUE, dimData=3)
 
-# Not run 
-# prior(model="Dirichlet", type="r", n=5, Hpar=list(mean.alpha=0, sd.alpha=3), dimData=3)
-# Not run 
-# prior(model="Dirichlet", type="d", par=rep(1,3), Hpar=list(mean.alpha=0, sd.alpha=3),
-# log=TRUE, dimData=3)
+prior(model="Extremalt", type="r", n=5, Hpar=Hpar.et, dimData=3)
+prior(model="Extremalt", type="d", par=c(rep(0.1,3),4), Hpar=Hpar.et, log=TRUE, dimData=3)
 
-# Not run 
-# prior(model="Extremalt", type="r", n=5, Hpar=list(mean.rho=0, mean.mu=0, 
-# sd.rho=3, sd.mu=3), dimData=3)
-# Not run 
-# prior(model="Extremalt", type="d", par=c(rep(0.1,3),4), Hpar=list(mean.rho=0, 
-# mean.mu=0, sd.rho=3, sd.mu=3),
-# log=TRUE, dimData=3)
+prior(model="Asymmetric", type="r", n=5, Hpar=Hpar.alm, dimData=3)
+prior(model="Asymmetric", type="d", par=c(rep(2,4),rep(0.7,9)), Hpar=Hpar.alm, log=TRUE, dimData=3)
 
-# Not run 
-# prior(model="Asymmetric", type="r", n=5, Hpar=list(mean.alpha=0, mean.beta=0, 
-# sd.alpha=3, sd.beta=3), dimData=3)
-# Not run 
-# prior(model="Asymmetric", type="d", par=c(rep(2,4),rep(0.7,9)), Hpar=list(mean.alpha=0, 
-# mean.beta=0, sd.alpha=3, sd.beta=3),
-# log=TRUE, dimData=3)
 }
+
+
