@@ -1,19 +1,19 @@
 ################################################################################################
 ### Authors: Boris Beranger and Simone Padoan        	 									 ###
-### 																						 ###	
-###	Emails: borisberanger@gmail.com, simone.padoan@unibocconi.it							 ###
-### 																						 ###
+### 																							 ###	
+###	Emails: borisberanger@gmail.com, simone.padoan@unibocconi.it								 ###
+### 																							 ###
 ###	Institutions: Department of Decision Sciences, University Bocconi of Milan				 ###
-### School of Mathematics and Statistics, University of New South Wales 					 ###
-### 																						 ###
+### School of Mathematics and Statistics, University of New South Wales 						 ###
+### 																							 ###
 ### File name: ApproxBayesian.r	                 							             	 ###
-### 																						 ###
+### 																							 ###
 ### Description:                                  							      		     ###
 ### This file provides the Approximate Bayesian procedure for the extremal dependence models ###
-### Pairwise Beta, Dirichlet, H??sler-Reiss, Asymmetric logistic and Extremal-t			     ###
-### 																						 ###
-### Last change: 11/07/2015                         		  								 ###
-### 																						 ###
+### Pairwise Beta, Dirichlet, Husler-Reiss, Asymmetric logistic and Extremal-t			     ###
+### 																							 ###
+### Last change: 15/12/2014                         		  									 ###
+### 																							 ###
 ################################################################################################
 
 
@@ -164,16 +164,16 @@ prior <- function(model, type = c("r", "d"), n, par, Hpar, log, dimData){
     		if(p==3){
 	    	    lpar <- c( log( par[1:4]-1), logit(par[5:13]))
     		    ld1 <- dnorm(lpar[1:4], mean = Hpar$mean.alpha, sd = Hpar$sd.alpha, log = TRUE)
-    	    	ld2 <- dnorm(lpar[5:13], mean = Hpar$mean.beta, sd = Hpar$sd.beta, log = TRUE)
+    	   	 	ld2 <- dnorm(lpar[5:13], mean = Hpar$mean.beta, sd = Hpar$sd.beta, log = TRUE)
     	    }
     		if(p==4){
-		        lpar <- c( log( par[1:11]-1), logit(par[12:39]) )
+		    lpar <- c( log( par[1:11]-1), logit(par[12:39]) )
     		    ld1 <- dnorm(lpar[1:11], mean = Hpar$mean.alpha, sd = Hpar$sd.alpha, log = TRUE)
    	 	    	ld2 <- dnorm(lpar[12:39], mean = Hpar$mean.beta, sd = Hpar$sd.beta, log = TRUE)
         	}        
         	if (log) 
-        	    return( sum(ld1) + ld2 )
-        	else return( exp( sum(ld1) + ld2 ) )
+        	    return( sum(ld1) + sum(ld2) )
+        	else return( exp( sum(ld1) + sum(ld2) ) )
     	}
     	stop("wrong 'type' argument")
 	}
@@ -358,25 +358,17 @@ posteriorMCMC <- function (
 	seed = NULL, kind = "Mersenne-Twister", 
     save = FALSE, name.save = NULL, save.directory = "~", 
     name.dat = "", 
-    model) 
+    model, c=NULL) 
 {
 
 	# Preliminary function
 	
-	lAccept.ratio <- function (cur.par, prop.par, llh.cur, lprior.cur, Hpar, MCpar, dat, model) {
+	lAccept.ratio <- function (cur.par, prop.par, llh.cur, lprior.cur, Hpar, MCpar, dat, model,c) {
  
 	    p <- ncol(dat)
    
-		new.ll <- dens(x = dat, model=model, par = prop.par, log = TRUE, vectorial = FALSE)
-		
-#	    if(model=='Pairwise'){ new.ll <- dens_pb(x = dat, b = prop.par[-length(prop.par)], alpha = prop.par[length(prop.par)], log = TRUE, vectorial = FALSE)}
-# 	    if(model=='Husler'){ new.ll <- dens_hr(x = dat, lambda = prop.par, log = TRUE, vectorial = FALSE)}
-# 	    if(model=='Dirichlet'){ new.ll <- dens_di(x = dat, para = prop.par, log = TRUE, vectorial = FALSE)}
-#	    if(model=='Extremalt'){ new.ll <- dens_et(x = dat, rho = prop.par[-length(prop.par)], mu = prop.par[length(prop.par)], log = TRUE, vectorial = FALSE)}
-# 	    if(model=='Asymmetric' && p==2){ new.ll <- dens_al(x = dat, alpha = prop.par[1], beta = prop.par[2:3], log = TRUE, vectorial = FALSE)}        
-#	    if(model=='Asymmetric' && p==3){ new.ll <- dens_al(x = dat, alpha = prop.par[1:4], beta = prop.par[5:13], log = TRUE, vectorial = FALSE)}        
-#	    if(model=='Asymmetric' && p==4){ new.ll <- dens_al(x = dat, alpha = prop.par[1:11], beta = prop.par[12:39], log = TRUE, vectorial = FALSE)}            
-        
+		new.ll <- dens(x = dat, model=model, par = prop.par, c=c, log = TRUE, vectorial = FALSE)
+		        
 	    new.lprior <- prior(model,type = "d", par = prop.par, Hpar = Hpar, log = TRUE, dimData = p)
 	    proposal.oldToProp <- proposal(model,type = "d", cur.par = cur.par,  prop.par = prop.par, MCpar = MCpar, log = TRUE)
     	proposal.propToOld <- proposal(model,type = "d", cur.par = prop.par, 
@@ -384,7 +376,6 @@ posteriorMCMC <- function (
     	return(list(lrho = new.ll - llh.cur + new.lprior - lprior.cur + proposal.propToOld - proposal.oldToProp, llh = new.ll, 
         	lprior = new.lprior))
 	}
-
 	
 	#
 
@@ -401,14 +392,7 @@ posteriorMCMC <- function (
     if (is.null(par.start)) {
         repeat {
             par.start <- prior(model, type = "r", n = 1, Hpar = Hpar, dimData = p)
-			condit1 <- dens(x = dat, model=model, par = par.start, log = TRUE,  vectorial = FALSE)
-#            if(model=='Pairwise'){condit1 <- dens_pb(x = dat, b = par.start[-length(par.start)], alpha = par.start[length(par.start)], log = TRUE,  vectorial = FALSE)} 
-#            if(model=='Husler'){condit1 <- dens_hr(x = dat, lambda = par.start, log = TRUE,  vectorial = FALSE)}
-#			if(model=='Dirichlet'){condit1 <- dens_di(x = dat, para = par.start, log = TRUE,  vectorial = FALSE)}
-#			if(model=='Extremalt'){condit1 <- dens_et(x = dat, rho = par.start[-length(par.start)], mu = par.start[length(par.start)], log = TRUE,  vectorial = FALSE)}               	
-#			if(model=='Asymmetric' && p==2){condit1 <- dens_al(x = dat, alpha = par.start[1], beta = par.start[2:3], log = TRUE,  vectorial = FALSE)}
-#			if(model=='Asymmetric' && p==3){condit1 <- dens_al(x = dat, alpha = par.start[1:4], beta = par.start[5:13], log = TRUE,  vectorial = FALSE)} 
-#			if(model=='Asymmetric' && p==4){condit1 <- dens_al(x = dat, alpha = par.start[1:11], beta = par.start[12:39], log = TRUE,  vectorial = FALSE)}
+			condit1 <- dens(x = dat, model=model, par = par.start, c=c, log = TRUE,  vectorial = FALSE)
             condit <- condit1 + prior(model, type = "d", par = par.start, Hpar = Hpar, log = TRUE, dimData = p)
             if (is.finite(condit)) 
                 break
@@ -416,14 +400,7 @@ posteriorMCMC <- function (
     }
     cur.par <- par.start
     
-	llh.cur <- dens(x = dat, model=model, par = cur.par, log = TRUE, vectorial = FALSE)
-#    if(model=='Pairwise'){llh.cur <- dens_pb(x = dat, b = cur.par[-length(cur.par)], alpha = cur.par[length(cur.par)], log = TRUE, vectorial = FALSE)}
-#    if(model=='Husler'){llh.cur <- dens_hr(x = dat, lambda = cur.par, log = TRUE, vectorial = FALSE)}
-#    if(model=='Dirichlet'){llh.cur <- dens_di(x = dat, para = cur.par, log = TRUE, vectorial = FALSE)}
-#    if(model=='Extremalt'){llh.cur <- dens_et(x = dat, rho = cur.par[-length(cur.par)], mu = cur.par[length(cur.par)], log = TRUE, vectorial = FALSE)}
-#    if(model=='Asymmetric' && p==2){llh.cur <- dens_al(x = dat, alpha = cur.par[1], beta = cur.par[2:3], log = TRUE, vectorial = FALSE)}
-#    if(model=='Asymmetric' && p==3){llh.cur <- dens_al(x = dat, alpha = cur.par[1:4], beta = cur.par[5:13], log = TRUE, vectorial = FALSE)}
-#    if(model=='Asymmetric' && p==4){llh.cur <- dens_al(x = dat, alpha = cur.par[1:11], beta = cur.par[12:39], log = TRUE, vectorial = FALSE)}
+	llh.cur <- dens(x = dat, model=model, par = cur.par, c=c, log = TRUE, vectorial = FALSE)
     
     lprior.cur <- prior(model, type = "d", par = cur.par, Hpar = Hpar, log = TRUE, dimData = p)
     nsim = 1
@@ -471,17 +448,8 @@ posteriorMCMC <- function (
     end.time <- proc.time()
     print(end.time - start.time)
     
-	BIC <- -2*dens(x=dat, model=model, par=mean.res, log=TRUE, vectorial=FALSE)+length(mean.res)*(log(nrow(dat))+log(2*pi))
-	
-#    if(model=="Pairwise"){BIC <- -2*dens_pb(x=dat, b=mean.res[-length(mean.res)], alpha=mean.res[length(mean.res)], log=TRUE, vectorial=FALSE)+(choose(p,2)+1)*(log(nrow(dat))+log(2*pi)) }
-#    if(model=="Husler"){BIC <- -2*dens_hr(x=dat, lambda=mean.res, log=TRUE, vectorial=FALSE) + choose(p,2)*(log(nrow(dat))+log(2*pi)) }
-#    if(model=="Dirichlet"){BIC <- -2*dens_di(x=dat, para=mean.res, log=TRUE, vectorial=FALSE) + p*(log(nrow(dat))+log(2*pi)) }
-#    if(model=="Extremalt"){BIC <- -2*dens_et(x=dat, rho=mean.res[-length(mean.res)], mu=mean.res[length(mean.res)],log=TRUE, vectorial=FALSE)+(choose(p,2)+1)*(log(nrow(dat))+log(2*pi))}
-#    if(model=="Asymmetric" && p==2){BIC <- -2*dens_al(x=dat, alpha=mean.res[1], beta=mean.res[2:3], log=TRUE, vectorial=FALSE)+3*(log(nrow(dat))+log(2*pi)) }
-#    if(model=="Asymmetric" && p==3){BIC <- -2*dens_al(x=dat, alpha=mean.res[1:4], beta=mean.res[5:13], log=TRUE, vectorial=FALSE)+13*(log(nrow(dat))+log(2*pi)) }
-#    if(model=="Asymmetric" && p==4){BIC <- -2*dens_al(x=dat, alpha=mean.res[1:11], beta=mean.res[12:39], log=TRUE, vectorial=FALSE)+39*(log(nrow(dat))+log(2*pi)) }
-                
-    
+	BIC <- -2*dens(x=dat, model=model, par=mean.res, c=c, log=TRUE, vectorial=FALSE)+length(mean.res)*(log(nrow(dat))+log(2*pi))
+	   
     res <- list(stored.vals = stored.vals, llh = llh, lprior = lprior, 
         arguments = arglist, elapsed = end.time - start.time, 
         Nsim = Nsim, Nbin = Nbin, n.accept = n.accept, n.accept.kept = n.accept.kept, 

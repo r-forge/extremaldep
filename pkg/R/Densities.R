@@ -1,25 +1,25 @@
 ################################################################################################
 ### Authors: Boris Beranger and Simone Padoan        	 									 ###
-### 																						 ###	
-###	Emails: borisberanger@gmail.com, simone.padoan@unibocconi.it							 ###
-### 																						 ###
+### 																							 ###	
+###	Emails: borisberanger@gmail.com, simone.padoan@unibocconi.it								 ###
+### 																							 ###
 ###	Institutions: Department of Decision Sciences, University Bocconi of Milan				 ###
-### School of Mathematics and Statistics, University of New South Wales 					 ###
-### 																						 ###
+### School of Mathematics and Statistics, University of New South Wales 						 ###
+### 																							 ###
 ### File name: Densities.r	                 							             	     ###
-### 																						 ###
+### 																							 ###
 ### Description:                                  							      		     ###
-### This file provides the Angular densities of extremal dependence models: 				 ###
-### 1) Pairwise Beta, Dirichlet and H??sler-Reiss (mass only on the interior of the simplex)  ###
+### This file provides the Angular densities of extremal dependence models: 					 ###
+### 1) Pairwise Beta, Dirichlet and Husler-Reiss (mass only on the interior of the simplex)  ###
 ### 2) Asymmetric logistic and Extremal-t (mass on all subsets of the simplex)				 ###
-### It also provides the likelihood and log-likelihood functions							 ###
-### 																						 ###
-### Last change: 11/07/2015                         		  								 ###
-### 																						 ###
+### It also provides the likelihood and log-likelihood functions								 ###
+### 																							 ###
+### Last change: 04/12/2014                         		  									 ###
+### 																							 ###
 ################################################################################################
 
 
-dens <- function(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4), log=FALSE, vectorial=TRUE){
+dens <- function(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4), c=NULL, log=FALSE, vectorial=TRUE){
 
 ### Functions needed for the Pairwise Beta model 
 
@@ -71,9 +71,7 @@ dens_pb <- function (x, b, alpha, log, vectorial){
     else return(result)
 }
 
-
-### Functions neeed for the H??sler-Reiss model
-
+### Functions needed for the Husler-Reiss model
 
 dens_hr <- function (x, lambda, log, vectorial){
 	
@@ -139,6 +137,7 @@ dens_hr <- function (x, lambda, log, vectorial){
   	return(result)
 }
 
+### Functions needed for the Dirichlet model
 
 dens_di <- function (x, para, log, vectorial){
 	
@@ -179,12 +178,9 @@ dens_di <- function (x, para, log, vectorial){
     else return(result)
 }
 
+### Functions needed for the Asymmetric logistic model
 
-
-
-### Functions neeed for the Asymmetric logistic model
-
-dens_al <- function (x, alpha, beta, log, vectorial){
+dens_al <- function (x, alpha, beta, c, log, vectorial){
 
 	# The 2d case: 
 
@@ -206,13 +202,13 @@ dens_al <- function (x, alpha, beta, log, vectorial){
 		if(s==2){return(1-beta[2])}
 	}
 
-	dens_alm_2d <- function(w,alpha,beta){
+	dens_alm_2d <- function(w,alpha,beta,c){
 		if(length(alpha)!=1){return(stop("Wrong length of parameter alpha"))}
 		if(length(beta)!=2){return(stop("Wrong length of parameter beta"))}
 		if( (alpha < 1) || any(beta < 0) || any(beta > 1)){return(1e-50)}
   
-		if(sum(w<0.01) == 1){ # then we are in a corner 
-			ind <- which(w > 0.99)
+		if(sum(w > (1-c) ) == 1){ # then we are in a corner 
+			ind <- which(w > (1-c))
 			return(corners_alm_2d(w,alpha,beta,ind))
 		} else {
 			return(interior_alm_2d(w,alpha,beta))	
@@ -259,122 +255,56 @@ dens_al <- function (x, alpha, beta, log, vectorial){
 		if(s==3){return(1-beta[4]-beta[6]-beta[9])}
 	}
 
-	dens_alm_3d <- function(w,alpha,beta){
+	dens_alm_3d <- function(w,alpha,beta,c){
 		if(length(alpha)!=4){return(stop("Wrong length of parameter alpha"))}
 		if(length(beta)!=9){return(stop("Wrong length of parameter beta"))}
-		if(any(alpha < 1) || any(beta < 0) || any(beta > 1)){return(1e-50)}
 	  	if(beta[1]+beta[3]+beta[7]>1){return(1e-50)} # see conditions on the beta parameters
 	  	if(beta[2]+beta[5]+beta[8]>1){return(1e-50)}
 	  	if(beta[4]+beta[6]+beta[9]>1){return(1e-50)}
+		if(any(alpha < 1) || any(beta < 0) || any(beta > 1)){return(1e-50)}
+ 
+   		if(c==0){return(interior_alm_3d(w,alpha,beta))}
   
-		if(sum(w<0.01) == 2){ # then we are in a corner 
-			ind <- which(w > 0.98)
-			return(corners_alm_3d(w,alpha,beta,ind))
-		} else if(sum(w<0.01) == 1){
-			ind <- which(w >= 0.01)
-			return(edges_alm_3d(w,alpha,beta,ind[1],ind[2]))		
+		if(sum(w<c) == 2){ # then we are in a corner 
+			ind <- which(w > c)
+			return(corners_alm_3d(w,alpha,beta,ind)/c^2)
+		} else if(sum(w<c) == 1){
+			ind <- which(w >= c)
+			w2 <- w[ind]/sum(w[ind])
+			edge_surface <- c*sqrt(3)*(1-2*c)/2
+
+			if(w[1]<=1-c && w[2]<=1-c && w[3]<=c && w[1]>=(1-w[2])/2 && w[1]>=1-2*w[2]){ #EDGE {1,2} 			
+				edg01 <- integrate(Vectorize(function(x){edges_alm_3d(w=c(x,1-x,0), alpha=alpha, beta=beta, s=1, t=2)}), lower=0, upper=1)$value
+				return(edges_alm_3d(c(w2,w[3]),alpha,beta,1,2) * edg01 / edge_surface)
+			}
+
+			if(w[1]<=1-c && w[2]<=c && w[3]<=1-c && w[2]<=w[1] && w[1]<=1-2*w[2]){ #EDGE {1,3} 			
+				edg01 <- integrate(Vectorize(function(x){edges_alm_3d(w=c(x,0,1-x), alpha=alpha, beta=beta, s=1, t=3)}), lower=0, upper=1)$value
+				return(edges_alm_3d(c(w2[1],w[2],w2[2]),alpha,beta,1,3) * edg01 / edge_surface)
+			}
+
+			if(w[1]<=c && w[2]<=1-c && w[3]<=1-c && w[1]<=w[2] && w[1]<=(1-w[2])/2){ #EDGE {2,3} 			
+				edg01 <- integrate(Vectorize(function(x){edges_alm_3d(w=c(0,x,1-x), alpha=alpha, beta=beta, s=2, t=3)}), lower=0, upper=1)$value
+				return(edges_alm_3d(c(w[1],w2),alpha,beta,2,3) * edg01 / edge_surface)
+			}
 		} else {
-			return(interior_alm_3d(w,alpha,beta))	
+			int01 <- integrate(Vectorize(function(y) integrate(Vectorize(function(x) interior_alm_3d(c(x,y,1-x-y),alpha=alpha, beta=beta)), lower=0, upper=1-y )$value), lower=0, upper=1)$value
+			intc <- integrate(Vectorize(function(y) integrate(Vectorize(function(x) interior_alm_3d(c(x,y,1-x-y),alpha=alpha, beta=beta)), lower=c, upper=1-y-c )$value), lower=c, upper=1-2*c)$value
+			
+			return(interior_alm_3d(w,alpha,beta)*int01/intc)	
 		}
 	}
 
-	# The 4d case:
 
-	# in the following functions:
-	#
-	# alpha is a vector of size 11: for the subsets {1,2}, {1,3}, {1,4}, {2,3}, {2,4}, {3,4}, {1,2,3}, etc...
-	# beta is a vector of size 28: for [1,{1,2}], [2,{1,2}], [1,{1,3}], [3,{1,3}], [1,{1,4}], [4,{1,4}], [2,{2,3}], [3,{2,3}], etc...
-	# beta for [1,{1}], [2,{2}] and [3,{3}] are omitted as obtained as :
-	# 	[1,{1}] = 1 - [1,{1,2}]+[1,{1,3}]+[1,{1,4}]+[1,{1,2,3}]+[1,{1,2,4}]+[1,{1,3,4}]+[1,{1,2,3,4}] etc... 
-
-	interior_alm_4d <- function(w,alpha,beta){
-	
-		k <- c(1,2,3,4)
-	
-		part1 <- (alpha[11]-1) * (2*alpha[11]-1) * (3*alpha[11]-1)
-		part2 <- prod(beta[24+k]^alpha[11]*w[k]^(-alpha[11]-1))
-		part3 <- sum( (beta[24+k]/w[k])^alpha[11] )^(1/alpha[11]-4)
-
-		return(part1*part2*part3)
-	}
-
-	faces_alm_4d <- function(w,alpha,beta,s,t,u){ # mass put on a face of the 4-dim simplex between the s-th, t-th and u-th components (in increasing order)
-	
-		if(t>s || u>s || u>t){return('s, t and u should be in increasing order')}	
-	
-		if(s==1 && t==2 && u==3){a=alpha[7];b1=beta[13];b2=beta[14];b3=beta[15]}
-		if(s==1 && t==2 && u==4){a=alpha[8];b1=beta[16];b2=beta[17];b3=beta[18]}
-		if(s==1 && t==3 && u==4){a=alpha[9];b1=beta[19];b2=beta[20];b3=beta[21]}
-		if(s==2 && t==3 && u==4){a=alpha[10];b1=beta[22];b2=beta[23];b3=beta[24]}
-		w1=w[s];w2=w[t];w3=w[u];
-	
-		part1 <- (a-1) * (2*a-1) * (b1*b2*b3)^a * (w1*w2*w3)^(-a-1)
-		part2 <- ( (b1/w1)^a + (b2/w2)^a + (b3/w3)^a )^(1/a-3) 			
-
-		return(part1*part2)
-	}
-
-	edges_alm_4d <- function(w,alpha,beta,s,t){ # mass put on an edge of the 4-dim simplex between the s-th and t-th components (in increasing order)
-
-		if(t>s){return('s and t should be in increasing order')}	
-	
-		if(s==1 && t==2){a=alpha[1];b1=beta[1];b2=beta[2]}
-		if(s==1 && t==3){a=alpha[2];b1=beta[3];b2=beta[4]}
-		if(s==1 && t==4){a=alpha[3];b1=beta[5];b2=beta[6]}
-		if(s==2 && t==3){a=alpha[4];b1=beta[7];b2=beta[8]}
-		if(s==2 && t==4){a=alpha[5];b1=beta[9];b2=beta[10]}
-		if(s==3 && t==4){a=alpha[6];b1=beta[11];b2=beta[12]}
-		w1=w[s];w2=w[t];
-		
-		part1 <- (a-1)  * (b1*b2)^a * (w1*w2)^(-a-1)
-		part2 <- ( (b1/w1)^a + (b2/w2)^a )^(1/a-2) 			
-
-		return(part1*part2)
-	
-	}	
-
-	corners_alm_4d <- function(w,alpha,beta,s){ # mass put on a corner of the 4-dim simplex of th s-th component
-		if(s==1){return( 1-beta[1]-beta[3]-beta[5]-beta[13]-beta[16]-beta[19]-beta[25] )}
-		if(s==2){return( 1-beta[2]-beta[7]-beta[9]-beta[14]-beta[17]-beta[22]-beta[26] )}
-		if(s==3){return( 1-beta[4]-beta[8]-beta[11]-beta[15]-beta[20]-beta[23]-beta[27] )}
-		if(s==4){return( 1-beta[6]-beta[10]-beta[12]-beta[18]-beta[21]-beta[24]-beta[28] )}			
-	}
-
-	dens_alm_4d <- function(w,alpha,beta){
-	
-		if(length(alpha)!=11){return(stop("Wrong length of parameter alpha"))}
-		if(length(beta)!=28){return(stop("Wrong length of parameter beta"))}
-		if(any(alpha < 1) || any(beta < 0) || any(beta > 1)){return(1e-50)}
-  		if(beta[1]+beta[3]+beta[5]+beta[13]+beta[16]+beta[19]+beta[25]>1){return(1e-50)} # see conditions on the beta parameters
-  		if(beta[2]+beta[7]+beta[9]+beta[14]+beta[17]+beta[22]+beta[26]>1){return(1e-50)}
-  		if(beta[4]+beta[8]+beta[11]+beta[15]+beta[20]+beta[23]+beta[27]>1){return(1e-50)}
-  		if(beta[6]+beta[10]+beta[12]+beta[18]+beta[21]+beta[24]+beta[28]>1){return(1e-50)}
-			
-		if(sum(w < 0.03) == 3){ # in one of the corners of the 4-d simplex
-			ind <- c(1:4)[-which(w<0.03)]
-			return(corners_alm_4d(w,alpha,beta,ind))			
-		} else if(sum(w < 0.02) == 2){ # in one of the edges of the 4-d simplex
-		    ind <- c(1:4)[-which(w<0.02)]
-		    return(edges_alm_4d(w,alpha,beta,ind[1],ind[2]))
-		}else	if(sum(w < 0.01) == 1){ # in one of the faces of the 4-d simplex
-		    ind <- c(1:4)[-which(w<0.01)]
-			return(faces_alm_4d(w,alpha,beta,ind[1],ind[2],ind[3]))
-		}else{ # in the interior of the 4-d simplex
-			return(interior_alm_4d(w,alpha,beta))	
-		}	
-	}
-
-
-	### Angular density for the Asymmetric Logistic model on the 2, 3 and 4 dimensional simplex
+	### Angular density for the Asymmetric Logistic model on the 2 and 3 dimensional simplex
 
 		xvect = as.double(as.vector(t(x)))
    	if (is.vector(x)) {
    	     dim = as.integer(length(x))
    	     n = as.integer(1)
    	     if(round(sum(x),7) !=1){ stop("Data is not angular") }
-   	     if(dim==2){ result <- dens_alm_2d(x,alpha,beta)}
-   	     if(dim==3){ result <- dens_alm_3d(x,alpha,beta)}
-   	     if(dim==4){ result <- dens_alm_4d(x,alpha,beta)}
+   	     if(dim==2){ result <- dens_alm_2d(x,alpha,beta,c)}
+   	     if(dim==3){ result <- dens_alm_3d(x,alpha,beta,c)}
    	}
    	else {
    		dim = as.integer(ncol(x))
@@ -382,14 +312,12 @@ dens_al <- function (x, alpha, beta, log, vectorial){
 	   	if (sum(apply(x,1,sum)) != n){ stop("Data is not angular") }
 		if (vectorial) {
 	        result = double(n)
-	        if(dim==2){ result <- apply(x,1,function(y){dens_alm_2d(y,alpha,beta)}) }
-	        if(dim==3){ result <- apply(x,1,function(y){dens_alm_3d(y,alpha,beta)}) }
-	        if(dim==4){ result <- apply(x,1,function(y){dens_alm_4d(y,alpha,beta)}) }
+	        if(dim==2){ result <- apply(x,1,function(y){dens_alm_2d(y,alpha,beta,c)}) }
+	        if(dim==3){ result <- apply(x,1,function(y){dens_alm_3d(y,alpha,beta,c)}) }
 	    } else { # vectorial=FALSE mean we return the likelihood function
     	    result = as.double(1)
-        	if(dim==2){ result <- prod(apply(x,1,function(y){dens_alm_2d(y,alpha,beta)})) }
-        	if(dim==3){ result <- prod(apply(x,1,function(y){dens_alm_3d(y,alpha,beta)})) }
-        	if(dim==4){ result <- prod(apply(x,1,function(y){dens_alm_4d(y,alpha,beta)})) }
+        	if(dim==2){ result <- prod(apply(x,1,function(y){dens_alm_2d(y,alpha,beta,c)})) }
+        	if(dim==3){ result <- prod(apply(x,1,function(y){dens_alm_3d(y,alpha,beta,c)})) }
     	}
     }	
     if(log)
@@ -397,10 +325,9 @@ dens_al <- function (x, alpha, beta, log, vectorial){
     else return(result)
 }
 
+### Functions needed for the Extremal-t model
 
-### Functions neeed for the Extremal-t model
-
-dens_et <- function (x, rho, mu, log, vectorial){
+dens_et <- function (x, rho, mu, c, log, vectorial){
 
 	# in the following functions:
 	#
@@ -413,21 +340,26 @@ dens_et <- function (x, rho, mu, log, vectorial){
 		k=p-1;
 		w.tilde<-rep(0,k);
 		Sigma<-diag(k);
+	
+		if(any(w==0) || any(w==1)){return(1e-300)}	
 		
 		for(i in 1:k){
-			w.tilde[i] <- ((w[i+1]/w[1])^(1/mu)-rho[i])*sqrt(mu+1);
+			w.tilde[i] <- ((w[i+1]/w[1])^(1/mu)-rho[i])*sqrt((mu+1)/(1-rho[i]^2));
 			for(j in i:k){
-				if(i==j){Sigma[i,j]=Sigma[j,i]=1-rho[i]^2}else{
-					Sigma[i,j]=Sigma[j,i]=(rho[sum(k:(k-i+1))+j-i]-rho[i]*rho[j])
+				if(i==j){Sigma[i,j]=Sigma[j,i]=1}else{
+					Sigma[i,j]=Sigma[j,i]=(rho[sum(k:(k-i+1))+j-i]-rho[i]*rho[j])/sqrt((1-rho[i]^2)*(1-rho[j]^2))
 				}
 			}
 		}
-	
+		
 		if(sum(eigen(Sigma)$values<0)>=1){return(1e-50)} #Check if matrix is positive definite
-	
-		deriv = (w[-1]/w[1])^(1/mu-1)/mu*sqrt(mu+1)
-		return(dmvt(w.tilde,rep(0,k),sigma=Sigma,df=mu+1,log=FALSE)*w[1]^(-p-1)*prod(deriv) )	
-	
+		
+		deriv = (w[-1]/w[1])^(1/mu-1)/mu*sqrt((mu+1)/(1-rho[1:k]^2))
+		if(k==1){
+			return(dest(x=w.tilde, scale=Sigma, df=mu+1)*w[1]^(-p-1)*prod(deriv) )	
+		}else{
+			return(dmest(x=w.tilde, scale=Sigma, df=mu+1)*w[1]^(-p-1)*prod(deriv) )	
+		}	
 	}
 
 	# Mass on the other subsets of the 2d case: 
@@ -439,12 +371,12 @@ dens_et <- function (x, rho, mu, log, vectorial){
 		return(part1)
 	}
 
-	dens_et_2d <- function(w,rho,mu){ # mass on the interior of the 2-dim simplex
+	dens_et_2d <- function(w,rho,mu,c){
 		if(length(rho)!=1){return(stop("Wrong length of parameter rho"))}
 		if( (abs(rho) > 1) || (mu<1) ){return(1e-50)}
   
-		if(sum(w<0.01) == 1){ # then we are in a corner 
-			ind <- which(w > 0.99)
+		if(sum(w<1-c) == 1){ # then we are in a corner 
+			ind <- which(w > c)
 			return(corners_et_2d(w,rho,mu,ind))
 		} else {
 			return(interior_et_d(w,rho,mu))	
@@ -454,28 +386,30 @@ dens_et <- function (x, rho, mu, log, vectorial){
 	# Mass on the other subsets of the 3d case:
 
 	corners_et_3d <- function(w,rho,mu,s){ # mass on the corner of the s-th component
-	
+		
 		if(s==1){rho1=rho[1];rho2=rho[2];rho3=rho[3]}
 		if(s==2){rho1=rho[1];rho2=rho[3];rho3=rho[2]}	
 		if(s==3){rho1=rho[2];rho2=rho[3];rho3=rho[1]}
-	
+		
 		R <- (rho3 - rho1*rho2)/sqrt((1-rho1^2) * (1-rho2^2))
 		S <- matrix( c(1,R,R,1), ncol=2)
-
+		if(sum(eigen(S)$values<0)>=1){return(1e-50)} # Check if matrix R1 is positive definite
+		
 		a = -rho1 * sqrt((mu+1)/(1-rho1^2))
 		b = -rho2 * sqrt((mu+1)/(1-rho2^2))
-
-		return( pmvt(lower=rep(-Inf,2), upper=c(a,b), sigma=S, df=round(mu)+1)[1] )
-	
+		
+		return( pmest(x=c(a,b), scale=S, df=mu+1) )	
 	}
 
-	edges_et_3d <- function(w,rho,mu,s,t){ # mass on the edge linking the s-th and t-th components (in inceasing order)
+	# mass on the edge linking the s-th and t-th components (in inceasing order)
 
+	edges_et_3d <- function(w,rho,mu,s,t){ 
+		
 		if(s==1 && t==2){rho1=rho[1];rho2=rho[2];rho3=rho[3]}
 		if(s==1 && t==3){rho1=rho[2];rho2=rho[1];rho3=rho[3]}
 		if(s==2 && t==3){rho1=rho[3];rho2=rho[1];rho3=rho[2]}
 		x=w[s];y=w[t];
-	
+		
 		A1 <- sqrt((mu+1)/(1-rho1^2)) * ( (y/x)^(1/mu) -rho1 )
 		A2 <- sqrt((mu+1)/(1-rho1^2)) * ( (x/y)^(1/mu) -rho1 )
 		B1 <- - rho2 * sqrt((mu+1)/(1-rho2^2))
@@ -484,607 +418,73 @@ dens_et <- function (x, rho, mu, log, vectorial){
 		d2 <- sqrt((mu+1)/(1-rho1^2)) / mu * x^(1/mu-1) /y^(1/mu)
 		R1 <- (rho3 - rho1*rho2)/sqrt((1-rho1^2) * (1-rho2^2))
 		R2 <- (rho2 - rho1*rho3)/sqrt((1-rho1^2) * (1-rho3^2))
-	
+		
 		S1 <- matrix(c(1,R1,R1,1),ncol=2)
 		S2 <- matrix(c(1,R2,R2,1),ncol=2)
-	
+		
 		if(sum(eigen(S1)$values<0)>=1){return(1e-50)} # Check if matrix R1 is positive definite
 		if(sum(eigen(S2)$values<0)>=1){return(1e-50)} # Check if matrix R2 is positive definite
 		if(any( abs(c(R1,R2)) >1 ) ){return(1e-50)}
 		
-		part11 <- dt(A1,df=mu+1) * pt(sqrt((mu+2)/(mu+1+A1^2))*(B1-R1*A1)/sqrt(1-R1^2),df=mu+2) * d1 / x^2
+		part11 <- dt(x=A1,df=mu+1) * pt(sqrt((mu+2)/(mu+1+A1^2))*(B1-R1*A1)/sqrt(1-R1^2),df=mu+2) * d1 / x^2
 		part12 <- -1 - 1/mu + y * d1 * (mu+2) * A1 / (mu+1+A1^2)
-		part13 <- dt(A1,df=mu+1) * dt(sqrt((mu+2)/(mu+1+A1^2))*(B1-R1*A1)/sqrt(1-R1^2),df=mu+2) * d1^2 * y / x^2
+		part13 <- dt(x=A1,df=mu+1) * dt(x=sqrt((mu+2)/(mu+1+A1^2))*(B1-R1*A1)/sqrt(1-R1^2),df=mu+2) * d1^2 * y / x^2
 		part14 <- sqrt((mu+2)/(1-R1^2)) * (R1*(mu+1)+B1*A1) / (mu+1+A1^2)^(3/2)
-	
-		part21 <- dt(A2,df=mu+1) * pt(sqrt((mu+2)/(mu+1+A2^2))*(B2-R2*A2)/sqrt(1-R2^2),df=mu+2) * d2 / y^2
+		
+		part21 <- dt(x=A2,df=mu+1) * pt(sqrt((mu+2)/(mu+1+A2^2))*(B2-R2*A2)/sqrt(1-R2^2),df=mu+2) * d2 / y^2
 		part22 <- -1 - 1/mu + x * d2 * (mu+2) * A2 / (mu+1+A2^2)
-		part23 <- dt(A2,df=mu+1) * dt(sqrt((mu+2)/(mu+1+A2^2))*(B2-R2*A2)/sqrt(1-R2^2),df=mu+2) * d2^2 * x / y^2
+		part23 <- dt(x=A2,df=mu+1) * dt(x=sqrt((mu+2)/(mu+1+A2^2))*(B2-R2*A2)/sqrt(1-R2^2),df=mu+2) * d2^2 * x / y^2
 		part24 <- sqrt((mu+2)/(1-R2^2)) * (R2*(mu+1)+B2*A2) / (mu+1+A2^2)^(3/2)
-	
+		
 		return( -(x+y)^3 * (part11*part12 + part13*part14 + part21*part22 + part23*part24))	
-	
+		
 	}
-
-	dens_et_3d <- function(w,rho,mu){
-
+	
+	dens_et_3d <- function(w,rho,mu,c){
+		
 		if(length(rho)!=3){return(stop("Wrong length of parameter rho"))}
 		if(any(abs(rho)>=1) || mu<=0 ){return(1e-50)}
-  
-		if(sum(w<0.01) == 2){ # then we are in a corner 
-			ind <- which(w > 0.98)
-			return(corners_et_3d(w,rho,mu,ind))
-		} else if(sum(w<0.01) == 1){
-			ind <- which(w >= 0.01)
-			return(edges_et_3d(w,rho,mu,ind[1],ind[2]))
+
+		if(c==0){return(interior_et_d(w,rho,mu))}
+
+		if(sum(w<c) == 2){ # then we are in a corner 
+			ind <- which(w > c)
+			return(corners_et_3d(w,rho,mu,ind)/c^2)
+		}else if(sum(w<c) == 1){
+			ind <- which(w >= c)
+			w2 <- w[ind]/sum(w[ind])
+			edge_surface <- c*sqrt(3)*(1-2*c)/2
+		 
+			if(w[1]<=1-c && w[2]<=1-c && w[3]<=c && w[1]>=(1-w[2])/2 && w[1]>=1-2*w[2]){ #EDGE {1,2} 			
+				edg01 <- integrate(Vectorize(function(x){edges_et_3d(w=c(x,1-x,0), rho=rho, mu=mu, s=1, t=2)}), lower=0, upper=1)$value
+				return(edges_et_3d(c(w2,w[3]),rho,mu,1,2) * edg01 / edge_surface)
+			}
+
+			if(w[1]<=1-c && w[2]<=c && w[3]<=1-c && w[2]<=w[1] && w[2]<=(1-w[1])/2){ #EDGE {1,3} 			
+				edg01 <- integrate(Vectorize(function(x){edges_et_3d(w=c(x,0,1-x), rho=rho, mu=mu, s=1, t=3)}), lower=0, upper=1)$value
+				return(edges_et_3d(c(w2[1],w[2],w2[2]),rho,mu,1,3) * edg01 / edge_surface)
+			}
+
+			if(w[1]<=c && w[2]<=1-c && w[3]<=1-c && w[1]<=w[2] && w[1]<=(1-w[2])/2){ #EDGE {2,3} 			
+				edg01 <- integrate(Vectorize(function(x){edges_et_3d(w=c(0,x,1-x), rho=rho, mu=mu, s=2, t=3)}), lower=0, upper=1)$value
+				return(edges_et_3d(c(w[1],w2),rho,mu,2,3) * edg01 / edge_surface)
+			}
 		}	else {
-			return(interior_et_d(w,rho,mu))
+			int01 <- integrate(Vectorize(function(y) integrate(Vectorize(function(x) interior_et_d(c(x,y,1-x-y),rho=rho, mu=mu)), lower=0, upper=1-y )$value), lower=0, upper=1)$value
+			intc <- integrate(Vectorize(function(y) integrate(Vectorize(function(x) interior_et_d(c(x,y,1-x-y),rho=rho, mu=mu)), lower=c, upper=1-y-c )$value), lower=c, upper=1-2*c)$value
+			return(interior_et_d(w,rho,mu)*int01/intc)
 		}
 	}
 
-
-	# Mass on the other subsets of the 4d case:
-
-		###########################################
-		#										  #	
-		#   In all of the following functions :   #
-		#										  #	
-		#	v is of size 3						  #
-		#	rho is a 3x3 correlation matrix		  #
-		#	mu is the degree of freedom			  #
-		#										  #	
-		###########################################
-
-
-
-	## First derivative of the trivariate t CDF w.r.t the k-th component
-
-	dT_dx <- function(v,rho,mu,k){
-		if(k==1){x=v[1];y=v[2];z=v[3];rho12=rho[1];rho13=rho[2];rho23=rho[3]}
-		if(k==2){x=v[2];y=v[1];z=v[3];rho12=rho[1];rho13=rho[3];rho23=rho[2]}
-		if(k==3){x=v[3];y=v[1];z=v[2];rho12=rho[2];rho13=rho[3];rho23=rho[1]}
-
-		up1 <- (y-rho12*x)/sqrt(1-rho12^2) * sqrt((mu+1)/(mu+x^2))	
-		up2 <- (z-rho13*x)/sqrt(1-rho13^2) * sqrt((mu+1)/(mu+x^2))
-		rho <- (rho23-rho12*rho13)/sqrt((1-rho12^2)*(1-rho13^2))
-	
-		part1 <- dt(x,df=mu)
-		part2 <- pmvt(lower=rep(-Inf,2),upper=c(up1,up2),sigma=matrix(c(1,rho,rho,1),ncol=2),df=round(mu)+1)
-		return((part1*part2)[1])		
-	}
-
-	## Second derivative of the trivariate t CDF w.r.t the k-th component
-
-	dT2_dx2 <- function(v,rho,mu,k){
-		if(k==1){x=v[1];y=v[2];z=v[3];rho12=rho[1];rho13=rho[2];rho23=rho[3]}
-		if(k==2){x=v[2];y=v[1];z=v[3];rho12=rho[1];rho13=rho[3];rho23=rho[2]}
-		if(k==3){x=v[3];y=v[1];z=v[2];rho12=rho[2];rho13=rho[3];rho23=rho[1]}
-
-		up1 <- (y-rho12*x)/sqrt(1-rho12^2) * sqrt((mu+1)/(mu+x^2))
-		up2 <- (z-rho13*x)/sqrt(1-rho13^2) * sqrt((mu+1)/(mu+x^2))
-		rho <- (rho23-rho12*rho13)/sqrt((1-rho12^2)*(1-rho13^2))
-
-		part1 <- dt(x,df=mu)/(mu+x^2)
-		part2 <- pmvt(lower=rep(-Inf,2),upper=c(up1,up2),sigma=matrix(c(1,rho,rho,1),ncol=2),df=round(mu)+1) * (-x*(mu+1))
-		part31 <- dt(up1,df=mu+1) * sqrt((mu+1)/(1-rho12^2)) * (-rho12*(mu+x^2)-(y-rho12*x)*x)/sqrt(mu+x^2)
-		part32 <- pt(sqrt((mu+2)/(mu+1+up1^2))*(up2-rho*up1)/sqrt(1-rho^2),df=mu+2)
-		part41 <- dt(up2,df=mu+1) * sqrt((mu+1)/(1-rho13^2)) * (-rho13*(mu+x^2)-(z-rho13*x)*x)/sqrt(mu+x^2)
-		part42 <- pt(sqrt((mu+2)/(mu+1+up2^2))*(up1-rho*up2)/sqrt(1-rho^2),df=mu+2)
-	
-		return((part1*(part2+part31*part32+part41*part42))[1]) 	
-	}
-
-	## Second derivative of the trivariate t CDF w.r.t the k and j-th components
-
-	dT2_dxdy <- function(v,rho,mu,k,j){
-		s <- sort(c(k,j))
-		k=s[1]; j=s[2];
-		if(k==1 && j==2){x=v[1];y=v[2];z=v[3];rho12=rho[1];rho13=rho[2];rho23=rho[3]}
-		if(k==1 && j==3){x=v[1];y=v[3];z=v[2];rho12=rho[2];rho13=rho[1];rho23=rho[3]}
-		#if(k==2 && j==1){x=v[2];y=v[1];z=v[3];rho12=rho[1];rho13=rho[3];rho23=rho[2]}
-		if(k==2 && j==3){x=v[2];y=v[3];z=v[1];rho12=rho[3];rho13=rho[1];rho23=rho[2]}
-		#if(k==3 && j==1){x=v[3];y=v[1];z=v[2];rho12=rho[2];rho13=rho[3];rho23=rho[1]}
-		#if(k==3 && j==2){x=v[3];y=v[2];z=v[1];rho12=rho[3];rho13=rho[2];rho23=rho[1]}	
-
-		up1 <- (x-rho12*y)/sqrt(1-rho12^2) * sqrt((mu+1)/(mu+y^2))
-		up2 <- (z-rho23*y)/sqrt(1-rho23^2) * sqrt((mu+1)/(mu+y^2))
-		rho <- (rho13-rho12*rho23)/sqrt((1-rho12^2)*(1-rho23^2))
-
-		part1 <- dt(y,df=mu) * dt(up1,df=mu+1) * sqrt((mu+1)/(1-rho12^2)/(mu+y^2))
-		part2 <- pt(sqrt((mu+2)/(mu+1+up1^2))*(up2-rho*up1)/sqrt(1-rho^2),df=mu+2)
-		return(part1*part2)
-	}
-
-	## Third derivative of the trivariate t CDF w.r.t the k-th component
-
-	dT3_dx3 <- function(v,rho,mu,k){
-		if(k==1){x=v[1];y=v[2];z=v[3];rho12=rho[1];rho13=rho[2];rho23=rho[3]}
-		if(k==2){x=v[2];y=v[1];z=v[3];rho12=rho[1];rho13=rho[3];rho23=rho[2]}
-		if(k==3){x=v[3];y=v[1];z=v[2];rho12=rho[2];rho13=rho[3];rho23=rho[1]}
-
-		up1 <- (y-rho12*x)/sqrt(1-rho12^2) * sqrt((mu+1)/(mu+x^2))
-		up2 <- (z-rho13*x)/sqrt(1-rho13^2) * sqrt((mu+1)/(mu+x^2))
-		rho <- (rho23-rho12*rho13)/sqrt((1-rho12^2)*(1-rho13^2))
-
-		part1 <- dt(x,df=mu)/(mu+x^2)
-	
-		part21 <- pmvt(lower=rep(-Inf,2),upper=c(up1,up2),sigma=matrix(c(1,rho,rho,1),ncol=2),df=round(mu)+1) 
-		part22 <- ((mu+1)+2)/(mu+x^2)*(mu+1)*x^2 - (mu+1)
-		part2 <- part21*part22
-	
-		part31 <- dt(up1,df=mu+1) * pt(sqrt((mu+2)/(mu+1+up1^2))*(up2-rho*up1)/sqrt(1-rho^2),df=mu+2)
-		part32 <- 2*(mu+2)*x/(mu+x^2) * (rho12*sqrt(mu+x^2)+(y-rho12*x)*x/sqrt(mu+x^2)) * sqrt((mu+1)/(1-rho12^2))
-		part33 <- (-(mu+2)*up1/((mu+1)+up1^2)) * (mu+1)/(1-rho12^2) / (mu+x^2) * (rho12*sqrt(mu+x^2)+(y-rho12*x)*x/sqrt(mu+x^2))^2
-		part34 <- (y-rho12*x)*(-mu)/(mu+x^2)^(3/2) * sqrt((mu+1)/(1-rho12^2))
-		part3 <- part31*(part32+part33+part34)
-	
-		part41 <- dt(up2,df=mu+1) * pt(sqrt((mu+2)/(mu+1+up2^2))*(up1-rho*up2)/sqrt(1-rho^2),df=mu+2)
-		part42 <- 2*(mu+2)*x/(mu+x^2) * (rho13*sqrt(mu+x^2)+(z-rho13*x)*x/sqrt(mu+x^2)) * sqrt((mu+1)/(1-rho13^2))
-		part43 <- (-(mu+2)*up2/((mu+1)+up2^2)) * (mu+1)/(1-rho13^2) / (mu+x^2) * (rho13*sqrt(mu+x^2)+(z-rho13*x)*x/sqrt(mu+x^2))^2
-		part44 <- (z-rho13*x)*(-mu)/(mu+x^2)^(3/2) * sqrt((mu+1)/(1-rho13^2))
-		part4 <- part41*(part42+part43+part44)
-	
-		part50 <- sqrt((mu+1)/(1-rho12^2))*(-rho12*sqrt(mu+x^2)-(y-rho12*x)*x/sqrt(mu+x^2))
-		part51 <- dt(up1,df=mu+1) * dt(sqrt((mu+2)/(mu+1+up1^2))*(up2-rho*up1)/sqrt(1-rho^2),df=mu+2)
-		part52 <- (1-rho12^2)*sqrt(mu+2)/sqrt((1-rho12^2)*(1-rho13^2)-(rho23-rho12*rho13)^2)/((1-rho12^2)*(mu+x^2)+(y-rho12*x)^2)^(3/2)
-		part53 <- (-rho13+rho12*(rho23-rho12*rho13)/(1-rho12^2)) * ((1-rho12^2)*(mu+x^2)+(y-rho12*x)^2)
-		part54 <- ((z-rho13*x)-(rho23-rho12*rho13)/(1-rho12^2)*(y-rho12*x)) * (x*(1-rho12^2)-rho12*(y-rho12*x))	
-		part5 <- part50*part51*part52*(part53-part54)
-	
-		part60 <- sqrt((mu+1)/(1-rho13^2))*(-rho13*sqrt(mu+x^2)-(z-rho13*x)*x/sqrt(mu+x^2))	
-		part61 <- dt(up2,df=mu+1) * dt(sqrt((mu+2)/(mu+1+up2^2))*(up1-rho*up2)/sqrt(1-rho^2),df=mu+2)
-		part62 <- (1-rho13^2)*sqrt(mu+2)/sqrt((1-rho12^2)*(1-rho13^2)-(rho23-rho12*rho13)^2)/((1-rho13^2)*(mu+x^2)+(z-rho13*x)^2)^(3/2)
-		part63 <- (-rho12+rho13*(rho23-rho12*rho13)/(1-rho13^2)) * ((1-rho13^2)*(mu+x^2)+(z-rho13*x)^2)
-		part64 <- ((y-rho12*x)-(rho23-rho12*rho13)/(1-rho13^2)*(z-rho13*x)) * (x*(1-rho13^2)-rho13*(z-rho13*x))	
-		part6 <- part60*part61*part62*(part63-part64)
-	
-		
-		return(part1*(part2+part3+part4+part5+part6)) 	
-	}
-
-	## Third derivative of the trivariate t CDF w.r.t the k (twice) and j-th (once) components
-
-	dT3_dx2dy <- function(v,rho,mu,k,j){
-		if(k==1 && j==2){x=v[1];y=v[2];z=v[3];rho12=rho[1];rho13=rho[2];rho23=rho[3]}
-		if(k==1 && j==3){x=v[1];y=v[3];z=v[2];rho12=rho[2];rho13=rho[1];rho23=rho[3]}
-		if(k==2 && j==1){x=v[2];y=v[1];z=v[3];rho12=rho[1];rho13=rho[3];rho23=rho[2]}
-		if(k==2 && j==3){x=v[2];y=v[3];z=v[1];rho12=rho[3];rho13=rho[1];rho23=rho[2]}
-		if(k==3 && j==1){x=v[3];y=v[1];z=v[2];rho12=rho[2];rho13=rho[3];rho23=rho[1]}
-		if(k==3 && j==2){x=v[3];y=v[2];z=v[1];rho12=rho[3];rho13=rho[2];rho23=rho[1]}	
-
-		up1 <- (x-rho12*y)/sqrt(1-rho12^2) * sqrt((mu+1)/(mu+y^2))
-		up2 <- (z-rho23*y)/sqrt(1-rho23^2) * sqrt((mu+1)/(mu+y^2))
-		rho <- (rho13-rho12*rho23)/sqrt((1-rho12^2)*(1-rho23^2))
-
-		part1 <- dt(y,df=mu) * sqrt((mu+1)/(1-rho12^2)/(mu+y^2)) 
-		part21 <- dt(up1,df=mu+1) * pt(sqrt((mu+2)/(mu+1+up1^2))*(up2-rho*up1)/sqrt(1-rho^2),df=mu+2)
-		part22 <- -((mu+2)*up1)/(mu+1+up1^2) * sqrt((mu+1)/(1-rho12^2)/(mu+y^2))
-		part31 <- dt(up1,df=mu+1) * dt(sqrt((mu+2)/(mu+1+up1^2))*(up2-rho*up1)/sqrt(1-rho^2),df=mu+2)
-		part32 <- sqrt(mu+2)*(1-rho12^2)/sqrt((1-rho12^2)*(1-rho23^2)-(rho13-rho12*rho23)^2)
-		part33 <- -((rho13-rho12*rho23)*(mu+y^2)+(z-rho23*y)*(x-rho12*y))/((1-rho12^2)*(mu+y^2)+(x-rho12*y)^2)^(3/2)
-		return(part1*(part21*part22+part31*part32*part33))
-	}
-
-
-	######################################################################################
-	# 	Definition of the functions x,y,w and their derivatives
-	######################################################################################
-
-
-		###########################################
-		#										  #	
-		#   In all of the following functions :   #
-		#										  #	
-		#	z is of size 4						  #
-		#	rho is of size 6 (4dim = 6corr coeff) #
-		#	mu is the degree of freedom			  #
-		#										  #	
-		###########################################
-
-
-
-
-	#function corresponding to the j-th component of I_k
-	# Gives x1,y1,w1, x2,y2,w2, ..., x4,y4,w4
-
-
-	comp <- function(z1,z2,z3,z4,rho,mu,j,k){
-		#j = 1,2 or 3
-		#k = 1,2,3 or 4
-	
-		if(j==1 & k==1){corr=rho[1];x=z2;y=z1}
-		if(j==1 & k==2){corr=rho[1];x=z1;y=z2}	
-		if(j==1 & k==3){corr=rho[2];x=z1;y=z3}
-		if(j==1 & k==4){corr=rho[3];x=z1;y=z4}	
-
-		if(j==2 & k==1){corr=rho[2];x=z3;y=z1}
-		if(j==2 & k==2){corr=rho[4];x=z3;y=z2}	
-		if(j==2 & k==3){corr=rho[4];x=z2;y=z3}
-		if(j==2 & k==4){corr=rho[6];x=z2;y=z4}	
-
-		if(j==3 & k==1){corr=rho[3];x=z4;y=z1}
-		if(j==3 & k==2){corr=rho[5];x=z4;y=z2}	
-		if(j==3 & k==3){corr=rho[6];x=z4;y=z3}
-		if(j==3 & k==4){corr=rho[6];x=z3;y=z4}	
-
-	
-		return( sqrt((mu+1)/(1-corr^2))*((x/y)^(1/mu)-corr) )
-	}
-
-	# first derivative of the j-th component of I_k w.r.t the s-th component of z (z_s)
-
-	d_comp <- function(z1,z2,z3,z4,rho,mu,j,k,s){
-		#j = 1,2 or 3
-		#k = 1,2,3 or 4
-		#ind = 1,2,3 or 4	
-	
-		if(s==1){return(jacobian(function(i){comp(i,z2,z3,z4,rho,mu,j,k)},z1))}
-		if(s==2){return(jacobian(function(i){comp(z1,i,z3,z4,rho,mu,j,k)},z2))}
-		if(s==3){return(jacobian(function(i){comp(z1,z2,i,z4,rho,mu,j,k)},z3))}
-		if(s==4){return(jacobian(function(i){comp(z1,z2,z3,i,rho,mu,j,k)},z4))}	
-	}
-
-
-	# Second derivative of the j-th component of I_k w.r.t the s-th and t-th component of z (z_s and z_t)
-
-	d2_comp_dsdt <- function(z1,z2,z3,z4,rho,mu,j,k,s,t){
-		# j = 1,2 or 3
-		# k = 1,2,3 or 4
-		# s = 1,2,3 or 4	
-		# t = 1,2,3 or 4
-		# s != t	
-	
-		so <- sort(c(s,t))
-		s<- so[1]; t<- so[2];
-		
-		if(s==1 & t==2){return(hessian(function(i){comp(i[1],i[2],z3,z4,rho,mu,j,k)},c(z1,z2))[1,2])}
-		if(s==1 & t==3){return(hessian(function(i){comp(i[1],z2,i[2],z4,rho,mu,j,k)},c(z1,z3))[1,2])}
-		if(s==1 & t==4){return(hessian(function(i){comp(i[1],z2,z3,i[2],rho,mu,j,k)},c(z1,z4))[1,2])}
-	
-		if(s==2 & t==3){return(hessian(function(i){comp(z1,i[1],i[2],z4,rho,mu,j,k)},c(z2,z3))[1,2])}
-		if(s==2 & t==4){return(hessian(function(i){comp(z1,i[1],z3,i[2],rho,mu,j,k)},c(z2,z4))[1,2])}
-		if(s==3 & t==4){return(hessian(function(i){comp(z1,z2,i[1],i[2],rho,mu,j,k)},c(z3,z4))[1,2])}
-	
-	}
-
-
-
-	######################################################################################
-	# 	Definition of the I_k and their derivatives
-	######################################################################################
-
-
-		###########################################
-		#										  #	
-		#   In all of the following functions :   #
-		#										  #	
-		#	z is of size 4						  #
-		#	rho is of size 6 (4dim = 6corr coeff) #
-		#	mu is the degree of freedom			  #
-		#										  #	
-		###########################################
-
-
-	# Correlation matrix of I_k
-
-	R_k <- function(rho,k,matrix){
-	
-		rho12=rho[1];rho13=rho[2];rho14=rho[3];rho23=rho[4];rho24=rho[5];rho34=rho[6];
-	
-		if(k==1){
-			R12=(rho23-rho12*rho13)/sqrt((1-rho12^2)*(1-rho13^2));
-			R13=(rho24-rho12*rho14)/sqrt((1-rho12^2)*(1-rho14^2));
-			R23=(rho34-rho13*rho14)/sqrt((1-rho13^2)*(1-rho14^2));
-		}
-	
-		if(k==2){
-			R12=(rho13-rho12*rho23)/sqrt((1-rho12^2)*(1-rho23^2));
-			R13=(rho14-rho12*rho24)/sqrt((1-rho12^2)*(1-rho24^2));
-			R23=(rho34-rho23*rho24)/sqrt((1-rho23^2)*(1-rho24^2));
-		}
-	
-		if(k==3){
-			R12=(rho12-rho13*rho23)/sqrt((1-rho13^2)*(1-rho23^2));
-			R13=(rho14-rho13*rho34)/sqrt((1-rho13^2)*(1-rho34^2));
-			R23=(rho24-rho23*rho34)/sqrt((1-rho23^2)*(1-rho34^2));
-		}
-	
-		if(k==4){
-			R12=(rho12-rho14*rho24)/sqrt((1-rho14^2)*(1-rho24^2));
-			R13=(rho13-rho14*rho34)/sqrt((1-rho14^2)*(1-rho34^2));
-			R23=(rho23-rho24*rho34)/sqrt((1-rho24^2)*(1-rho34^2));
-		}	
-		if(matrix==TRUE){return(matrix(c(1,R12,R13,R12,1,R23,R13,R23,1),ncol=3))} # return under matrix form
-		if(matrix==FALSE){return(c(R12,R13,R23))}	
-	}
-
-
-	# Function I_k
-
-	I_k <- function(z,rho,mu,k){
-	
-		up <- c(comp(z[1],z[2],z[3],z[4],rho,mu,1,k),comp(z[1],z[2],z[3],z[4],rho,mu,2,k),comp(z[1],z[2],z[3],z[4],rho,mu,3,k))
-		return(pmvt(lower=rep(-Inf,3),upper=up,sigma=R_k(rho,k,TRUE),df=round(mu)+1,algorithm=TVPACK)[1])
-	
-	}
-
-
-	# First derivative of I_k w.r.t its s-th component (z_s)
-
-	dI_k_ds <- function(z,rho,mu,k,s){
-		# j = 1,2 or 3
-		# k = 1,2,3 or 4
-		# s = 1,2,3 or 4
-	
-		xk <- comp(z[1],z[2],z[3],z[4],rho,mu,1,k)
-		yk <- comp(z[1],z[2],z[3],z[4],rho,mu,2,k)
-		zk <- comp(z[1],z[2],z[3],z[4],rho,mu,3,k)
-
-		part1 <- dT_dx(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s)
-		part2 <- dT_dx(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s)
-		part3 <- dT_dx(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,3) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s)		
-
-		return(part1+part2+part3)
-	}
-
-	# Second derivative of I_k w.r.t its s-th and t-th components (z_s and z_t)
-
-	d2I_k_dsdt <- function(z,rho,mu,k,s,t){
-		# j = 1,2 or 3
-		# k = 1,2,3 or 4
-		# s = 1,2,3 or 4
-		# t = 1,2,3 or 4
-		# s != t
-
-		xk <- comp(z[1],z[2],z[3],z[4],rho,mu,1,k)
-		yk <- comp(z[1],z[2],z[3],z[4],rho,mu,2,k)
-		zk <- comp(z[1],z[2],z[3],z[4],rho,mu,3,k)
-	
-		part1 <- dT2_dx2(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t)
-		part2 <- dT2_dx2(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t)
-		part3 <- dT2_dx2(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,3) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t)		
-		part4 <- dT_dx(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,s,t) 
-		part5 <- dT_dx(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,s,t) 
-		part6 <- dT_dx(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,3) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,s,t)
-
-		part71 <- dT2_dxdy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1,2)
-		part72 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s)
-		part73 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t)
-
-		part81 <- dT2_dxdy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1,3)
-		part82 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s)
-		part83 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t)
-	
-		part91 <- dT2_dxdy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2,3)
-		part92 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s)
-		part93 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t)
-	
-	
-		return(part1+part2+part3+part4+part5+part6+part71*(part72+part73)+part81*(part82+part83)+part91*(part92+part93))
-	}	
-
-	# Third derivative of I_k w.r.t its s-th, t-th and u-th components (z_s, z_t and z_u)
-
-	d3I_k_dsdtdu <- function(z,rho,mu,k,s,t,u){
-		# j = 1,2 or 3
-		# k = 1,2,3 or 4
-		# s = 1,2,3 or 4
-		# t = 1,2,3 or 4
-		# u = 1,2,3 or 4
-		# s != t != u
-	
-		xk <- comp(z[1],z[2],z[3],z[4],rho,mu,1,k)
-		yk <- comp(z[1],z[2],z[3],z[4],rho,mu,2,k)
-		zk <- comp(z[1],z[2],z[3],z[4],rho,mu,3,k)
-
-		part10 <- dT2_dxdy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1,2)
-		part11 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,u,t)
-		part12 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,u,t)
-		part13 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,u,s)
-		part14 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,u,s)
-		part15 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,s,t)
-		part16 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,s,t)
-		part1 <- part10*(part11+part12+part13+part14+part15+part16)
-	
-		part20 <- dT2_dxdy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1,3)
-		part21 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,u,t)
-		part22 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,u,t)
-		part23 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,u,s)
-		part24 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,u,s)
-		part25 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,1,k,s,t)
-		part26 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,s,t)
-		part2 <- part20*(part21+part22+part23+part24+part25+part26)
-	 
-		part30 <- dT2_dxdy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2,3)
-		part31 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,u,t)
-		part32 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,u,t)
-		part33 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,u,s)
-		part34 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,u,s)
-		part35 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,2,k,s,t)
-		part36 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u) * d2_comp_dsdt(z[1],z[2],z[3],z[4],rho,mu,3,k,s,t)
-		part3 <- part30*(part31+part32+part33+part34+part35+part36)	
-	
-		part40 <- dT3_dx2dy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1,2)
-		part41 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)
-		part42 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)
-		part43 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)
-		part4 <- part40*(part41+part42+part43)
-
-		part50 <- dT3_dx2dy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,1,3)
-		part51 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)
-		part52 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)
-		part53 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)
-		part5 <- part50*(part51+part52+part53)
-	
-		part60 <- dT3_dx2dy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2,1)
-		part61 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)
-		part62 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)
-		part63 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)
-		part6 <- part60*(part61+part62+part63)
-
-		part70 <- dT3_dx2dy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,2,3)
-		part71 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)
-		part72 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)
-		part73 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)
-		part7 <- part70*(part71+part72+part73)
-	
-		part80 <- dT3_dx2dy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,3,1)
-		part81 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)
-		part82 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)
-		part83 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)
-		part8 <- part80*(part81+part82+part83)
-
-		part90 <- dT3_dx2dy(c(xk,yk,zk),R_k(rho,k,FALSE),mu+1,3,2)
-		part91 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)
-		part92 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)
-		part93 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)
-		part9 <- part90*(part91+part92+part93)	
-	
-		part100 <- dmvt(c(xk,yk,zk),sigma=R_k(rho,k,TRUE),df=mu+1,log=FALSE)
-		part1001 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)			
-		part1002 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)			
-		part1003 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,u)			
-		part1004 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)			
-		part1005 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,u)			
-		part1006 <- d_comp(z[1],z[2],z[3],z[4],rho,mu,3,k,s) * d_comp(z[1],z[2],z[3],z[4],rho,mu,2,k,t) * d_comp(z[1],z[2],z[3],z[4],rho,mu,1,k,u)			
-		part <- part100*(part1001+part1002+part1003+part1004+part1005+part1006)
-	
-		return(part1+part2+part3+part4+part5+part6+part7+part8+part9+part)
-	}
-
-	######################################################################################
-	# 	Definition of the V and its derivatives
-	######################################################################################
-
-
-		###########################################
-		#										  #	
-		#   In all of the following functions :   #
-		#										  #	
-		#	z is of size 4						  #
-		#	rho is of size 6 (4dim = 6corr coeff) #
-		#	mu is the degree of freedom			  #
-		#										  #	
-		###########################################
-
-
-	# V function (4 dimensions)
-
-
-	V <- function(z,rho,mu){
-  
-	  # check if the 4 correlation matrices are all positive definite (and correlation coefficient between -1 and 1)
-	  M1 <- R_k(rho,1,TRUE); M2 <- R_k(rho,2,TRUE); M3 <- R_k(rho,3,TRUE); M4 <- R_k(rho,4,TRUE);
-	  if(sum(eigen(M1)$values<0)>=1 || sum(eigen(M2)$values<0)>=1 || sum(eigen(M3)$values<0)>=1 || sum(eigen(M4)$values<0)>=1 ){return(1e-50)}
- 	 if(any(abs(M1)>1) || any(abs(M2)>1) || any(abs(M3)>1) || any(abs(M4)>1)){return(1e-50)}
-  
-		return(I_k(z,rho,mu,1)/z[1] + I_k(z,rho,mu,2)/z[2] + I_k(z,rho,mu,3)/z[3] + I_k(z,rho,mu,4)/z[4])
-	}
-
-
-	# first derivative of V with respect to its s-th component (z_s)
-
-	dV_ds <- function(z,rho,mu,s){
-	
-		# s= 1,2,3 or 4
-
- 	 # check if the 4 correlation matrices are all positive definite (and correlation coefficient between -1 and 1)
-	  M1 <- R_k(rho,1,TRUE); M2 <- R_k(rho,2,TRUE); M3 <- R_k(rho,3,TRUE); M4 <- R_k(rho,4,TRUE);
-	  if(sum(eigen(M1)$values<0)>=1 || sum(eigen(M2)$values<0)>=1 || sum(eigen(M3)$values<0)>=1 || sum(eigen(M4)$values<0)>=1 ){return(1e-50)}
-	  if(any(abs(M1)>1) || any(abs(M2)>1) || any(abs(M3)>1) || any(abs(M4)>1)){return(1e-50)}
-    
-		part1 <- -I_k(z,rho,mu,s)/z[s]^2 
-		part2 <- dI_k_ds(z,rho,mu,1,s)/z[1] + dI_k_ds(z,rho,mu,2,s)/z[2] + dI_k_ds(z,rho,mu,3,s)/z[3] + dI_k_ds(z,rho,mu,4,s)/z[4]
-		return(part1+part2)
-	}
-
-	# second dereivative of V with respect to its s-th and t-th components (z_s and z_t)
-
-	d2V_dsdt <- function(z,rho,mu,s,t){
-	
-		# s= 1,2,3 or 4
-		# t= 1,2,3 or 4
-		# s != t
-
- 	 # check if the 4 correlation matrices are all positive definite (and correlation coefficient between -1 and 1)
-	  M1 <- R_k(rho,1,TRUE); M2 <- R_k(rho,2,TRUE); M3 <- R_k(rho,3,TRUE); M4 <- R_k(rho,4,TRUE);
-	  if(sum(eigen(M1)$values<0)>=1 || sum(eigen(M2)$values<0)>=1 || sum(eigen(M3)$values<0)>=1 || sum(eigen(M4)$values<0)>=1 ){return(1e-50)}
-	  if(any(abs(M1)>1) || any(abs(M2)>1) || any(abs(M3)>1) || any(abs(M4)>1)){return(1e-50)}
-  
-		part1 <- -dI_k_ds(z,rho,mu,s,t)/z[s]^2 -dI_k_ds(z,rho,mu,t,s)/z[t]^2 
-		part2 <- d2I_k_dsdt(z,rho,mu,1,s,t)/z[1] + d2I_k_dsdt(z,rho,mu,2,s,t)/z[2] + d2I_k_dsdt(z,rho,mu,3,s,t)/z[3] + d2I_k_dsdt(z,rho,mu,4,s,t)/z[4]
-
-		return(part1+part2)	
-		
-	}	
-
-	# third derivative of V with respect to its s-th, t-th and u-th components (z_s, z_t and z_u)
-
-	d3V_dsdtdu <- function(z,rho,mu,s,t,u){
-	
-		# s= 1,2,3 or 4
-		# t= 1,2,3 or 4
-		# u= 1,2,3 or 4
-		# s != t != u
-	
-	  # check if the 4 correlation matrices are all positive definite (and correlation coefficient between -1 and 1)
-	  M1 <- R_k(rho,1,TRUE); M2 <- R_k(rho,2,TRUE); M3 <- R_k(rho,3,TRUE); M4 <- R_k(rho,4,TRUE);
-	  if(sum(eigen(M1)$values<0)>=1 || sum(eigen(M2)$values<0)>=1 || sum(eigen(M3)$values<0)>=1 || sum(eigen(M4)$values<0)>=1 ){return(1e-50)}
-	  if(any(abs(M1)>1) || any(abs(M2)>1) || any(abs(M3)>1) || any(abs(M4)>1)){return(1e-50)}
-  
-		part1 <- -d2I_k_dsdt(z,rho,mu,s,t,u)/z[s]^2 -d2I_k_dsdt(z,rho,mu,t,s,u)/z[t]^2 -d2I_k_dsdt(z,rho,mu,u,s,t)/z[u]^2
-		part2 <- d3I_k_dsdtdu(z,rho,mu,1,s,t,u)/z[1] + d3I_k_dsdtdu(z,rho,mu,2,s,t,u)/z[2] + d3I_k_dsdtdu(z,rho,mu,3,s,t,u)/z[3] + d3I_k_dsdtdu(z,rho,mu,4,s,t,u)/z[4]
-	
-		return(part1+part2)
-	
-	}	
-
-
-
-	dens_et_4d <- function(w,rho,mu){
-		p <- 4; # 4-variate data
-		k=p-1;
-		if(sum(abs(rho)>=1)){return(1e-50)}
-		w.tilde<-rep(0,k);
-		Sigma<-diag(k);
-			
-		if(sum(w < 0.03) == 3){ # in one of the corners of the 4-d simplex
-		  ind.lim <-which(w <0.03)
-		  ind <- c(1:4)[-which(w<0.03)]
-		  z <- vector(length=4)
-		  z[ind.lim] <- 1e-20 # In order to consider the limit when these components are going to zero
-		  z[ind] <- w[ind] 
-			return( -sum(z[ind])^(length(ind)+1) * dV_ds(z,rho,mu,ind) )		
-		} else if(sum(w < 0.02) == 2){ # in one of the edges of the 4-d simplex
-		    ind.lim <-which(w <0.02)
-		    ind <- c(1:4)[-which(w<0.02)]
-		    z <- vector(length=4)
-		    z[ind.lim] <- 1e-20 # In order to consider the limit when these components are going to zero
-		    z[ind] <- w[ind] 
-	      return( -sum(z[ind])^(length(ind)+1) * d2V_dsdt(z,rho,mu,ind[1],ind[2]) )
-		}else	if(sum(w < 0.01) == 1){ # in one of the faces of the 4-d simplex
-		    ind.lim <-which(w <0.01)
-		    ind <- c(1:4)[-which(w<0.01)]
-		    z <- vector(length=4)
-		    z[ind.lim] <- 1e-20 # In order to consider the limit when these components are going to zero
-		    z[ind] <- w[ind] 
-	      return( -sum(z[ind])^(length(ind)+1) * d3V_dsdtdu(z,rho,mu,ind[1],ind[2],ind[3]) )		
-		}else{ # in the interior of the 4-d simplex
-			return(interior_et_d(w,rho,mu))
-		}	
-	}
-
-
-### Angular density for the Extremal-t model on the 2, 3 and 4 dimensional simplex
+	### Angular density for the Extremal-t model on the 2 and 3 dimensional simplex
 
 	xvect = as.double(as.vector(t(x)))
     if (is.vector(x)) {
         dim = as.integer(length(x))
         n = as.integer(1)
         if(round(sum(x),7) != 1){ stop("Data is not angular")}
-        if(dim==2){ result <- dens_et_2d(x,rho,mu)} 
-    	if(dim==3){ result <- dens_et_3d(x,rho,mu)} 
-    	if(dim==4){ result <- dens_et_4d(x,rho,mu)} 
+        if(dim==2){ result <- dens_et_2d(x,rho,mu,c)} 
+    		if(dim==3){ result <- dens_et_3d(x,rho,mu,c)}  
     }
     else {
         dim = as.integer(ncol(x))
@@ -1094,20 +494,438 @@ dens_et <- function (x, rho, mu, log, vectorial){
     
     	if (vectorial) {
     	    result = double(n)
-    	    if(dim==2){ result <- apply(x,1,function(y){dens_et_2d(y,rho,mu)}) }
-    	    if(dim==3){ result <- apply(x,1,function(y){dens_et_3d(y,rho,mu)}) }
-    	    if(dim==4){ result <- apply(x,1,function(y){dens_et_4d(y,rho,mu)}) }
+    	    if(dim==2){ result <- apply(x,1,function(y){dens_et_2d(y,rho,mu,c)}) }
+    	    if(dim==3){ result <- apply(x,1,function(y){dens_et_3d(y,rho,mu,c)}) }
     	} else { # vectorial=FALSE mean we return the likelihood function
     	    result = as.double(1)
-    	    if(dim==2){ result <- prod(apply(x,1,function(y){dens_et_2d(y,rho,mu)})) }
-    	    if(dim==3){ result <- prod(apply(x,1,function(y){dens_et_3d(y,rho,mu)})) }
-    	    if(dim==4){ result <- prod(apply(x,1,function(y){dens_et_4d(y,rho,mu)})) }
+    	    if(dim==2){ result <- prod(apply(x,1,function(y){dens_et_2d(y,rho,mu,c)})) }
+    	    if(dim==3){ result <- prod(apply(x,1,function(y){dens_et_3d(y,rho,mu,c)})) }
    		}
    	}	
-    if(log)
-    	return(log(result))
-    else return(result)
+    if(log){
+    		if(any(result==0)){
+    			result[which(result==0)] <- log(-1e+50)
+    		result[which(result!=0)] <- log(result[which(result!=0)]) 
+    		return(result)   			
+    		}else{
+    			return(log(result))
+    		}
+    	}else{ 
+    		return(result)
+	}
 }
+
+### Functions needed for the Extremal Skew-t model
+
+dens_est <- function (x, rho, alpha, mu, c, log, vectorial){
+	
+	## Preliminary functions
+	
+	Sigma <- function(rho){
+			p <- round(uniroot(function(x){length(rho)-choose(x,2)},lower=1, upper=10)$root) 
+			Sig <- diag(p)
+			Sig[lower.tri(Sig)] = rho
+			Sig[row(Sig) < col(Sig)] = t(Sig)[row(Sig) < col(Sig)]
+			return(Sig)
+		}
+
+	Sigma_j <-function(rho,j){
+			Sig <- Sigma(rho)	
+			return(Sig[-j,-j] - Sig[-j,j] %*% t(Sig[j,-j]) )
+		}
+		
+	s_j <- function(rho,j){
+			p <- round(uniroot(function(x){length(rho)-choose(x,2)},lower=1, upper=10)$root)
+			k=p-1;
+
+			sigma_j <- Sigma_j(rho,j)
+			M <- diag(k)
+			diag(M) = sqrt(diag(sigma_j)) 
+			return( M )
+		}
+		
+	Sigma_bar_j <- function(rho,j){
+			sigma_j <- Sigma_j(rho,j)
+			sj <- s_j(rho,j)
+			return( solve(sj) %*% t(sigma_j) %*% solve(sj) )
+		}
+		
+	alpha_tilde <- function(alpha,j){
+			return(t(alpha[-j]))
+		}
+		
+	alpha_bar_j <- function(rho,alpha,j){
+			Sig <- Sigma(rho) 
+			sigma_j <- Sigma_j(rho,j)
+			Alpha_tilde <- alpha_tilde(alpha,j)
+	
+			num <- alpha[j] + Sig[j,-j] %*% t(Alpha_tilde)
+			denom <- sqrt( 1 + Alpha_tilde %*% t(sigma_j) %*% t(Alpha_tilde)  )
+			return(num/denom)
+		}		
+		
+	alpha_star_j <- function(alpha,j){
+			Alpha_tilde <- alpha_tilde(alpha,j)
+			sj <- s_j(rho,j)
+			return( Alpha_tilde %*% sj )
+		}
+
+	tau_star_j <- function(rho,alpha,j){
+			Sig <- Sigma(rho)
+			Alpha_tilde <- alpha_tilde(alpha,j)
+			return( sqrt(mu+1) * (alpha[j] + Sig[-j,j] %*% t(Alpha_tilde) )	 )
+		}	
+
+	nu_p <- function(rho,alpha,mu,j){
+			Alpha_bar <- alpha_bar_j(rho,alpha,j)
+			return( pt(sqrt(mu+1)*Alpha_bar,df=mu+1) * 2^(mu/2-1) * gamma((mu+1)/2) / sqrt(pi) )
+		}
+
+	x_bar <- function(x,rho,alpha,mu,j){
+			return( x * nu_p(rho,alpha,mu,j) )
+		}
+
+	comp <- function(z1,z2,z3,rho,alpha,mu,j,k){
+
+			#function corresponding to the j-th component of I_k
+			# Gives x1,y1, x2,y2, x3,y3
+			# a1,b1, a2,b2, a3,b3
+	
+
+			#j = 1 or 2
+			#k = 1,2 or 3
+	
+			if(j==1 & k==1){corr=rho[1];x=x_bar(z2,rho,alpha,mu,2); y=x_bar(z1,rho,alpha,mu,1)}
+			if(j==1 & k==2){corr=rho[1];x=x_bar(z1,rho,alpha,mu,1); y=x_bar(z2,rho,alpha,mu,2)}	
+			if(j==1 & k==3){corr=rho[2];x=x_bar(z1,rho,alpha,mu,1); y=x_bar(z3,rho,alpha,mu,3)}
+
+			if(j==2 & k==1){corr=rho[2];x=x_bar(z3,rho,alpha,mu,3); y=x_bar(z1,rho,alpha,mu,1)}
+			if(j==2 & k==2){corr=rho[3];x=x_bar(z3,rho,alpha,mu,3); y=x_bar(z2,rho,alpha,mu,2)}	
+			if(j==2 & k==3){corr=rho[3];x=x_bar(z2,rho,alpha,mu,2); y=x_bar(z3,rho,alpha,mu,3)}
+	
+			if(z1==0 && z2==0 && z3==0){
+				return( -corr * sqrt((mu+1)/(1-corr^2)) )
+			}else{
+				return( sqrt((mu+1)/(1-corr^2))*((x/y)^(1/mu)-corr) )
+			}
+		}
+
+	R_j <- function(rho,alpha,j,matrix=TRUE){
+			sigma_bar <- Sigma_bar_j(rho,j)
+			d <- ncol(sigma_bar)
+			delta <- delta_j(rho,alpha,j)
+
+			S <- diag(d+1)
+			S[(1:d),(1:d)] <- sigma_bar
+			S[(1:d),d+1] <- S[d+1,(1:d)] <- -delta
+			if (matrix==TRUE){return(S)}else{
+				seq <- vector("numeric")
+				for(i in 1:d){
+					seq <- c(seq,S[(i+1):(d+1),i])
+				}
+				return(seq)
+			}	
+		}
+
+	delta_j <- function(rho,alpha,j){
+	
+			sigma_bar <- Sigma_bar_j(rho,j)
+			alpha_star <- alpha_star_j(alpha,j)
+			return( (alpha_star %*% sigma_bar )/ as.numeric(sqrt( 1 + alpha_star %*% sigma_bar %*% t(alpha_star) )) )
+		}
+
+	tau_bar_j <- function(rho,alpha,j){
+			tau_star <- tau_star_j(rho,alpha,j)
+			alpha_star <- alpha_star_j(alpha,j)
+			sigma_bar <- Sigma_bar_j(rho,j)	
+			return( tau_star / sqrt( 1 + alpha_star %*% sigma_bar %*% t(alpha_star) ) )
+		}
+
+	# in the following functions:
+	#
+	# rho is a vector of size choose(dim,2) which mean choose 2 from dim (correlation coefficients)
+	# alpha is a vector of size dim (skewness parameters)
+	# mu is of size 1 (degree of freedom)
+
+	## Mass on the interior of the simplex
+	
+	interior_skewt_d <- function(w,rho,alpha,mu){ # mass on the interior of the d-dim simplex
+		p<-length(w);
+		k=p-1;
+		w.tilde<-rep(0,k);
+				
+		cond <- sapply(1:p,function(j){alpha_tilde(alpha,j) %*% t(Sigma_j(rho,j)) %*% t(alpha_tilde(alpha,j))})
+		
+		if( any(cond < -1)){return(1e-50)}else{		
+			sigma_bar1 <- Sigma_bar_j(rho,1)
+			alpha_star1 <- alpha_star_j(alpha,1)
+			tau_star1 <- tau_star_j(rho,alpha,1)
+	
+			w_bar <- sapply(1:p,function(j){w[j]*nu_p(rho,alpha,mu,j)})
+			
+			for(i in 1:k){
+				w.tilde[i] <- ((w_bar[i+1]/w_bar[1])^(1/mu)-rho[i])*sqrt((mu+1)/(1-rho[i]^2));
+			}	
+			
+			# if( alpha_star1 %*% sigma_bar1 %*% t(alpha_star1) < -1){return(1e-50)}
+			# if( t(w.tilde) %*% solve(sigma_bar1) %*% w.tilde < -1){return(1e-50)}
+			
+			deriv = (w_bar[-1]/w_bar[1])^(1/mu-1) / mu * sqrt((mu+1)/(1-rho[1:k]^2)) * sapply(2:p,function(x){nu_p(rho,alpha,mu,x)}) / nu_p(rho,alpha,mu,1)
+
+		if(k==1){
+			return(dest(x=w.tilde, scale=sigma_bar1, shape=t(alpha_star1), ext=tau_star1, df=mu+1)*w[1]^(-p-1)*prod(deriv) )	
+		}else{
+			return(dmest(x=w.tilde, loc=rep(0,2), scale=sigma_bar1, shape=t(alpha_star1), ext=tau_star1, df=mu+1) * w[1]^(-p-1) * prod(deriv) )	
+		}	
+										
+		}	
+	}
+	
+	## mass on the corner of the s-th component of the 2-d simplex
+	
+	corners_skewt_2d <- function(w,rho,alpha,mu,s){ 
+
+		alpha_star <- alpha_star_j(alpha,s)
+		tau_star <- tau_star_j(rho,alpha,s)
+		part1 <- pest(-rho * sqrt((mu+1)/(1-rho^2)),shape=alpha_star, ext=tau_star ,df=mu+1)	
+	
+		return(part1)
+	}
+	
+	## density on 2-d simplex
+	
+	dens_skewt_2d <- function(w,rho,alpha,mu,c){
+		if(length(rho)!=1){return(stop("Wrong length of parameter rho"))}
+		if( (abs(rho) > 1) || (mu<1) ){return(1e-50)}
+  
+		if(sum(w<c) == 1){ # then we are in a corner 
+			ind <- which(w > c)
+			return(corners_skewt_2d(w,rho,alpha,mu,ind))
+		} else {
+			return(interior_skewt_d(w,rho,alpha,mu))	
+		}
+	}
+
+	## mass on the corner of the s-th component of the 3-d simplex
+
+	corners_skewt_3d <- function(w,rho,alpha,mu,s){
+ 
+		s_bar <- Sigma_bar_j(rho,s)
+		al=t(alpha_star_j(alpha,s))
+		if(t(al) %*% s_bar %*% al < -1 ){return(1e-50)}
+		
+		up <- c(comp(0,0,0,rho,alpha,mu,1,s), comp(0,0,0,rho,alpha,mu,2,s))
+		return(pmest(x=up, loc=rep(0,2), scale=s_bar, shape=al, ext=tau_star_j(rho,alpha,s), df=mu+1 ))	
+	}
+			
+	## mass on the edge between the s-th and t-th components of the 3-d simplex
+
+	edges_skewt_3d <- function(w,rho,alpha,mu,s,t){
+	
+		sigma_j1 <- Sigma_j(rho,s)
+		Alpha_tilde1 <- alpha_tilde(alpha,s)		
+		sigma_j2 <- Sigma_j(rho,t)
+		Alpha_tilde2 <- alpha_tilde(alpha,t)		
+		alpha_star1 <- alpha_star_j(alpha,s)
+		sigma_bar1 <- Sigma_bar_j(rho,s)	
+		alpha_star2 <- alpha_star_j(alpha,t)
+		sigma_bar2 <- Sigma_bar_j(rho,t)	
+		if( Alpha_tilde1 %*% t(sigma_j1) %*% t(Alpha_tilde1)< -1){return(1e-50)}
+		if( Alpha_tilde2 %*% t(sigma_j2) %*% t(Alpha_tilde2)< -1){return(1e-50)}
+		if(	alpha_star1 %*% sigma_bar1 %*% t(alpha_star1)< -1){return(1e-50)} 	
+		if(	alpha_star2 %*% sigma_bar2 %*% t(alpha_star2)< -1){return(1e-50)}
+				
+		ind= c(1,2,3)
+		w[which((ind != s)  & (ind != t))]=0
+	
+		if(s==1 && t==2){
+			a1_p <- comp(w[1],w[2],w[3],rho,alpha,mu,1,s)
+			b1_p <- comp(w[1],w[2],w[3],rho,alpha,mu,2,s)		
+			R1 <- R_j(rho,alpha,s,FALSE)
+		
+			a2_p <- comp(w[1],w[2],w[3],rho,alpha,mu,1,t)
+			b2_p <- comp(w[1],w[2],w[3],rho,alpha,mu,2,t)	
+			R2 <- R_j(rho,alpha,t,FALSE)
+		}
+		if(s==1 && t==3){
+			a1_p <- comp(w[1],w[2],w[3],rho,alpha,mu,2,s)
+			b1_p <- comp(w[1],w[2],w[3],rho,alpha,mu,1,s)		
+			R1 <- R_j(rho,alpha,s,FALSE)
+			r1 <- R1[2];
+			r2 <- R1[3];
+			R1[2] <- r2;
+			R1[3] <- r1;	
+		
+			a2_p <- comp(w[1],w[2],w[3],rho,alpha,mu,1,t)
+			b2_p <- comp(w[1],w[2],w[3],rho,alpha,mu,2,t)	
+			R2 <- R_j(rho,alpha,t,FALSE)	
+		}
+		if(s==2 && t==3){
+			a1_p <- comp(w[1],w[2],w[3],rho,alpha,mu,2,s)
+			b1_p <- comp(w[1],w[2],w[3],rho,alpha,mu,1,s)		
+			R1 <- R_j(rho,alpha,s,FALSE)
+			r1 <- R1[2];
+			r2 <- R1[3];
+			R1[2] <- r2;
+			R1[3] <- r1;	
+		
+			a2_p <- comp(w[1],w[2],w[3],rho,alpha,mu,2,t)
+			b2_p <- comp(w[1],w[2],w[3],rho,alpha,mu,1,t)	
+			R2 <- R_j(rho,alpha,t,FALSE)
+			rr1 <- R2[2];
+			rr2 <- R2[3];
+			R2[2] <- rr2;
+			R2[3] <- rr1;	
+		}	
+
+		if( R1[1]^2 >1 || R1[2]^2>1 || R2[1]^2 >1 || R2[2]^2>1 ){return(1e-50)}		
+		
+		c1 <- tau_bar_j(rho,alpha,s)
+		u1_p <- c(a1_p,b1_p,c1)
+	
+		R1_p <- diag(2)
+		R1_p[1,2] <- R1_p[2,1] <- (R1[3]-R1[1]*R1[2])/sqrt((1-R1[1]^2)*(1-R1[2]^2))
+			
+		c2 <- tau_bar_j(rho,alpha,t)
+		u2_p <- c(a2_p,b2_p,c2)
+
+		R2_p <- diag(2)
+		R2_p[1,2] <- R2_p[2,1] <- (R2[3]-R2[1]*R2[2])/sqrt((1-R2[1]^2)*(1-R2[2]^2))
+	
+		x1_bar <- x_bar(w[s],rho,alpha,mu,s)
+		x2_bar <- x_bar(w[t],rho,alpha,mu,t)
+	
+		v1_1 <- (b1_p-R1[1]*a1_p)/sqrt(1-R1[1]^2) * sqrt((mu+2)/(mu+1+a1_p^2))
+		v2_1 <- (c1-R1[2]*a1_p)/sqrt(1-R1[2]^2) * sqrt((mu+2)/(mu+1+a1_p^2))
+		
+		v1_1_p <- (a1_p-R1[1]*b1_p)/sqrt(1-R1[1]^2) * sqrt((mu+2)/(mu+1+b1_p^2))
+			
+		v1_2 <- (b2_p-R2[1]*a2_p)/sqrt(1-R2[1]^2) * sqrt((mu+2)/(mu+1+a2_p^2))
+		v2_2 <- (c2-R2[2]*a2_p)/sqrt(1-R2[2]^2) * sqrt((mu+2)/(mu+1+a2_p^2))
+	
+		v1_2_p <- (a2_p-R2[1]*b2_p)/sqrt(1-R2[1]^2) * sqrt((mu+2)/(mu+1+b2_p^2))
+	
+		if(s==1 & t==2){rho12=rho[1];rho13=rho[2];rho23=rho[3]}
+		if(s==1 & t==3){rho12=rho[2];rho13=rho[1];rho23=rho[3]}
+		if(s==2 & t==3){rho12=rho[3];rho13=rho[1];rho23=rho[2]}
+		
+		part1 <- pt(c1,df=mu+1)
+		part11 <- -dt(a1_p,df=mu+1) * pmest(x=c( v1_1, v2_1), scale=R1_p, df=mu+2) * sqrt((mu+1)/(1-rho12^2)) * ( x2_bar/x1_bar )^(1/mu-1)
+		part12 <- nu_p(rho,alpha,mu,s)^2 * nu_p(rho,alpha,mu,t) / (mu*x1_bar^3) * ( 1+ 1/mu )
+	
+			p1 <- dt(a1_p,df=mu+1)/(mu+1+a1_p^2)
+			p2 <- (mu+2) * a1_p * pmest(x=c( v1_1, v2_1), scale=R1_p, df=mu+2 )	
+
+			p3 <- dt(v1_1,df=mu+2) * sqrt((mu+2)/(1-R1[1]^2)) * (b1_p*a1_p+R1[1]*(mu+1))/sqrt(mu+1+a1_p^2)
+			p4num <- sqrt(mu+3) * ( (c1 -R1[2]*a1_p)*(1-R1[1]^2) - (R1[3]-R1[1]*R1[2])*(b1_p-R1[1]*a1_p) )
+			p4denom <- ((1-R1[1]^2)*(mu+1+a1_p^2)+(b1_p-R1[1]*a1_p)^2) * ((1-R1[1]^2)*(1-R1[2]^2)-(R1[3]-R1[1]*R1[2])^2)
+			p4 <- pt(p4num/sqrt(p4denom),df=mu+2)
+
+			p5 <- dt(v2_1,df=mu+2) * sqrt((mu+2)/(1-R1[2]^2)) * (c1*a1_p+R1[2]*(mu+1))/sqrt(mu+1+a1_p^2)
+			p6num <- sqrt(mu+3) * ( (b1_p -R1[1]*a1_p)*(1-R1[2]^2) - (R1[3]-R1[1]*R1[2])*(c1-R1[2]*a1_p) )
+			p6denom <- ((1-R1[2]^2)*(mu+1+a1_p^2)+(c1-R1[2]*a1_p)^2) * ((1-R1[1]^2)*(1-R1[2]^2)-(R1[3]-R1[1]*R1[2])^2)
+			p6 <- pt(p6num/sqrt(p6denom),df=mu+2)
+
+		part13 <- (p1 * (p2+ p3*p4 + p5*p6)) * (mu+1)/(1-rho12^2) * ( x2_bar/x1_bar )^(2/mu-1)
+		part14 <- nu_p(rho,alpha,mu,s)^2 * nu_p(rho,alpha,mu,t) / (mu^2 * x1_bar^3)
+		
+		part2 <- pt(c2,df=mu+1)
+		part21 <- -dt(a2_p,df=mu+1) * pmest(x=c( v1_2, v2_2), scale=R2_p, df=mu+2 ) * sqrt((mu+1)/(1-rho12^2)) * ( x1_bar/x2_bar )^(1/mu-1)
+		part22 <- nu_p(rho,alpha,mu,s) * nu_p(rho,alpha,mu,t)^2 / (mu*x2_bar^3) * ( 1+ 1/mu )
+	
+			P1 <- dt(a2_p,df=mu+1)/(mu+1+a2_p^2)
+			P2 <- (mu+2) * a2_p * pmest(x=c( v1_2, v2_2), scale=R2_p, df=mu+2 )	
+
+			P3 <- dt(v1_2,df=mu+2) * sqrt((mu+2)/(1-R2[1]^2)) * (b2_p*a2_p+R2[1]*(mu+1))/sqrt(mu+1+a2_p^2)
+			P4num <- sqrt(mu+3) * ( (c2 -R2[2]*a2_p)*(1-R2[1]^2) - (R2[3]-R2[1]*R2[2])*(b2_p-R2[1]*a2_p) )
+			P4denom <- ((1-R2[1]^2)*(mu+1+a2_p^2)+(b2_p-R2[1]*a2_p)^2) * ((1-R2[1]^2)*(1-R2[2]^2)-(R2[3]-R2[1]*R2[2])^2)
+			P4 <- pt(P4num/sqrt(P4denom),df=mu+2)
+
+			P5 <- dt(v2_2,df=mu+2) * sqrt((mu+2)/(1-R2[2]^2)) * (c2*a2_p+R2[2]*(mu+1))/sqrt(mu+1+a2_p^2)
+			P6num <- sqrt(mu+3) * ( (b2_p -R2[1]*a2_p)*(1-R2[2]^2) - (R2[3]-R2[1]*R2[2])*(c2-R2[2]*a2_p) )	
+			P6denom <- ((1-R2[2]^2)*(mu+1+a2_p^2)+(c2-R2[2]*a2_p)^2) * ((1-R2[1]^2)*(1-R2[2]^2)-(R2[3]-R2[1]*R2[2])^2)
+			P6 <- pt(P6num/sqrt(P6denom),df=mu+2)
+	
+		part23 <- (P1 * (P2+ P3*P4 + P5*P6)) * (mu+1)/(1-rho12^2) * ( x1_bar/x2_bar )^(2/mu-1)
+		part24 <- nu_p(rho,alpha,mu,s) * nu_p(rho,alpha,mu,t)^2 / (mu^2 * x2_bar^3)
+			
+		return( -(w[s]+w[t])^3 * ((part11*part12+part13*part14)/part1 + (part21*part22+part23*part24)/part2)) 
+	
+	}
+	
+	## density on 3-d simplex
+	
+	dens_skewt_3d <- function(w,rho,alpha,mu,c){
+
+		if(length(rho)!=3){return(stop("Wrong length of parameter rho"))}
+		if(length(alpha)!=3){return(stop("Wrong length of parameter rho"))}
+		if(any(abs(rho)>=1) || mu<=0){return(1e-50)}
+  
+  		if(c==0){return(interior_skewt_d(w,rho,alpha,mu))}	
+  
+		if(sum(w<c) == 2){ # then we are in a corner 
+			ind <- which(w > c)
+			return(corners_skewt_3d(w,rho,alpha,mu,ind)/c^2)
+		} else 
+		if(sum(w<c) == 1){
+			ind <- which(w >= c)
+			w2 <- w[ind]/sum(w[ind])
+			edge_surface <- c*sqrt(3)*(1-2*c)/2
+		 
+			if(w[1]<=1-c && w[2]<=1-c && w[3]<=c && w[1]>=(1-w[2])/2 && w[1]>=1-2*w[2]){ #EDGE {1,2} 			
+				edg01 <- integrate(Vectorize(function(x){edges_skewt_3d(w=c(x,1-x,0), rho=rho, alpha=alpha, mu=mu, s=1, t=2)}), lower=0, upper=1)$value
+				return(edges_skewt_3d(c(w2,w[3]),rho,alpha,mu,1,2) * edg01 / edge_surface)
+			}
+
+			if(w[1]<=1-c && w[2]<=c && w[3]<=1-c && w[2]<=w[1] && w[1]<=1-2*w[2]){ #EDGE {1,3} 			
+				edg01 <- integrate(Vectorize(function(x){edges_skewt_3d(w=c(x,0,1-x), rho=rho, alpha=alpha, mu=mu, s=1, t=3)}), lower=0, upper=1)$value
+				return(edges_skewt_3d(c(w2[1],w[2],w2[2]),rho,alpha,mu,1,3) * edg01 / edge_surface)
+			}
+
+			if(w[1]<=c && w[2]<=1-c && w[3]<=1-c && w[1]<=w[2] && w[1]<=(1-w[2])/2){ #EDGE {2,3} 			
+				edg01 <- integrate(Vectorize(function(x){edges_skewt_3d(w=c(0,x,1-x), rho=rho, alpha=alpha, mu=mu, s=2, t=3)}), lower=0, upper=1)$value
+				return(edges_skewt_3d(c(w[1],w2),rho,alpha,mu,2,3) * edg01 / edge_surface)
+			}
+		}	else {
+			int01 <- integrate(Vectorize(function(y) integrate(Vectorize(function(x) interior_skewt_d(c(x,y,1-x-y),rho=rho, alpha=alpha, mu=mu)), lower=0, upper=1-y )$value), lower=0, upper=1)$value
+			intc <- integrate(Vectorize(function(y) integrate(Vectorize(function(x) interior_skewt_d(c(x,y,1-x-y),rho=rho, alpha=alpha, mu=mu)), lower=c, upper=1-y-c )$value), lower=c, upper=1-2*c)$value
+			
+			return(interior_skewt_d(w,rho,alpha,mu)*int01/intc)
+		}
+	}
+	
+	### Angular density for the Extremal Skew-t model on the 2 and 3 dimensional simplex
+
+	xvect = as.double(as.vector(t(x)))
+    if (is.vector(x)) {
+        dim = as.integer(length(x))
+        n = as.integer(1)
+        if(round(sum(x),7) != 1){ stop("Data is not angular")}
+        if(dim==2){ result <- dens_skewt_2d(x,rho,alpha,mu,c)} 
+    	if(dim==3){ result <- dens_skewt_3d(x,rho,alpha,mu,c)} 
+    }
+    else {
+        dim = as.integer(ncol(x))
+        n = as.integer(nrow(x))
+    	
+		if (sum(apply(x,1,sum)) != n){ stop("Data is not angular") }
+    
+    	if (vectorial) {
+    	    result = double(n)
+    	    if(dim==2){ result <- apply(x,1,function(y){dens_skewt_2d(y,rho,alpha,mu,c)}) }
+    	    if(dim==3){ result <- apply(x,1,function(y){dens_skewt_3d(y,rho,alpha,mu,c)}) }
+    	} else { # vectorial=FALSE mean we return the likelihood function
+    	    result = as.double(1)
+    	    if(dim==2){ result <- prod(apply(x,1,function(y){dens_skewt_2d(y,rho,alpha,mu,c)})) }
+    	    if(dim==3){ result <- prod(apply(x,1,function(y){dens_skewt_3d(y,rho,alpha,mu,c)})) }
+   		}
+   	}	
+    if(log){
+		if(result==0){return(log(1e-50))}else{
+			return(log(result))
+		}
+	}else return(result)	
+}	
 
 # Dimension of the density
 if (is.vector(x)) { d <- as.integer(length(x))}else{d <- as.integer(ncol(x)) }	
@@ -1126,29 +944,29 @@ if(model=='Dirichlet'){
 }
 if(model=='Extremalt'){
 	if(length(par)!= (choose(d,2)+1) ){stop('Wrong length of parameters')}
-	return(dens_et(x=x, rho=par[1:choose(d,2)], mu=par[choose(d,2)+1], log=log,  vectorial=vectorial))
+	if(is.null(c)){stop('c needs to be specified')}
+	return(dens_et(x=x, rho=par[1:choose(d,2)], mu=par[choose(d,2)+1], c=c, log=log,  vectorial=vectorial))
+}
+if(model=='Skewt'){
+	if(length(par)!= (choose(d,2)+d+1) ){stop('Wrong length of parameters')}
+	if(is.null(c)){stop('c needs to be specified')}
+	return(dens_est(x=x, rho=par[1:choose(d,2)], alpha=par[choose(d,2)+1:d],mu=par[choose(d,2)+d+1], c=c, log=log,  vectorial=vectorial))
 }
 if(model=='Asymmetric'){
+	if(is.null(c)){stop('c needs to be specified')}	
 	if(d==2){
 		if(length(par)!=3 ){
 			stop('Wrong length of parameters')
 		}else{
-			return(dens_al(x=x, alpha=par[1], beta=par[2:3], log=log,  vectorial=vectorial))
+			return(dens_al(x=x, alpha=par[1], beta=par[2:3], c=c, log=log,  vectorial=vectorial))
 		}
 	}
 	if(d==3){
 		if(length(par)!=13 ){
 			stop('Wrong length of parameters')
 		}else{
-			return(dens_al(x=x, alpha=par[1:4], beta=par[5:13], log=log,  vectorial=vectorial))
-		}
-	}
-	if(d==4){
-		if(length(par)!=39 ){
-			stop('Wrong length of parameters')
-		}else{
-			return(dens_al(x=x, alpha=par[1:11], beta=par[12:39], log=log,  vectorial=vectorial))
-		}
+			return(dens_al(x=x, alpha=par[1:4], beta=par[5:13], c=c, log=log,  vectorial=vectorial))
+		}	
 	}
 }
 	

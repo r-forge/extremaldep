@@ -1,22 +1,32 @@
 ################################################################################################
 ### Authors: Boris Beranger and Simone Padoan        	 									 ###
-### 																						 ###	
-###	Emails: borisberanger@gmail.com, simone.padoan@unibocconi.it							 ###
-### 																						 ###
+### 																							 ###	
+###	Emails: borisberanger@gmail.com, simone.padoan@unibocconi.it								 ###
+### 																							 ###
 ###	Institutions: Department of Decision Sciences, University Bocconi of Milan				 ###
-### School of Mathematics and Statistics, University of New South Wales 					 ###
-### 																						 ###
+### School of Mathematics and Statistics, University of New South Wales 						 ###
+### 																							 ###
 ### File name: ApproxLikelihood.r              							             	     ###
-### 																						 ###
+### 																							 ###
 ### Description:                                  							      		     ###
 ### This file provides the Approximate Likelihood estimation 				 				 ###
 ### for the Pairwise Beta, Dirichlet, H??sler-Reiss, Asym Logisitic and Extremal-t models. 	 ###
 ### Also calculates the standard errors using the Godambe information matrix.				 ###
-### 																						 ###
-### Last change: 11/07/2015                         		  								 ###
-### 																						 ###
+### 																							 ###
+### Last change: 10/12/2014                         		  									 ###
+### 																							 ###
 ################################################################################################
 
+###############################################################################
+## Trace of Matrix (identical to matrixcalc package for example) 
+###############################################################################
+
+matrix.trace <- function (x) 
+{
+    if (ncol(x)!=nrow(x)) 
+        stop("argument x is not a square matrix")
+    return(sum(diag(x)))
+}
 
 ###############################################################################
 ## Matrix square root - taken from Stephen Lake 
@@ -35,13 +45,13 @@ matrix.sqrt <- function(A)
 	return(Asqrt)
 }
 
-alik <- function(data, model, parastart, trace=0, sig=3){
+alik <- function(data, model, parastart, c=NULL, trace=0, sig=3){
 
 	optimfun<-function(para){
-		return(dens(x=data, model=model, par=para, log=TRUE, vectorial=FALSE))
+		return(dens(x=data, model=model, par=para, c=c, log=TRUE, vectorial=FALSE))
 	}
 	est.para=optim(parastart, optimfun,method="BFGS",control=list(maxit=500, trace=trace, fnscale=-1)) 
-
+	
 	LogLik <- est.para$value # log likelihood
 	param.est <- est.para$par # Parameters estimates
 
@@ -50,7 +60,7 @@ alik <- function(data, model, parastart, trace=0, sig=3){
 	score <- matrix(nrow=n,ncol=length(param.est))
 	for(i in 1:n){
 		stepJ <- function(para){
-			dens(x=data[i,], model=model, par=para, log=TRUE, vectorial=FALSE)
+			dens(x=data[i,], model=model, par=para, c=c, log=TRUE, vectorial=FALSE)
 		}
 		score[i,] = jacobian(stepJ,param.est)
 		s = s + hessian(stepJ,param.est)	
