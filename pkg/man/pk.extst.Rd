@@ -19,9 +19,15 @@
 	Dependence parameters must be between \eqn{-1}{-1} and \eqn{1}{1}, the degree of freedom must be positive.
 }
 
+\references{
+  Padoan, S. A. (2011).
+	Multivariate extreme models based on underlying skew-t and skew-normal distributions.
+	\emph{Journal of Multivariate Analysis}, \bold{102}, 977-991.	
+}
+
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.bocconi.it/simonepadoan};
+	\url{faculty.bocconi.it/simonepadoan};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 

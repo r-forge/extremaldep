@@ -35,7 +35,7 @@
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.bocconi.it/simonepadoan};
+	\url{faculty.bocconi.it/simonepadoan};
 	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
@@ -43,21 +43,21 @@
 ### Extremal-t
 
 ## Bivariate
-r_extr_mod("Extremalt", n=5, par=c(0.5,2))
+r_extr_mod("Extremalt", n=3, par=c(0.5,2))
 
 \dontrun{
 ## Trivariate
-r_extr_mod("Extremalt", n=5, par=c(0.5,0.6,0.4,2))
+r_extr_mod("Extremalt", n=3, par=c(0.5,0.6,0.4,2))
 }
 
 ### Extremal Skew-t
 
 ## Bivariate
-r_extr_mod("Skewt", n=5, par=c(0.5,-1,1,2))
+r_extr_mod("Skewt", n=3, par=c(0.5,-1,1,2))
 
 \dontrun{
 ## Trivariate
-r_extr_mod("Skewt", n=5, par=c(0.5,0.6,0.4,-2,-2,5,2))
+r_extr_mod("Skewt", n=3, par=c(0.5,0.6,0.4,-2,-2,5,2))
 }
 
 }

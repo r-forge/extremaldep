@@ -27,18 +27,22 @@
 	Returns a single value correspond to the density or the log-density.
 }
 
+\author{
+  Simone Padoan, \email{simone.padoan@unibocconi.it},
+	\url{faculty.bocconi.it/simonepadoan};
+	Boris Beranger, \email{borisberanger@gmail.com}
+}
+
 \references{
 	
 	Beranger, B., Padoan, S. A. and Sisson, S. A. (2016).
 	Models for extremal dependence derived from skew-symmetric families.
 	\emph{Scandinavian Journal of Statistics}, \bold{To appear}.	
+  
+    Padoan, S. A. (2011).
+	Multivariate extreme models based on underlying skew-t and skew-normal distributions.
+	\emph{Journal of Multivariate Analysis}, \bold{102}, 977-991.
 	
-}
-
-\author{
-	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.bocconi.it/simonepadoan};
-	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
 \examples{
