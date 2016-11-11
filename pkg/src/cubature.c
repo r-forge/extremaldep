@@ -1,14 +1,3 @@
-/*
-
- The follwing code has been taken from the R package CUBATURE, see
- https://cran.r-project.org/web/packages/cubature/index.html
- 
- The credit for development the code goes to original author Steven G. Johnson. 
- We thank him for his helpful work. See below for mode details. We use this code 
- for computing several integrals, that are not necessarily on the hypercude, 
- in our package's routines  
- 
-*/
 /* Adaptive multidimensional integration of a vector of integrands.
  *
  * Copyright (c) 2005-2010 Steven G. Johnson

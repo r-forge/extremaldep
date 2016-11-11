@@ -1,11 +1,3 @@
-/*
- 
- The follwing code has been taken from the R package COMPRANDFLD, see
- https://cran.r-project.org/web/packages/CompRandFld/index.html
- 
- The credit for development the code goes to original author S. P. Padoan. 
- */
-
 #include <Rdefines.h>
 
 #include "cubature.h"
