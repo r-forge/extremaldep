@@ -60,16 +60,24 @@ The madogram-based estimator does not satisfy the required constraints in order 
   A numeric vector of estimates.
 }
 
+
+\author{
+  Simone Padoan, \email{simone.padoan@unibocconi.it},
+  \url{faculty.bocconi.it/simonepadoan};
+  Giulia Marcon
+}
+
 \references{
-  Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. (2014)
+  Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. and Segers, J. (2016)
   Multivariate Nonparametric Estimation of the Pickands Dependence
-  Function using Bernstein Polynomials,
-  \emph{Submitted}.
+  Function using Bernstein Polynomials.
+  \emph{Journal of Statistical Planning and Inference}, \bold{To appear}.
   
-  Naveau, P., Guillou, A., Cooley, D., Diebolt, J. (2009)
+    Naveau, P., Guillou, A., Cooley, D., Diebolt, J. (2009)
   Modelling pairwise dependence of maxima in space,
   Biometrika, \bold{96(1)}, 1-17.
 }
+
 
 \seealso{\code{\link{beed}}, \code{\link{beed.confband}}}
 
