@@ -1,11 +1,11 @@
 Package: ExtremalDep
 Version: 0.0.2
-Date: 2015-07-11
-Title: Extremal Dependence Modeling
-Author: Giulia Marcon[aut] <giulia.marcon@phd.unibocconi.it>, Boris Beranger[aut] <borisberanger@gmail.com>, Simone Padoan[aut, cre] <simone.padoan@unibocconi.it>
+Date: 2016-09-18
+Title: Extremal Dependence Models
+Author: Simone Padoan[aut, cre] <simone.padoan@unibocconi.it>,Boris Beranger[aut] <borisberanger@gmail.com>, Giulia Marcon[aut] <giulia.marcon@phd.unibocconi.it>
 Maintainer: Simone Padoan <simone.padoan@unibocconi.it>
-Depends: R (>= 3.1.1), quadprog, evd, gtools, copula, sn, numDeriv
-Description: A set of procedures for modeling parametrically or non-parametrically the dependence structure of extreme values is provided. The statistical inference is performed with non-parametric estimators, likelihood based and Bayesian techniques. 
+Depends: R (>= 3.1.1), numDeriv, evd, sn, quadprog, copula, gtools
+Imports: grDevices, graphics, stats
+Description: A set of procedures for modeling parametrically and non-parametrically the dependence structure of multivariate extreme-values is provided. The statistical inference is performed with non-parametric estimators, likelihood-based estimators and and Bayesian techniques.
 License: GPL (>= 2)
-URL: http://faculty.unibocconi.it/simonepadoan/
-Packaged: 2014-10-22 15:01:15 UTC; Padoan
+URL: faculty.unibocconi.it/simonepadoan
