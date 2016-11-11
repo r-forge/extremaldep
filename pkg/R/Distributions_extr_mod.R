@@ -254,7 +254,6 @@ fit_pclik_extr_mod <- function(model, data, parastart, trace){
     	if(is.matrix(x)){
     		n <- nrow(x)
     	}else{ n <- 1}
-    	par <- c(df,scale)
     res <- .C("llHRmax", as.double(x), as.double(lambda), as.integer(n), double(1), 
     		PACKAGE="ExtremalDep", NAOK=TRUE)
     	return(res[[4]])
@@ -358,7 +357,7 @@ r_extr_mod <- function(model, n, param){
 			maxima <- apply(sim, 2, max)
     		res[i,] <- maxima/an
 		}
-		return(res^df) # Transform from Fréchet with parameter df to Standard Fréchet
+		return(res^df) # Transform from Frechet with parameter df to Standard Frechet
 	}
 
 	## Extremal Skew-t model
@@ -374,7 +373,7 @@ r_extr_mod <- function(model, n, param){
     		maxima <- apply(sim, 2, max)
     		res[i,] <- maxima/an
     		}
-  		return(res^df) # Transform from Fréchet with parameter df to Standard Fréchet
+  		return(res^df) # Transform from Frechet with parameter df to Standard Frechet
 	}
 
 	dim <- nrow(scale)
