@@ -50,12 +50,18 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
     \item{up.beta/low.beta}{Vectors of upper and lower bounds of the bootstrap sampling distribution of the polynomial coefficients estimator.}
   }
   
-  \references{
-    Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. (2014)
-    Multivariate Nonparametric Estimation of the Pickands   
-    Dependence Function using Bernstein Polynomials.
-    \emph{Submitted}.
-  }
+\author{
+  Simone Padoan, \email{simone.padoan@unibocconi.it},
+  \url{faculty.bocconi.it/simonepadoan};
+	Giulia Marcon
+}
+
+\references{
+  Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. and Segers, J. (2016)
+  Multivariate Nonparametric Estimation of the Pickands Dependence
+  Function using Bernstein Polynomials.
+  \emph{Journal of Statistical Planning and Inference}, \bold{To appear}.
+}
   
   \seealso{\code{\link{beed}}, \code{\link{beed.boot}}.}
   

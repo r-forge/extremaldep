@@ -37,11 +37,17 @@
   \item{beta}{A matrix of estimated polynomial coefficients. Each column is an estimates corrisponding to a data resampling.}
 }
 
+\author{
+  Simone Padoan, \email{simone.padoan@unibocconi.it},
+	\url{faculty.bocconi.it/simonepadoan};
+	Giulia Marcon
+}
+
 \references{
-  Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. (2014)
+  Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. and Segers, J. (2016)
   Multivariate Nonparametric Estimation of the Pickands Dependence
   Function using Bernstein Polynomials.
-  \emph{Submitted}.
+  \emph{Journal of Statistical Planning and Inference}, \bold{To appear}.
 }
 
 \seealso{\code{\link{beed}}, \code{\link{beed.confband}}.}

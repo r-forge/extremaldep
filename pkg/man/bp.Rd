@@ -53,12 +53,19 @@ B_f(w;k) = \sum_{l \in L_k} beta_l b_l (w;k).
   \value{
     A vector/matrix with the Bernstein polynomial basis.
   }
-  
-  \references{
-Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. (2014)
-Multivariate Nonparametric Estimation of the Pickands Dependence
-Function using Bernstein Polynomials.
-\emph{Submitted}.
+
+
+\author{
+  Simone Padoan, \email{simone.padoan@unibocconi.it},
+  \url{faculty.bocconi.it/simonepadoan};
+	Giulia Marcon
+}
+
+\references{
+Marcon, G., Padoan, S.A., Naveau, P., Muliere, P. and Segers, J. (2016)
+  Multivariate Nonparametric Estimation of the Pickands Dependence
+  Function using Bernstein Polynomials.
+  \emph{Journal of Statistical Planning and Inference}, \bold{To appear}.
     
 Petrone, S. (2004) 
 On the role of mixtures in bayesian nonparametrics. 
