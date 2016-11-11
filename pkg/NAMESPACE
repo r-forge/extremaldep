@@ -9,6 +9,10 @@ import(quadprog)
 importFrom(copula,An)
 importFrom(gtools,permutations)
 
+import(grDevices)
+import(graphics)
+import(stats)
+
 export(matrix.trace)
 export(matrix.sqrt)
 export(FitGev)
