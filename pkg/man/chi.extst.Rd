@@ -20,18 +20,19 @@
 	Returns a value that is trictly greater than \eqn{0}{0} and less than \eqn{1}{1}.
 }
 
+
+\author{
+  Simone Padoan, \email{simone.padoan@unibocconi.it},
+	\url{faculty.bocconi.it/simonepadoan};
+	Boris Beranger, \email{borisberanger@gmail.com}
+}
+
 \references{
 		
 	Padoan, S. A. (2011).
 	Multivariate extreme models based on underlying skew-t and skew-normal distributions.
-	\emph{Journal of Multivariate Analysis}.	
+	\emph{Journal of Multivariate Analysis}, \bold{102}, 977-991.	
 	
-}
-
-\author{
-	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.bocconi.it/simonepadoan};
-	Boris Beranger, \email{borisberanger@gmail.com}
 }
 
 \examples{
