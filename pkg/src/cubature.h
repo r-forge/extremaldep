@@ -44,43 +44,31 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-    /* USAGE: Call adapt_integrate with your function as described below.
-     
-     To compile a test program, compile cubature.c with
-     -DTEST_INTEGRATOR as described at the end. */
+/* USAGE: Call adapt_integrate with your function as described below.
+
+	  To compile a test program, compile cubature.c with
+	  -DTEST_INTEGRATOR as described at the end. */
+
+/* a vector integrand - evaluates the function at the given point x
+  (an array of length ndim) and returns the result in fval (an array
+  of length fdim).   The void* parameter is there in case you have
+  to pass any additional data through to your function (it corresponds
+  to the fdata parameter you pass to adapt_integrate). */
+  typedef void (*integrand) (unsigned ndim, const double *x, void *,
+			   unsigned fdim, double *fval);
+
     
-    /* a vector integrand - evaluates the function at the given point x
-     (an array of length ndim) and returns the result in fval (an array
-     of length fdim).   The void* parameter is there in case you have
-     to pass any additional data through to your function (it corresponds
-     to the fdata parameter you pass to adapt_integrate). */
-    typedef void (*integrand) (unsigned ndim, const double *x, void *,
-    unsigned fdim, double *fval);
-    
-    /* a vector integrand of a vector of npt points: x[i*ndim + j] is the
-     j-th coordinate of the i-th point, and the k-th function evaluation
-     for the i-th point is returned in fval[k*npt + i]. */
-    typedef void (*integrand_v) (unsigned ndim, unsigned npt,
-    const double *x, void *,
-    unsigned fdim, double *fval);
-    
-    /* Integrate the function f from xmin[dim] to xmax[dim], with at most
-     maxEval function evaluations (0 for no limit), until the given
-     absolute or relative error is achieved.  val returns the integral,
-     and err returns the estimate for the absolute error in val; both
-     of these are arrays of length fdim, the dimension of the vector
-     integrand f(x). The return value of the function is 0 on success
-     and non-zero if there  was an error. */
-    int adapt_integrate(unsigned fdim, integrand f, void *fdata,
+/* Integrate the function f from xmin[dim] to xmax[dim], with at most
+  maxEval function evaluations (0 for no limit), until the given
+  absolute or relative error is achieved.  val returns the integral,
+  and err returns the estimate for the absolute error in val; both
+  of these are arrays of length fdim, the dimension of the vector
+  integrand f(x). The return value of the function is 0 on success
+  and non-zero if there  was an error. */
+  int adapt_integrate(unsigned fdim, integrand f, void *fdata,
                         unsigned dim, const double *xmin, const double *xmax,
                         unsigned maxEval, double reqAbsError, double reqRelError,
                         double *val, double *err);
-    
-    /* as adapt_integrate, but vectorized integrand */
-    int adapt_integrate_v(unsigned fdim, integrand_v f, void *fdata,
-                          unsigned dim, const double *xmin, const double *xmax,
-                          unsigned maxEval, double reqAbsError, double reqRelError, 
-                          double *val, double *err);
     
   // univariate Skew-normal functions:
   double desn_int(double x, double mu, double omega, double alpha, double tau);
@@ -135,16 +123,6 @@ extern "C"
   void llHRmax(double *x, double *lambda, int *n, double *res);
   double ExtremalT(double *data, double df, double rho);
   void llETmax(double *x, double *par, int *n, double *res);
-    
-  // Functions taken from CompRandFld.c (ComRandFld package)
-  void Dist2Dist(double *data, double *eloc, double *escale, double *eshape,
-                   int *ndata, int *nsite, double *ploc, double *pscale,
-                   double *pshape, int *type, double *res);
-  double dgev(double x, double loc, double scale, double shape);
-  void GevLogLik(double *data, int *ndata, double *par, double *res);
-  double pgev(double x, double loc, double scale, double shape);
-  double qgev(double x, double loc, double scale, double shape);
-  
     
 #ifdef __cplusplus
 }  /* extern "C" */

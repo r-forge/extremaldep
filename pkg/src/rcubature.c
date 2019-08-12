@@ -13,7 +13,7 @@
 #else
 #define _(String) (String)
 #endif
-
+#define REARTH 6378.388
 
 SEXP CUB_common_env;   /* The common environment we use */
 SEXP f;                /* The function itself */
@@ -24,6 +24,15 @@ SEXP CUB_set_common_env(SEXP rho) {
         error(_("Argument rho must be an environment"));
     CUB_common_env = rho;
     return R_NilValue;
+}
+
+
+SEXP mkans(double x) {
+  SEXP ans;
+  PROTECT(ans = allocVector(REALSXP, 1));
+  REAL(ans)[0] = x;
+  UNPROTECT(1);
+  return ans;
 }
 
 void fWrapper(unsigned ndim, const double *x, void *fdata,
@@ -98,14 +107,4 @@ SEXP doCubature(SEXP sfDim, SEXP sf, SEXP sxLL, SEXP sxUL, SEXP smaxEval,
 
   UNPROTECT(5);
   return ans;
-}
-
-/**
- * Register the native adapt_integrate functions so that they are C callable
- * (courtesy of Simen Gaure)
- */
-
-void R_init_cubature(DllInfo *info) {
-  R_RegisterCCallable("cubature", "adapt_integrate", (DL_FUNC) adapt_integrate);
-  R_RegisterCCallable("cubature", "adapt_integrate_v", (DL_FUNC) adapt_integrate_v);
 }
