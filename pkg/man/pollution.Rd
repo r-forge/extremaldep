@@ -1,6 +1,11 @@
 \name{pollution}
 \alias{pollution}
-\alias{print.pollution}
+\alias{NSN}
+\alias{PNN}
+\alias{PNS}
+\alias{PNNS}
+\alias{winterdat}
+\alias{Leeds.frechet}
 
 \title{Air quality datasets containing daily maxima of air pollutants (PM10, NO, NO2, 03 and S02)
 	recorded in Leeds (U.K.), during five winter seasons (November-Februrary) between 1994 and 1998.}
@@ -48,3 +53,5 @@
 	\emph{Journal of the Royal Statistical Society, Series B, Methodology}, \bold{66}, 497--546
 	
 }
+
+\keyword{datasets}

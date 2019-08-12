@@ -2,7 +2,7 @@
 \alias{pk.extst}
 
 \title{Pickands dependence function for the Extremal Skew-$t$ model.}
-\description{Evaluate the bivariate and trivariate Pickands dependence function for the bivariate skew-normal. }
+\description{Evaluates the bivariate and trivariate Pickands dependence function for the extremal skew-$t$ model.}
 
 \usage{
 	pk.extst(x, param)
@@ -10,7 +10,7 @@
 
 \arguments{
 	\item{x}{a vector of length \eqn{2}{2} or \eqn{3}{3} that belongs to the corresponding simplex. }
-	\item{param}{the parameter vector, containing the dependence, shape and df parameters. }
+	\item{param}{the parameter vector, containing the dependence, shape and df parameters.}
 }
 
 \details{
@@ -19,30 +19,23 @@
 	Dependence parameters must be between \eqn{-1}{-1} and \eqn{1}{1}, the degree of freedom must be positive.
 }
 
-\references{
-  Padoan, S. A. (2011).
-	Multivariate extreme models based on underlying skew-t and skew-normal distributions.
-	\emph{Journal of Multivariate Analysis}, \bold{102}, 977-991.	
-}
-
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{faculty.bocconi.it/simonepadoan};
+	\url{http://faculty.unibocconi.it/simonepadoan};
 	Boris Beranger, \email{borisberanger@gmail.com}
+	\url{http://www.borisberanger.com};
 }
 
 \examples{
 
-### Upper tail dependence
+### Pickands dependence function for two-dimensional distribution
 
 pk.extst(x=c(0.5,0.5), param=c(0.4,-2,4,3))
 
-### Lower tail dependence
+### Pickands dependence function for three-dimensional distribution
 
 pk.extst(x=c(0.2,0.4,0.4), param=c(0.4,0.3,0.7,3,-1,0,2))
 
 }
 
-
-
-
+\keyword{models}

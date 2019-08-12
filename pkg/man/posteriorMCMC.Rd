@@ -2,14 +2,14 @@
 \alias{posteriorMCMC}
 
 \title{MCMC sampler for parametric spectral measures}
-\description{Generate a posterior parameters sample and computes the posterior mean, 
+\description{Generates a sample from the posterior distribution for the parameters and computes the posterior mean,
 	component-wise variance and BIC.}
 \usage{
-posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL, 
-              show.progress=floor(seq(1,Nsim, length.out=20)), 
-	            seed=NULL, kind="Mersenne-Twister", save=FALSE, 
-              name.save=NULL, save.directory = "~", 
-              name.dat="", model, c=NULL) 
+posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
+              show.progress=floor(seq(1,Nsim, length.out=20)),
+	            seed=NULL, kind="Mersenne-Twister", save=FALSE,
+              name.save=NULL, save.directory = "~",
+              name.dat="", model, c=NULL)
 }
 
 \arguments{
@@ -17,7 +17,7 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 	\item{Nbin}{Length of the burn-in period.}
 	\item{Hpar}{A vector of hyper-parameters. See \link{prior}.}
 	\item{MCpar}{MC MC parameter.See \link{proposal}.}
-	\item{dat}{Angular dataset. Each rows corresponds to coordinates in the simplex.}
+	\item{dat}{Angular dataset. Each row corresponds to coordinates in the simplex.}
 	\item{par.start}{Starting point for the MC MC sample.}
 	\item{show.progress}{A vector of integers containing the times (iteration numbers) at which a message showing
 		progression will be printed on the standard output.}
@@ -26,15 +26,16 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 		for details.}
 	\item{save}{Logical; if \code{save=TRUE} then the result is saved}
 	\item{name.save}{A character string giving the name under which the result is to be saved. If \code{NULL} (default),
-		nothing is saved. Otherwise the result is saved in file \code{paste(save.directory,"/", name.save,".rda",sep="")}.
-		A "log" is also saved, named \code{paste(name.save, ".log", sep="")}, in file \code{paste(save.directory,"/", 
+		nothing is saved. Otherwise the result is saved in file
+		\code{paste(save.directory,"/", name.save,".rda",sep="")}.
+		A "log" is also saved, named \code{paste(name.save, ".log", sep="")}, in file \code{paste(save.directory,"/",
 		name.log, ".rda", sep="")}.}
 	\item{save.directory}{A character string giving the directory where the result is to be saved (without trailing slash).}
-	\item{name.dat}{A character string naming the data set used for inference. Default is "".}	
+	\item{name.dat}{A character string naming the dataset used for inference. Default is "".}
 	\item{model}{A character string. Possible models are \code{"Pairiwse"}, \code{"Husler"}, \code{"Dirichlet"},
 		\code{"Extremalt"} or \code{"Asymmetric"}. See \code{details}.}
-	\item{c}{A real such that \eqn{0<=c<=1}{0<=c<=1}, providing the decision rule to allocate a data point to a subset of the simplex.
-		Only required for the Extremal-t and Asymmetric Logistic models.}			
+	\item{c}{A real value in \eqn{[0,1]}{[0,1]}, providing the decision rule to allocate a data point to a subset of the simplex.
+		Only required for the Extremal-t and Asymmetric Logistic models.}
 }
 
 \details{
@@ -47,31 +48,39 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 \value{
 	A list made of
 	\item{stored.vales}{A \eqn{(Nsim-Nbin)*d}{(Nsim-Nbin)*d} matrix, where \eqn{d}{d} is the dimension of the parameter space}
-	\item{llh}{A vector of size \eqn{(Nsim-Nbin)}{(Nsim-Nbin)} containing the log-likelihoods evaluadted at each parameter 
+	\item{llh}{A vector of size \eqn{(Nsim-Nbin)}{(Nsim-Nbin)} containing the log-likelihoods evaluadted at each parameter
 		of the posterior sample.}
-	\item{lprior}{A vector of size \eqn{(Nsim-Nbin)}{(Nsim-Nbin)} containing the logarithm of the prior densities evaluated 
+	\item{lprior}{A vector of size \eqn{(Nsim-Nbin)}{(Nsim-Nbin)} containing the logarithm of the prior densities evaluated
 		at each parameter of the posterior sample.}
 	\item{elapsed}{The time elapsed, as given by \code{porc.time} between the start and end of the run.}
 	\item{Nsim}{The same as the passed argument.}
 	\item{Nbin}{Idem.}
-	\item{n.accept}{The total number of accpeted proposals.}
+	\item{n.accept}{The total number of accepted proposals.}
 	\item{n.accept.kept}{The number of accepted proposals after the burn-in period. }
 	\item{emp.mean}{The estimated posterior parameters mean.}
 	\item{emp.sd}{The empirical posterior sample standard deviation.}
 	\item{BIC}{The Bayesian Information Criteria.}
 }
 
+\author{
+	Simone Padoan, \email{simone.padoan@unibocconi.it},
+	\url{http://faculty.unibocconi.it/simonepadoan};
+	Boris Beranger, \email{borisberanger@gmail.com}
+	\url{http://www.borisberanger.com};
+}
+
+
 \examples{
 
 ################################################
-# The following esamples provide the results of
-# the approximate bayesian analysis in Table 1.1 
+# The following examples provide the results of
+# the approximate bayesian analysis in Table 1.1
 # of the paper Beranger and Padoan (2015)
 ################################################
 
 ## Load datasets :
 data(pollution)
-Nsim <- 50e+4 
+Nsim <- 50e+4
 Nbin <- 30e+4
 MCpar <- 0.35
 Hpar.pb <- 	list(mean.alpha=0, mean.beta=3,sd.alpha=3, sd.beta=3)
@@ -80,7 +89,7 @@ Hpar.di <- list(mean.alpha=0, sd.alpha=3)
 Hpar.et <- list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3)
 
 ## Using the PNS dataset
-\dontrun{	
+\dontrun{
 est.pb.PNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNS, seed=14342, model='Pairwise')
 est.pb.PNS$emp.mean
 est.pb.PNS$emp.sd
@@ -104,7 +113,7 @@ est.et.PNS$BIC
 
 ## Using the NSN dataset
 
-\dontrun{	
+\dontrun{
 est.pb.NSN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, NSN, seed=14342, model='Pairwise')
 est.pb.NSN$emp.mean
 est.pb.NSN$emp.sd
@@ -128,7 +137,7 @@ est.et.NSN$BIC
 
 ## Using the PNN dataset
 
-\dontrun{	
+\dontrun{
 
 est.pb.PNN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNN, seed=14342, model='Pairwise')
 est.pb.PNN$emp.mean
@@ -152,16 +161,16 @@ est.et.PNN$BIC
 }
 
 ################################################
-# The following esamples provide the results of
-# the approximate bayesian analysis in Table 1.2 
+# The following examples provide the results of
+# the approximate bayesian analysis in Table 1.2
 # of the paper Beranger and Padoan (2015)
 ################################################
 
 
 # Using the PNNS dataset
 
-\dontrun{	
-	
+\dontrun{
+
 est.pb.PNNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNNS, seed=14342, model='Pairwise')
 est.pb.PNNS$BIC
 
@@ -174,4 +183,4 @@ est.di.PNNS$BIC
 
 }
 
-
+\keyword{models}

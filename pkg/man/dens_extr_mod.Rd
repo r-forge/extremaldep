@@ -2,7 +2,7 @@
 \alias{dens_extr_mod}
 
 \title{Density of extremal dependence models}
-\description{Evaluate the bivariate density of the Extremal-$t$ and Extremal Skew-$t$ models. }
+\description{Evaluates the bivariate density of the Extremal-$t$ and Extremal Skew-$t$ models. }
 
 \usage{
 	dens_extr_mod(model, z, param, log=TRUE)
@@ -11,38 +11,35 @@
 \arguments{
 	\item{model}{A string with the name of the model: \code{"Extremalt"} or \code{"Skewt"}. }
 	\item{z}{A vector of length \eqn{2}{2}, containing strictly positive reals.}
-	\item{param}{A vector containing the parameters of the model. See \bold{Details}. }	
+	\item{param}{A vector containing the parameters of the model. See \bold{Details}. }
 	\item{log}{Logical; if \code{TRUE} the log-density is returned. \code{FALSE}
 		is the default.}
 }
 
 \details{
-	
+
 	If \code{model="Extremalt"} then the parameter vector is made of one dependence parameter and a degree of freedom.
-	If \code{model="Skewt"} then the parameter vector is made of one dependence parameter, two shape (or skewness) parameters and a degree of freedom.	
-	
+	If \code{model="Skewt"} then the parameter vector is made of one dependence parameter, two shape (or skewness) parameters and a degree of freedom.
+
 }
 
 \value{
-	Returns a single value correspond to the density or the log-density.
-}
-
-\author{
-  Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{faculty.bocconi.it/simonepadoan};
-	Boris Beranger, \email{borisberanger@gmail.com}
+	Returns a single value corresponding to the density or the log-density.
 }
 
 \references{
-	
-	Beranger, B., Padoan, S. A. and Sisson, S. A. (2016).
+
+	Beranger, B., Padoan, S. A. and Sisson, S. A. (2017).
 	Models for extremal dependence derived from skew-symmetric families.
-	\emph{Scandinavian Journal of Statistics}, \bold{To appear}.	
-  
-    Padoan, S. A. (2011).
-	Multivariate extreme models based on underlying skew-t and skew-normal distributions.
-	\emph{Journal of Multivariate Analysis}, \bold{102}, 977-991.
-	
+	\emph{Scandinavian Journal of Statistics}, \bold{44}(1), 21-45.
+
+}
+
+\author{
+	Simone Padoan, \email{simone.padoan@unibocconi.it},
+	\url{http://faculty.unibocconi.it/simonepadoan};
+	Boris Beranger, \email{borisberanger@gmail.com}
+	\url{http://www.borisberanger.com};
 }
 
 \examples{
@@ -58,6 +55,4 @@ dens_extr_mod(model="Skewt", z=c(0.1,0.3), param=c(0.6,-3,5,1),log=FALSE)
 
 }
 
-
-
-
+\keyword{models}
