@@ -14,111 +14,195 @@
 
 
 # univariate extended skew-normal probability distribution function
-pesn <- function(x, loc=0, scale=1, shape=0, ext=0)
+pesn <- function(x=0, location=0, scale=1, shape=0, extended=0)
 {
-  par <- c(x,loc,scale,shape,ext)
-  res <- .C("pesn", as.double(-1), as.double(0), as.double(par),
-     double(1), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-  return(res[[4]])
+  if(!is.atomic(x) || !is.numeric(x) || length(x)!=1)
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(length(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
+  par <- c(x,location,scale,shape,extended)
+  .C("pesn", as.double(-1), as.double(0), as.double(par),
+     out=double(1), double(1), NAOK=TRUE)$out
 }
 # bivariate and trivariate extended skew-normal probability distribution function
-pmesn <- function(x, loc=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), ext=0)
+pmesn <- function(x=c(0,0), location=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), extended=0)
 {
+  if(!is.atomic(x) || !is.numeric(x))
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(nrow(scale)!=ncol(scale) && nrow(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
   if(any(eigen(scale)$value<0)){stop("Scale matrix is not positive definite")}		
-  par <- c(x,loc,scale,shape,ext)
+  par <- c(x,location,scale,shape,extended)
   if(length(x)==2){
-    res <- .C("pmesn", as.double(c(-1,-1)), as.double(c(0,0)), as.double(par),
-    double(1), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
+    res = .C("pmesn", as.double(c(-1,-1)), as.double(c(0,0)), as.double(par),
+            out=double(1), double(1), NAOK=TRUE)$out
   }else if(length(x)==3){
-    res <- .C("pmesn3", as.double(c(-1,-1,-1)), as.double(c(0,0,0)), as.double(par),
-    double(1), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)		
+    res = .C("pmesn3", as.double(c(-1,-1,-1)), as.double(c(0,0,0)), as.double(par),
+            out=double(1), double(1), NAOK=TRUE)$out		
   }else{
   	stop("x must be of length 2 or 3")
   }	
-  return(res[[4]])
+  return(res)
 }
 # univariate extended skew-normal probability density function
-desn <- function(x, loc=0, scale=1, shape=0, ext=0)
+desn <- function(x=0, location=0, scale=1, shape=0, extended=0)
 {
-  res <- .C("desn", as.double(x), as.double(loc), as.double(scale), as.double(shape),
-     as.double(ext), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-  return(res[[6]])
+  if(!is.atomic(x) || !is.numeric(x) || length(x)!=1)
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(length(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
+  .C("desn", as.double(x), as.double(location), as.double(scale), as.double(shape),
+     as.double(extended), out = double(1), NAOK=TRUE)$out
 }
 # Bivariate and trivariate extended skew-normal probability density function
-dmesn <- function(x, loc=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), ext=0)
+dmesn <- function(x=c(0,0), location=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), extended=0)
 {
+  if(!is.atomic(x) || !is.numeric(x))
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(nrow(scale)!=ncol(scale) && nrow(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+    
   if(any(eigen(scale)$value<0)){stop("Scale matrix is not positive definite")}	
   if(length(x)==2){
-  	res <- .C("dmesn", as.double(x), as.double(loc), as.double(scale), as.double(shape),
-     as.double(ext), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
+  	res = .C("dmesn", as.double(x), as.double(location), as.double(scale), as.double(shape),
+     as.double(extended), out=double(1), NAOK=TRUE)$out
   }else if(length(x)==3){
-  	res <- .C("dmesn3", as.double(x), as.double(loc), as.double(scale), as.double(shape),
-     as.double(ext), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)  	
+  	res = .C("dmesn3", as.double(x), as.double(location), as.double(scale), as.double(shape),
+     as.double(extended), out=double(1), NAOK=TRUE)$out  	
   }else{
   	stop("x must be of length 2 or 3")	
   }		   
-  return(res[[6]])
+  return(res)
 }
 # univariate extended skew-t probability distribution function
-pest <- function(x, loc=0, scale=1, shape=0, ext=0, df=1)
+pest <- function(x=0, location=0, scale=1, shape=0, extended=0, df=Inf)
 {
+  if(!is.atomic(x) || !is.numeric(x) || length(x)!=1)
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(length(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
   if(df==Inf)
-    return( pesn(x, loc,scale,shape,ext) )
+    res = pesn(x, location,scale,shape,extended)
   else{
-    par <- c(x,loc,scale,df,shape,ext)
-    res <- .C("pest", as.double(-1), as.double(0), as.double(par),
-       double(1), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-	return(res[[4]])
-  }	
+    par <- c(x,location,scale,df,shape,extended)
+    res = .C("pest", as.double(-1), as.double(0), as.double(par),
+       out=double(1), double(1), NAOK=TRUE)$out
+  }
+  return(res)
 }
 # bivariate and trivariate extended skew-t probability distribution function
-pmest <- function(x, loc=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), ext=0, df=1)
+pmest <- function(x=c(0,0), location=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), extended=0, df=Inf)
 {	
+  if(!is.atomic(x) || !is.numeric(x))
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(nrow(scale)!=ncol(scale) && nrow(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
   if(any(eigen(scale)$value<0)){stop("Scale matrix is not positive definite")}	
   if(df==Inf)
-    return( pmesn(x, loc,scale,shape,ext) )
+    res = pmesn(x, location,scale,shape,extended)
   else{
-    par <- c(x,loc,scale,df,shape,ext)
+    par <- c(x,location,scale,df,shape,extended)
     if(length(x)==2){
-	    res <- .C("pmest", as.double(c(-1,-1)), as.double(c(0,0)), as.double(par),
-       double(1), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
+	    res = .C("pmest", as.double(c(-1,-1)), as.double(c(0,0)), as.double(par),
+       out=double(1), double(1), NAOK=TRUE)$out
 	}else if(length(x)==3){
-	    res <- .C("pmest3", as.double(c(-1,-1,-1)), as.double(c(0,0,0)), as.double(par),
-       double(1), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)		
+	    res = .C("pmest3", as.double(c(-1,-1,-1)), as.double(c(0,0,0)), as.double(par),
+       out=double(1), double(1), NAOK=TRUE)$out		
 	}else{
 		stop("x must be of length 2 or 3")
 	}	
-	return(res[[4]])
-  }  
+  }
+  return(res)
 }
 # univariate extended skew-t probability density function
-dest <- function(x, loc=0, scale=1, shape=0, ext=0, df=1)
+dest <- function(x=0, location=0,scale=1,shape=0,extended=0,df=Inf)
 {
+  if(!is.atomic(x) || !is.numeric(x) || length(x)!=1)
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(length(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
   if(df==Inf)
-    return( desn(x, loc,scale,shape,ext) )
-  else{
-    res <- .C("dest", as.double(x), as.double(loc), as.double(scale), as.double(df),
-       as.double(shape), as.double(ext), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-  return(res[[7]])
-  }
+    res = desn(x, location,scale,shape,extended)
+  else
+    res = .C("dest", as.double(x), as.double(location), as.double(scale), as.double(df),
+       as.double(shape), as.double(extended), out=double(1), NAOK=TRUE)$out
+  return(res)
 }
 # multivariate extended skew-t probability density function
-dmest <- function(x, loc=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), ext=0, df=1)
+dmest <- function(x=c(0,0), location=rep(0,length(x)), scale=diag(length(x)), shape=rep(0,length(x)), extended=0, df=Inf)
 {
+  if(!is.atomic(x) || !is.numeric(x))
+    stop("x argument has incorrect format")
+  if(!is.atomic(location) || length(location) != length(x))
+    stop("Location argument has incorrect length")
+  if(nrow(scale)!=ncol(scale) && nrow(scale) != length(x))
+    stop("Scale argument has incorrect dimensions")
+  if(!is.atomic(shape) || length(shape) != length(x))
+    stop("Shape argument has incorrect length")  
+  if(length(extended)!=1)
+    stop("Extended argument is not of length 1")
+  
   if(any(eigen(scale)$value<0)){stop("Scale matrix is not positive definite")}	
   if(df==Inf)
-    return( dmesn(x, loc,scale,shape,ext) )
+    res = dmesn(x, location,scale,shape,extended)
   else{
   	if(length(x)==2){
-    		res <- .C("dmest", as.double(x), as.double(loc), as.double(scale), as.double(df),
-    		   as.double(shape), as.double(ext), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
+    		res = .C("dmest", as.double(x), as.double(location), as.double(scale), as.double(df),
+    		   as.double(shape), as.double(extended), out=double(1), NAOK=TRUE)$out
     }else if(length(x)==3){
-    		res <- .C("dmest3", as.double(x), as.double(loc), as.double(scale), as.double(df),
-   	 	   as.double(shape), as.double(ext), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)   	
+    		res = .C("dmest3", as.double(x), as.double(location), as.double(scale), as.double(df),
+   	 	   as.double(shape), as.double(extended), out=double(1), NAOK=TRUE)$out   	
     }else{
     		stop("x must be of length 2 or 3")
-    }  	
-    return(res[[7]])	 
+    }  		 
   }     
-  
+  return(res)
 }

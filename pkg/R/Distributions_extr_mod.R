@@ -29,9 +29,8 @@ dens_extr_mod <- function(model, z, param, log=TRUE){
 	dmextst <- function(x, scale=1, shape=rep(0,length(x)), df=1){
 		if(any(is.na(x)))
     		return(NA)
-    	res <- .C("dmextst", as.double(x), as.double(scale), as.double(df),
-       		as.double(shape), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-    	return(res[[5]])
+    	.C("dmextst", as.double(x), as.double(scale), as.double(df),
+       		as.double(shape), out=double(1), NAOK=TRUE)$out
 	}
 	
 	if(model=="Extremalt"){
@@ -90,9 +89,8 @@ exponent_extr_mod <- function(model, z, param, dist){
 	pmextst <- function(x, scale=1, shape=rep(0,length(x)), df=1){
     	if(any(is.na(x)))
     	  return(NA)
-    	res <- .C("pmextst", as.double(x), as.double(scale), as.double(df),
-    	   as.double(shape), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-    	return(res[[5]])
+    	.C("pmextst", as.double(x), as.double(scale), as.double(df),
+    	   as.double(shape), out=double(1), NAOK=TRUE)$out
 	}	
 
 	exponent.triv.skewt <- function(x, rho, alpha, mu){
@@ -154,9 +152,9 @@ exponent_extr_mod <- function(model, z, param, dist){
 		tau_star_2 <- sqrt(mu+1) * (alpha[2] + Sig[-2,2] %*% t(alpha_tilde_2) )
 		tau_star_3 <- sqrt(mu+1) * (alpha[3] + Sig[-3,3] %*% t(alpha_tilde_3) )	
 				
-		I1 <- pmest(x=c(comp1_1,comp2_1), scale=Sigma_bar_1, shape=alpha_star_1, ext=tau_star_1, df=mu+1)
-		I2 <- pmest(x=c(comp1_2,comp2_2), scale=Sigma_bar_2, shape=alpha_star_2, ext=tau_star_2, df=mu+1)
-		I3 <- pmest(x=c(comp1_3,comp2_3), scale=Sigma_bar_3, shape=alpha_star_3, ext=tau_star_3, df=mu+1)
+		I1 <- pmest(x=c(comp1_1,comp2_1),scale=Sigma_bar_1,shape=alpha_star_1,extended=tau_star_1,df=mu+1)
+		I2 <- pmest(x=c(comp1_2,comp2_2),scale=Sigma_bar_2,shape=alpha_star_2,extended=tau_star_2,df=mu+1)
+		I3 <- pmest(x=c(comp1_3,comp2_3),scale=Sigma_bar_3,shape=alpha_star_3,extended=tau_star_3,df=mu+1)
 			
 		return( I1/z1 + I2/z2 + I3/z3 )
 	}
@@ -254,9 +252,9 @@ fit_pclik_extr_mod <- function(model, data, parastart, trace){
     	if(is.matrix(x)){
     		n <- nrow(x)
     	}else{ n <- 1}
-    res <- .C("llHRmax", as.double(x), as.double(lambda), as.integer(n), double(1), 
-    		PACKAGE="ExtremalDep", NAOK=TRUE)
-    	return(res[[4]])
+    	par <- c(df,scale)
+    	.C("llHRmax", as.double(x), as.double(lambda), as.integer(n), out=double(1), NAOK=TRUE)$out
+
 	}
 
 	pair.cllik.hr <- function(z,par){
@@ -281,9 +279,7 @@ fit_pclik_extr_mod <- function(model, data, parastart, trace){
     		n <- nrow(x)
     	}else{ n <- 1}
     	par <- c(df,scale)
-    	res <- .C("llETmax", as.double(x), as.double(par), as.integer(n), double(1), 
-    		PACKAGE="ExtremalDep", NAOK=TRUE)
-    	return(res[[4]])
+    	.C("llETmax", as.double(x), as.double(par), as.integer(n), out=double(1), NAOK=TRUE)$out
 	}
 
 	pair.cllik.ext <- function(z,par){
@@ -307,9 +303,8 @@ fit_pclik_extr_mod <- function(model, data, parastart, trace){
     		n <- nrow(x)
     	}else{ n <- 1}
     	
-    	res <- .C("llextst", as.double(x), as.integer(n), as.double(scale), as.double(df),
-    	   as.double(shape), double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-    	return(res[[6]])
+    	.C("llextst", as.double(x), as.integer(n), as.double(scale), as.double(df),
+    	   as.double(shape), out=double(1), NAOK=TRUE)$out
 	}
 
 	pair.cllik.skewt <- function(z,par){

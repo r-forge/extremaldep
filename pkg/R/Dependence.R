@@ -1,15 +1,11 @@
 chi.extst <- function(corr=0, shape=rep(0,2), df=1, tail="upper"){
 
 	chistup <- function(scale=1, shape=rep(0,2), df=1){
-	    res <- .C("chistup", as.double(scale), as.double(df), as.double(shape), 
-	    		double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-    		return(res[[4]])
+	    .C("chistup", as.double(scale), as.double(df), as.double(shape), out=double(1), NAOK=TRUE)$out
 	}
 
 	chistlo <- function(scale=1, shape=rep(0,2), df=1){
-	    res <- .C("chistlo", as.double(scale), as.double(df), as.double(shape), 
-	    		double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-	    return(res[[4]])
+	    .C("chistlo", as.double(scale), as.double(df), as.double(shape), out=double(1), NAOK=TRUE)$out
 	}
 
 	if(tail=="upper"){
@@ -54,17 +50,13 @@ pk.extst <- function(x, param=c(rep(0,choose(length(x),2)),rep(0,length(x)),1)){
 	bivpkst <- function(x,scale, shape, df){
 	    if(any(is.na(x)))
 	      return(NA)
-	    res <- .C("bivpkst", as.double(x), as.double(scale), as.double(df), as.double(shape),
-	    		double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-	    return(res[[5]])
+	    .C("bivpkst", as.double(x), as.double(scale), as.double(df), as.double(shape), out=double(1), NAOK=TRUE)$out
 	}
 
 	trivpkst <- function(x, scale, shape, df){
 	    if(any(is.na(x)))
 	      return(NA)
-	    res <- .C("trivpkst", as.double(x), as.double(scale), as.double(df), as.double(shape), 
-	    		double(1), PACKAGE="ExtremalDep", NAOK=TRUE)
-	    return(res[[5]])
+	    .C("trivpkst", as.double(x), as.double(scale), as.double(df), as.double(shape), out=double(1), NAOK=TRUE)$out
 	}
 
 	if(length(x)==2 && length(param)==4){

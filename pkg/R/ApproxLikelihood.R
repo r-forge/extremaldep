@@ -62,8 +62,8 @@ alik <- function(data, model, parastart, c=NULL, trace=0, sig=3){
 		stepJ <- function(para){
 			dens(x=data[i,], model=model, par=para, c=c, log=TRUE, vectorial=FALSE)
 		}
-		score[i,] = jacobian(stepJ,param.est)
-		s = s + hessian(stepJ,param.est)	
+		score[i,] = numDeriv::jacobian(stepJ,param.est)
+		s = s + numDeriv::hessian(stepJ,param.est)	
 
 	} 
 	K=var(score); # variability matrix
