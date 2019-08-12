@@ -1,21 +1,34 @@
-exportPattern("^[^\\.]")
-useDynLib(ExtremalDep)
+export(alik, AngDensPlot, angular, beed.boot, beed.confband, beed, chi.bsn, chi.extst,
+	dens_extr_mod, dens, desn, pesn, dest, pest, dmesn, pmesn, dmest,
+ 	pmest, excess_pr_extr_mod, exponent_extr_mod, fit_pclik_extr_mod, madogram, 
+	pk.extst, posteriorMCMC, prior, proposal, r_extr_mod,
+	bbeed, returns, summary.bbeed, UniExtQ, ExtQset, ellipse)
 
-import(numDeriv)
-import(evd)
-importFrom(sn,qsn)
-importFrom(sn,rmst)
-import(quadprog)
-importFrom(copula,An)
-importFrom(gtools,permutations)
+S3method(summary, bbeed)
+S3method(plot, bbeed)
 
-import(grDevices)
-import(graphics)
-import(stats)
+useDynLib(ExtremalDep, .registration = TRUE)
 
-export(matrix.trace)
-export(matrix.sqrt)
-export(FitGev)
-export(Dist2Dist)
-export(GevLogLik)
-export(MomEst)
+
+importFrom("sn", "qsn", "rmst")
+importFrom("CompRandFld", "Dist2Dist", "FitGev", "GevLogLik", "MomEst")
+importFrom("grDevices", "heat.colors", "gray")
+importFrom("graphics", "contour", "image", "lines", "points", "abline",
+           "polygon", "segments", "text", "curve", "hist", "mtext", "par", 
+	   "plot", "axis", "legend")
+importFrom("stats", "df", "qf", "dnorm", "dt", "ecdf", "integrate", "optim",
+           "pnorm", "pt", "quantile", "rnorm", "runif", "dunif", "uniroot",
+           "var", "rpois", "dpois", "rbeta", "dbeta", "dnbinom", "pexp", 
+	   "qchisq", "pbeta", "qnorm", "cov", "rnbinom")
+importFrom("evd", "rbvevd", "abvnonpar", "amvnonpar", "pfrechet", "pgumbel", 
+	   "pgev", "abvevd", "hbvevd")
+importFrom("numDeriv", "jacobian", "hessian")
+importFrom("quadprog", "solve.QP")
+importFrom("copula", "An", "An.biv")
+importFrom("gtools", "permutations")
+importFrom("nloptr", "nloptr")
+importFrom("utils", "setTxtProgressBar", "txtProgressBar", "tail")
+importFrom("mvtnorm", "rmvnorm", "rmvt")
+importFrom("rlist", "list.append")
+importFrom("fda", "fbplot")
+
