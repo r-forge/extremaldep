@@ -49,7 +49,7 @@
   \emph{Journal of Statistical Planning and Inference}, \bold{183}, 1-17.
 }
 
-\seealso{\code{\link{simplex}}, \code{\link{beed.confband}}.}
+\seealso{\code{\link{beed.confband}}.}
 \examples{
 	\dontrun{
 

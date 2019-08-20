@@ -13,7 +13,7 @@
 	\item{data}{A \code{data.frame} or \code{matrix} obejct with up to \eqn{4}{4} columns.}
 	\item{parastart}{A vector containing the initial parameter values. See \bold{Details}. }
 	\item{trace}{A non-negative integer. If positive, tracing information on the progress of the optimization is produced.
-		See \bold{?optim} for details.}
+		See the options of the routine \bold{optim} in \bold{R} for details.}
 }
 
 \details{

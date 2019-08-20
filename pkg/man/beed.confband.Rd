@@ -67,7 +67,7 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
 \examples{
 \dontrun{
 
-x <- simplex(2)
+x <- ExtremalDep:::simplex(2)
 data <- rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))
 
 # Note you should consider 500 bootstrap replications.

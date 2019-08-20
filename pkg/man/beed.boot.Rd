@@ -55,7 +55,7 @@
 \examples{
 \dontrun{
 
-x <- simplex(2)
+x <- ExtremalDep:::simplex(2)
 data <- rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))
 
 boot <- beed.boot(data, x, 2, "md", "emp", 20, 500)

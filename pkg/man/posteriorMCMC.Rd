@@ -21,8 +21,8 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 	\item{par.start}{Starting point for the MC MC sample.}
 	\item{show.progress}{A vector of integers containing the times (iteration numbers) at which a message showing
 		progression will be printed on the standard output.}
-	\item{seed}{The seed to be set via \link{set.seed}.}
-	\item{kind}{The kind of random number generator. Default is \code{"Mersenne-Twister"}. See \link{set.seed}
+	\item{seed}{The seed to be set via the routine \bold{set.seed}, see help of \bold{R} for details.}
+	\item{kind}{The kind of random number generator. Default is \code{"Mersenne-Twister"}. See \bold{set.seed}
 		for details.}
 	\item{save}{Logical; if \code{save=TRUE} then the result is saved}
 	\item{name.save}{A character string giving the name under which the result is to be saved. If \code{NULL} (default),

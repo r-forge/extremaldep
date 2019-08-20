@@ -80,7 +80,7 @@ Otherwise it refers to marginal parametric GEV theorethical distributions (\code
 }
 
 
-\seealso{\code{\link{simplex}}, \code{\link{beed}}, \code{\link{beed.confband}}}
+\seealso{\code{\link{beed}}, \code{\link{beed.confband}}}
 
 \examples{
 x <- ExtremalDep:::simplex(2)

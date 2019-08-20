@@ -85,7 +85,7 @@ With the estimated polynomial coefficients, the extremal coefficient, i.e. \eqn{
   \emph{Journal of Statistical Planning and Inference}, \bold{183}, 1-17.
 }
 
-\seealso{\code{\link{simplex}}, \code{\link{beed.confband}}.}
+\seealso{\code{\link{beed.confband}}.}
 
 \examples{
 
@@ -105,7 +105,7 @@ lines(x[,1], Acfg$A, lty = 1, col = 2)
 
 \dontrun{
 
-x <- simplex(3)
+x <- ExtremalDep:::simplex(3)
 
 data <- evd::rmvevd(50, dep = 0.8, model = "log", d = 3, mar = c(1,1,1))
 

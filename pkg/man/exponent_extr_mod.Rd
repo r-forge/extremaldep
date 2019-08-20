@@ -51,19 +51,25 @@
 
 ### Husler-Reiss
 
+\dontrun{
 exponent_extr_mod(model="hr", z=c(2,3), param=1.2, dist=FALSE)
 exponent_extr_mod(model="hr", z=c(2,3,1), param=c(1.2,1,1.4), dist=TRUE)
+}
 
 ### Extremal-t
 
+\dontrun{
 exponent_extr_mod(model="Extremalt", z=c(0.1,2), param=c(0.5,2), dist=FALSE)
 exponent_extr_mod(model="Extremalt", z=c(0.1,2,3), param=c(0.5,0.4,0.9,2), dist=TRUE)
+}
 
 ### Extremal Skew-t
 
+\dontrun{
 exponent_extr_mod(model="Skewt", z=c(0.1,2), param=c(0.5,0,0,2), dist=FALSE)
 exponent_extr_mod(model="Skewt", z=c(0.1,2,3), param=c(0.5,0.4,0.9,0,0,0,2), dist=TRUE)
 exponent_extr_mod(model="Skewt", z=c(0.1,2,3), param=c(0.5,0.4,0.9,1,10,-5,2), dist=TRUE)
+}
 
 }
 

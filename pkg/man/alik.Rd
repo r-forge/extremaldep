@@ -18,7 +18,7 @@ alik(data, model, parastart, c=NULL, trace=0, sig=3)
 		the log-approximate likelihood. See \bold{Details}.}
 	\item{c}{A real value in \eqn{[0,1]}{[0,1]}, providing the decision rule to allocate a data point to a subset of the simplex.
 		Only required for the Extremal-t, Extremal Skew-t and Asymmetric Logistic models.}
-	\item{trace}{Non-negative integer. See \code{\link{optim}} for details. \code{trace=0}
+	\item{trace}{Non-negative integer. See the options of the routine \bold{optim} in \bold{R} for details. \code{trace=0}
 		is the default.}
 	\item{sig}{Non-negative integer. Provides the number of decimal places for the returned object.
 		\code{sig=3} is the default.}
