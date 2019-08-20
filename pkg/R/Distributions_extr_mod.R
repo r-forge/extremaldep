@@ -183,7 +183,7 @@ exponent_extr_mod <- function(model, z, param, dist){
 			return(pt1 + pt2 + pt3 )
 		}
 
-		if(any(par<=0)){break('wrong value of parameters')}	
+		if(any(par<=0)){stop('wrong value of parameters')}	
 		if(length(X)==2 && length(par)==1){return( expo.hr.2d(X,par) )} # in 2d there is only 1 parameter
 		if(length(X)==3 && length(par)==3){return( expo.hr.3d(X,par) )} # in 3d there are 3 parameters
 	}

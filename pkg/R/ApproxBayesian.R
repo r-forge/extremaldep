@@ -390,12 +390,10 @@ posteriorMCMC <- function (
     start.time <- proc.time()
     p <- ncol(dat)
     if (is.null(par.start)) {
-        repeat {
+        while(!is.finite(condit)){
             par.start <- prior(model, type = "r", n = 1, Hpar = Hpar, dimData = p)
 			condit1 <- dens(x = dat, model=model, par = par.start, c=c, log = TRUE,  vectorial = FALSE)
             condit <- condit1 + prior(model, type = "d", par = par.start, Hpar = Hpar, log = TRUE, dimData = p)
-            if (is.finite(condit)) 
-                break
         }
     }
     cur.par <- par.start
