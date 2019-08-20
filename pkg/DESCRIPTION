@@ -2,9 +2,6 @@ Package: ExtremalDep
 Version: 0.0.3-1
 Date: 2019-08-08
 Title: Extremal Dependence Models
-Authors@R: c(person("Boris","Beranger", role = "aut", email="borisberanger@gmail.com"),
-	    person("Simone","Padoan", role = c("cre","aut"), 						   email="simone.padoan@unibocconi.it"),
-	    person("Giulia", "Marcon", role = "aut", 							   email="giuliamarcongm@gmail.com"))
 Author: Boris Beranger [aut], 
 	Simone Padoan [cre, aut],
 	Giulia Marcon [aut]
@@ -13,12 +10,4 @@ Imports: numDeriv, evd, sn, CompRandFld, quadprog, copula, nloptr,
         gtools, mvtnorm, rlist, fda
 Description: A set of procedures for modelling parametrically and non-parametrically the dependence structure of multivariate extreme-values is provided. The statistical inference is performed with non-parametric estimators, likelihood-based estimators and Bayesian techniques.
 License: GPL (>= 2)
-LazyData: yes
-NeedsCompilation: yes
-Repository: R-Forge
-Repository/R-Forge/Project: extremaldep
-Repository/R-Forge/Revision: 107
-Repository/R-Forge/DateTimeStamp: 2019-08-12 22:22:37
-Date/Publication: 2019-08-12 22:22:37
-Packaged: 2019-08-12 22:35:08 UTC; rforge
 Depends: R (>= 2.10)
