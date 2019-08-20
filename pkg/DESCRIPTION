@@ -2,9 +2,9 @@ Package: ExtremalDep
 Version: 0.0.3-1
 Date: 2019-08-08
 Title: Extremal Dependence Models
-Author: Boris Beranger [aut], 
-	Simone Padoan [cre, aut],
-	Giulia Marcon [aut]
+Author: Boris Beranger [aut] <borisberanger@gmail.com>, 
+	Simone Padoan [cre, aut] <simone.padoan@unibocconi.it>,
+	Giulia Marcon [aut] <giuliamarcongm@gmail.com>
 Maintainer: Simone Padoan <simone.padoan@unibocconi.it>
 Imports: numDeriv, evd, sn, CompRandFld, quadprog, copula, nloptr,
         gtools, mvtnorm, rlist, fda
