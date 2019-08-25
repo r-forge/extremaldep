@@ -42,7 +42,7 @@ beed.boot <- function(data, x, d=3, est = c("ht", "md", "cfg", "pick"),
     bootA <- cbind(bootA, mod$A)
     if(print){
       print.i <- seq(0, nboot, by=100)
-      if(i %in% print.i) cat(paste(c('iteration', i, 'out of', nboot,'\n')))
+      if(i %in% print.i) message(paste(c('iteration', i, 'out of', nboot,'\n')))
     } 
   }
   out=list(A=A.tilde,bootA=bootA,beta=beta)

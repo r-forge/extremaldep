@@ -272,5 +272,7 @@ if(type == "summary"){
   PriorVSPosterior.pm(mcmc=mcmc, nsim=nsim, burn=burn, ...)
 }
 
+on.exit(par(mfrow=c(1,1), mar=c(5.1,4.1,4.1,2.1), oma=c(0, 0, 0, 0), mgp=c(3, 1, 0),cex.axis=1) )
+
 }
 ###################### END PLOT PRIOR VS POSTERIOR p0 ####################

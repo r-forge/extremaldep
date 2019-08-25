@@ -416,7 +416,7 @@ posteriorMCMC <- function (
     llh[1] <- llh.cur
     while (nsim <= Nsim) {
         if (any(nsim == show.progress)) {
-            cat(paste("iter", nsim, ": n.accepted=", n.accept, "\n", sep = " "))
+            message(paste("iter", nsim, ": n.accepted=", n.accept, "\n", sep = " "))
         }
         prop.par <- proposal(model,type = "r", cur.par = cur.par, prop.par = NULL, MCpar = MCpar)
         ratio.list <- lAccept.ratio(cur.par = cur.par, prop.par = prop.par, llh.cur = llh.cur, lprior.cur = lprior.cur, 

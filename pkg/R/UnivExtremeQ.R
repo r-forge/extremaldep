@@ -36,7 +36,7 @@ UniExtQ <- function(data, P=NULL, method="bayesian", U=NULL, cov=as.matrix(rep(1
   }
   if(is.null(U)){ 
     U <- quantile(data, probs=0.9, type=3)
-    cat("U set to 90% quantile by default \n")
+    message("U set to 90% quantile by default \n")
   }
   if(is.null(param0)){stop("Need to specify param0 parameter")} # param0 is the starting value for both methods
   if(length(param0) != (ncol(cov)+2)){stop("Wrong length of initial parameter vector")}
@@ -46,7 +46,7 @@ UniExtQ <- function(data, P=NULL, method="bayesian", U=NULL, cov=as.matrix(rep(1
   if(method=="bayesian"){
     
     if(is.null(sig0) || is.null(nsim) || is.null(p)){stop("Missing initial values")}
-    if(is.null(nsim)){stop("Missing number of replicates in algorithm")}
+    if(is.null(nsim)){stop("Missing number of replimessagees in algorithm")}
     
     mcmc <- RWMH.gev(data = data, cov = cov, U=U, param0 = param0, p=p, sig0 = sig0, nsim = nsim)
     meanacc<-rep(NA, length(mcmc$acc.vec))
@@ -126,6 +126,8 @@ UniExtQ <- function(data, P=NULL, method="bayesian", U=NULL, cov=as.matrix(rep(1
     
   }
   
+  on.exit(par(mar=c(5.1,4.1,4.1,2.1)) )
+
   
 }
 
@@ -205,7 +207,7 @@ RWMH.gev <- function(data, cov, param0, U, p, sig0, nsim){
         
         if (Toobig || Toosmall) {
           #restart the algorithm
-          cat("restart the program at", i, "th iteration", "\n")
+          message("restart the program at", i, "th iteration", "\n")
           sig.restart <- c(sig.restart, sig)
           Numbig <- Numbig + Toobig
           Numsmall <- Numsmall + Toosmall

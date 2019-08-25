@@ -86,7 +86,7 @@ bbeed <- function(data, pm0, param0, k0, hyperparam,
     k_new <- prior_k_sampler(k)
         
     if(k_new==nk){
-      cat('maximum value k reached')
+      message('maximum value k reached')
       break
     }
     

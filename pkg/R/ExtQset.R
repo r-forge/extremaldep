@@ -29,11 +29,11 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
   if(method=="bayesian"){
     if(is.null(U) || !is.vector(U) ){ 
       U <- apply(data,2,function(x) quantile(x, probs=0.9, type=3))
-      cat("U set to 90% quantile by default on both margins \n")
+      message("U set to 90% quantile by default on both margins \n")
     }
     if(is.vector(U) && length(U)!=2){
       U <- rep(U[1],2)
-      cat(paste("Warning, U incorrectly specified and set to U=(", U[1], ",", U[1],") \n",sep=""))
+      message(paste("Warning, U incorrectly specified and set to U=(", U[1], ",", U[1],") \n",sep=""))
     }
     if(nrow(cov1) != nrow(data) || nrow(cov2) != nrow(data)){stop("Wrong dimensions of the covariates")}
     if(is.null(QatCov1) && ncol(cov1)>1){stop("QatCov1 argument required")}
@@ -91,12 +91,12 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
   if(method=="bayesian"){
     
     if(is.null(sig10) || is.null(sig20)){stop("Missing initial values")}
-    if(is.null(nsim)){stop("Missing number of replicates in algorithm")}
+    if(is.null(nsim)){stop("Missing number of replimessagees in algorithm")}
     
     if(mar){
-      cat("\n Preliminary on margin 1 \n")
+      message("\n Preliminary on margin 1 \n")
       rwmh.mar1 <- RWMH.gev(data = data[,1], cov = cov1, param0 = par10, U=U[1], p=0.234, sig0 = sig10, nsim = 5e+4)
-      cat("\n Preliminary on margin 2 \n")
+      message("\n Preliminary on margin 2 \n")
       rwmh.mar2 <- RWMH.gev(data = data[,2], cov = cov2, param0 = par20, U=U[2], p=0.234, sig0 = sig20, nsim = 5e+4)
       
       par10 <- apply(rwmh.mar1$param_post[-c(1:30000),], 2, mean)
@@ -119,7 +119,7 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
     # If specifying pm0 then need to also give the log densities for p0 and p1
     # p0 is unif(0,1/2) but p1 is uniform depending on k and p0
     
-    cat("\n Estimation of the extremal dependence and margins \n")
+    message("\n Estimation of the extremal dependence and margins \n")
     mcmc <- cens.bbeed(data=data, cov1=cov1, cov2=cov2, pm0=pm0, param0=param0, k0=k0, par10=par10, par20=par20, sig10=sig10, sig20=sig20, kn=kn,
                        prior.k = prior.k, prior.pm=prior.pm, hyperparam=hyperparam, nsim=nsim, U=U, p.star=0.234)
     
@@ -408,6 +408,7 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
     
   } # End frequentist estimation
   
+  on.exit(on.exit(par(mfrow=c(1,1),mar=c(5.1,4.1,4.1,2.1))))
 }
 
 ###
@@ -433,7 +434,7 @@ cens.bbeed <- function(data, cov1, cov2, pm0, param0, k0, par10, par20, sig10, s
   
   if(is.null(U)){
     U <- apply(data,2,function(x) quantile(x, probs=0.9, type=3))
-    cat("U set to 90% quantile by default on both margins \n")
+    message("U set to 90% quantile by default on both margins \n")
   }
   
   data.cens <- data
@@ -639,7 +640,7 @@ cens.bbeed <- function(data, cov1, cov2, pm0, param0, k0, par10, par20, sig10, s
     if(prior.k=="nbinom"){p <- dnbinom(k_new-3,prob=pnb,size=rnb)/dnbinom(k-3,prob=pnb,size=rnb)}
     
     if(k_new==nk){
-      cat('maximum value k reached')
+      message('maximum value k reached')
       break
     }
     
@@ -715,7 +716,7 @@ cens.bbeed <- function(data, cov1, cov2, pm0, param0, k0, par10, par20, sig10, s
         
         if (Toobig1 || Toosmall1) {
           #restart the algorithm
-          cat("\n restart the program at", i, "th iteration", "\n")
+          message("\n restart the program at", i, "th iteration", "\n")
           sig1.restart <- c(sig1.restart, sig1)
           Numbig1 <- Numbig1 + Toobig1
           Numsmall1 <- Numsmall1 + Toosmall1
@@ -736,7 +737,7 @@ cens.bbeed <- function(data, cov1, cov2, pm0, param0, k0, par10, par20, sig10, s
         
         if (Toobig2 || Toosmall2) {
           #restart the algorithm
-          cat("\n restart the program at", i, "th iteration", "\n")
+          message("\n restart the program at", i, "th iteration", "\n")
           sig2.restart <- c(sig2.restart, sig2)
           Numbig2 <- Numbig2 + Toobig2
           Numsmall2 <- Numsmall2 + Toosmall2
