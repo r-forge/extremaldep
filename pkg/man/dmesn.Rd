@@ -57,7 +57,7 @@ dens4 <- dmesn(x=c(1,1,1), scale=sigma2)
 prob1 <- pmesn(x=c(1,1), scale=sigma1, shape=shape1, extended=2)
 prob2 <- pmesn(x=c(1,1), scale=sigma1)
 
-\dontrun{
+\donttest{
 prob3 <- pmesn(x=c(1,1,1), scale=sigma2, shape=shape2, extended=2)
 prob4 <- pmesn(x=c(1,1,1), scale=sigma2)
 }

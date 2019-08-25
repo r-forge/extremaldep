@@ -73,7 +73,7 @@ UniExtQ(data, P=NULL, method="bayesian", U=NULL,
 }
 
 \examples{
-\dontrun{
+\donttest{
 
 distribution <- "FRE" # MDA(FRE), Tail index "xi"
 

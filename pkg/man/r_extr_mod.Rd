@@ -43,24 +43,24 @@
 \examples{
 ### Extremal-t
 
-\dontrun{
+\donttest{
 ## Bivariate
 r_extr_mod("Extremalt", n=5, par=c(0.5,2))
 }
 
-\dontrun{
+\donttest{
 ## Trivariate
 r_extr_mod("Extremalt", n=5, par=c(0.5,0.6,0.4,2))
 }
 
 ### Extremal Skew-t
 
-\dontrun{
+\donttest{
 ## Bivariate
 r_extr_mod("Skewt", n=5, par=c(0.5,-1,1,2))
 }
 
-\dontrun{
+\donttest{
 ## Trivariate
 r_extr_mod("Skewt", n=5, par=c(0.5,0.6,0.4,-2,-2,5,2))
 }

@@ -33,8 +33,9 @@
 pk.extst(x=c(0.5,0.5), param=c(0.4,-2,4,3))
 
 ### Pickands dependence function for three-dimensional distribution
-
-pk.extst(x=c(0.2,0.4,0.4), param=c(0.4,0.3,0.7,3,-1,0,2))
+\donttest{
+pk.extst(x=c(0.2,0.4,0.4), param=c(0.4,0.3,0.7,3,-1,0,2))	
+}
 
 }
 

@@ -122,7 +122,7 @@ dens(x=rbind(c(0.1,0.3,0.6),c(0.1,0.2,0.7)), model="Pairwise", par=c(2,2,2,4), c
 }
 
 \examples{
-\dontrun{
+\donttest{
 ### Pairwise Beta :
 
 
@@ -229,7 +229,7 @@ log=FALSE, vectorial=FALSE)
 # The second one is set to be on the interior of the simplex
 # The third one is set to be on the corner near the third component
 
-\dontrun{
+\donttest{
 dens(x=rbind(c(0.001,0.3,0.699),c(0.1,0.2,0.7),c(0.001,0.001,0.998)),
 model="Extremalt", par=c(rep(0.1,3),2), c=0.01, log=FALSE, vectorial=TRUE)
 }
@@ -265,7 +265,7 @@ log=FALSE, vectorial=FALSE)
 # The second one is set to be on the interior of the simplex
 # The third one is set to be on the corner near the third component
 
-\dontrun{
+\donttest{
 dens(x=rbind(c(0.001,0.3,0.699),c(0.1,0.2,0.7),c(0.001,0.001,0.998)),
 model="Skewt", par=c(rep(0.1,3),rep(0,3),2), c=0.01, log=FALSE, vectorial=TRUE)
 }

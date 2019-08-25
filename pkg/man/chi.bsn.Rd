@@ -43,11 +43,15 @@
 
 ### Upper tail dependence
 
-chi.bsn(u=0.9,corr=0.5, shape=c(1,-2), tail="upper")
+\donttest{
+chi.bsn(u=0.9,corr=0.5, shape=c(1,-2), tail="upper")	
+}
 
 ### Lower tail dependence
 
-chi.bsn(u=0.9, corr=0.5, shape=c(1,-2), tail="lower")
+\donttest{
+chi.bsn(u=0.9, corr=0.5, shape=c(1,-2), tail="lower")	
+}
 
 }
 

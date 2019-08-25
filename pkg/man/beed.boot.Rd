@@ -53,7 +53,7 @@
 \seealso{\code{\link{beed}}, \code{\link{beed.confband}}.}
 
 \examples{
-\dontrun{
+\donttest{
 
 x <- ExtremalDep:::simplex(2)
 data <- rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))

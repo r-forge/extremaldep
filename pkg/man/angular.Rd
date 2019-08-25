@@ -54,7 +54,7 @@ angular(data, model, n, dep, asy, alpha, beta, df, seed, k, nsim, plot=TRUE, nw=
 
 ## Figure 1 - symmetric logistic
 
-\dontrun{
+\donttest{
 # Strong dependence
 a <- angular(model='log', n=50, dep=0.3, seed=4321, k=20, nsim=10000)
 # Mild dependence
@@ -65,7 +65,7 @@ c <- angular(model='log', n=50, dep=0.9, seed=4334, k=6, nsim=10000)
 
 ## Figure 2 - Asymmetric logistic
 
-\dontrun{
+\donttest{
 # Strong dependence
 d <- angular(model='alog', n=25, dep=0.3, asy=c(.3,.8), seed=43121465, k=20, nsim=10000)
 # Mild dependence

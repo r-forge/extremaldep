@@ -51,7 +51,7 @@
 
 \seealso{\code{\link{beed.confband}}.}
 \examples{
-	\dontrun{
+	\donttest{
 
 	# This reproduces some of the results showed in Fig. 1 (Marcon, 2016).
 	set.seed(1890)
@@ -81,7 +81,6 @@
 	Atrue <- evd::abvevd(w, dep=0.6, asy=c(0.3,0.8), model='alog')
 	htrue <- evd::hbvevd(w, dep=0.6, asy=c(0.8,0.3), model='alog',half=TRUE)
 
-	par(mfrow=c(1,1))
 	plot.bbeed(type = "A", summary.mcmc=summary.mcmc, A_true=Atrue)
 	plot.bbeed(type = "h", summary.mcmc=summary.mcmc, h_true=htrue)
 

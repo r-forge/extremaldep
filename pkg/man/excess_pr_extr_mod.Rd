@@ -50,7 +50,7 @@
 
 ### Husler-Reiss
 
-\dontrun{
+\donttest{
 excess_pr_extr_mod(model="hr", z=c(1,3), param=0.5)
 excess_pr_extr_mod(model="hr", z=c(1,3,5), param=c(5,4,2))
 excess_pr_extr_mod(model="hr", z=c(0.001,0.001,0.001), param=c(5,4,2))
@@ -58,7 +58,7 @@ excess_pr_extr_mod(model="hr", z=c(0.001,0.001,0.001), param=c(5,4,2))
 
 ### Extremal-t
 
-\dontrun{
+\donttest{
 excess_pr_extr_mod(model="Extremalt", z=c(0.1,0.3), param=c(0.5,2))
 excess_pr_extr_mod(model="Extremalt", z=c(1,3,5), param=c(0.5,0.4,0.8,2))
 excess_pr_extr_mod(model="Extremalt", z=c(0.001,0.001,0.001), param=c(0.5,0.4,0.8,2))
@@ -66,7 +66,7 @@ excess_pr_extr_mod(model="Extremalt", z=c(0.001,0.001,0.001), param=c(0.5,0.4,0.
 
 ### Extremal Skew-t
 
-\dontrun{
+\donttest{
 excess_pr_extr_mod(model="Skewt", z=c(0.1,0.3), param=c(0.5,0,0,2))
 excess_pr_extr_mod(model="Skewt", z=c(0.1,0.3), param=c(0.5,-10,-4,2))
 excess_pr_extr_mod(model="Skewt", z=c(1,3,5), param=c(0.5,0.4,0.8,0,0,0,2))

@@ -55,7 +55,7 @@ where \eqn{B(x|a,b)}{B(x|a,b)} denotes the cumulative distribution function of a
 }
 
 \examples{
-		\dontrun{
+\donttest{
 
 	# This reproduces some of the results shown in Fig. 1 (Marcon, 2016).
 	set.seed(1890)
@@ -86,7 +86,7 @@ where \eqn{B(x|a,b)}{B(x|a,b)} denotes the cumulative distribution function of a
 	y <- as.matrix(expand.grid(y,y))
 	probs <- returns(mcmc = mcmc, summary.mcmc = summary.mcmc, y = y, plot = TRUE)
 
-	}
+}
 }
 
 \keyword{ models }% use one of  RShowDoc("KEYWORDS")

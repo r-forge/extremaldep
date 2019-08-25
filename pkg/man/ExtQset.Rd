@@ -96,8 +96,8 @@ ExtQset(data, P=NULL, method="bayesian", U=NULL,
 }
 
 \examples{
-\dontrun{
-# library(mvtnorm)
+\donttest{
+library(mvtnorm)
 
 distribution <- "Cauchy"
 
@@ -149,8 +149,6 @@ Q <- ExtQset(data=data, P=P, U=U, par10=par10, par20=par20, sig10=sig10, sig20=s
              k0=k0, prior.k=prior.k, prior.pm=prior.pm, hyperparam=hyperparam, nsim=50000)
 
 Q.EDhK <- ExtQset(data=data, P=P, method="EDhK", lo=50, up=300)
-
-# save(Q,Q.EDhK, file=paste("CensQsets_",distribution,"_k0_",k0,".RData",sep="")) # To save results
 
 w <- seq(0.00001, .99999, length=100) # define grid
 gfun <- ((w^2+(1-w)^2)^(-3/2))^(1/3) # Compute the true g function
@@ -207,7 +205,7 @@ for(j in 1:3){
   lines(Q.EDhK[[paste("xn_hat",j,sep="")]], Q.EDhK[[paste("yn_hat",j,sep="")]], lty=2, lwd=2)
 }
 
-# dev.off()
+par(mfrow=c(1,1),mar=c(5.1,4.1,4.1,2.1), mgp=c(3,1,0))
 
 }
 }

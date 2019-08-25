@@ -78,7 +78,7 @@ data(pollution)
 
 ## Dataset PM10-NO-SO2 (PNS)
 
-\dontrun{
+\donttest{
 alik(PNS,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
 alik(PNS,model="Husler",rep(1,3),trace=2,sig=2)
 alik(PNS,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
@@ -88,7 +88,7 @@ alik(PNS,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),c=0.01,trace=2,sig=2)
 
 ## Dataset NO2-SO2-NO (NSN)
 
-\dontrun{
+\donttest{
 alik(NSN,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
 alik(NSN,model="Husler",rep(1,3),trace=2,sig=2)
 alik(NSN,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
@@ -98,7 +98,7 @@ alik(NSN,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),c=0.01,trace=2,sig=2)
 
 ## Dataset PM10-NO-NO2 (PNN)
 
-\dontrun{
+\donttest{
 alik(PNN,model="Pairwise",c(1,1,1,1),trace=2,sig=2)
 alik(PNN,model="Husler",rep(1,3),trace=2,sig=2)
 alik(PNN,model="Dirichlet",rep(0.1,3),trace=2,sig=2)
@@ -108,7 +108,7 @@ alik(PNN,model="Asymmetric",c(rep(1.1,4),rep(0.1,9)),c=0.01,trace=2,sig=2)
 
 ## Dataset PM10-NO-NO2-SO2 (PNNS)
 
-\dontrun{
+\donttest{
 alik(PNNS,model="Pairwise",rep(1,choose(ncol(PNNS),2)+1),trace=2,sig=2)
 alik(PNNS,model="Husler",rep(1,choose(ncol(PNNS),2)),trace=2,sig=2)
 alik(PNNS,model="Dirichlet",rep(1,ncol(PNNS)),trace=2,sig=2)

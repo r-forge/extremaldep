@@ -103,7 +103,7 @@ lines(x[,1], Acfg$A, lty = 1, col = 2)
 # Trivariate case
 ##################################
 
-\dontrun{
+\donttest{
 
 x <- ExtremalDep:::simplex(3)
 
@@ -113,6 +113,7 @@ par(mfrow=c(1,3))
 Amd <- beed(data, x, 3, "md", "emp", 18, plot=TRUE)
 Acfg <- beed(data, x, 3, "cfg", "emp", 18, plot=TRUE)
 Aht <- beed(data, x, 3, "ht", "emp", 18, plot=TRUE)
+par(mfrow=c(1,1))
 }
 
 }

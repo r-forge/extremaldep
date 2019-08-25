@@ -89,7 +89,7 @@ Hpar.di <- list(mean.alpha=0, sd.alpha=3)
 Hpar.et <- list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3)
 
 ## Using the PNS dataset
-\dontrun{
+\donttest{
 est.pb.PNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNS, seed=14342, model='Pairwise')
 est.pb.PNS$emp.mean
 est.pb.PNS$emp.sd
@@ -113,7 +113,7 @@ est.et.PNS$BIC
 
 ## Using the NSN dataset
 
-\dontrun{
+\donttest{
 est.pb.NSN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, NSN, seed=14342, model='Pairwise')
 est.pb.NSN$emp.mean
 est.pb.NSN$emp.sd
@@ -137,7 +137,7 @@ est.et.NSN$BIC
 
 ## Using the PNN dataset
 
-\dontrun{
+\donttest{
 
 est.pb.PNN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNN, seed=14342, model='Pairwise')
 est.pb.PNN$emp.mean
@@ -169,7 +169,7 @@ est.et.PNN$BIC
 
 # Using the PNNS dataset
 
-\dontrun{
+\donttest{
 
 est.pb.PNNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNNS, seed=14342, model='Pairwise')
 est.pb.PNNS$BIC

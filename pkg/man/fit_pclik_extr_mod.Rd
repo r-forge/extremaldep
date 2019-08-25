@@ -63,7 +63,7 @@ p0 <- c(rep(0.5,3),1)
 
 ### CLOU CLAY SALL
 
-\dontrun{
+\donttest{
 ext1 <- fit_pclik_extr_mod("Extremalt", CLOU.CLAY.SALL, p0, 2)
 est.ext1 <- round(ext1$par,2)
 p01 <- c(ext1$par[1:3],rep(0,3),ext1$par[4])
@@ -73,7 +73,7 @@ est.skewt1 <- round(skewt1$par,2)
 
 ### CLOU CLAY PAUL
 
-\dontrun{
+\donttest{
 ext2 <- fit_pclik_extr_mod("Extremalt", CLOU.CLAY.PAUL, p0, 2)
 est.ext2 <- round(ext2$par,2)
 p02 <- c(ext2$par[1:3],rep(0,3),ext2$par[4])
@@ -83,7 +83,7 @@ est.skewt2 <- round(skewt2$par,2)
 
 ### CLAY SALL PAUL
 
-\dontrun{
+\donttest{
 ext3 <- fit_pclik_extr_mod("Extremalt", CLAY.SALL.PAUL, p0, 2)
 est.ext3 <- round(ext3$par,2)
 p03 <- c(ext3$par[1:3],rep(0,3),ext3$par[4])
@@ -93,7 +93,7 @@ est.skewt3 <- round(skewt3$par,2)
 
 ### CLAY SALL PAUL
 
-\dontrun{
+\donttest{
 ext4 <- fit_pclik_extr_mod("Extremalt", CLOU.SALL.PAUL, p0, 2)
 est.ext4 <- round(ext4$par,2)
 p04 <- c(ext4$par[1:3],rep(0,3),ext4$par[4])

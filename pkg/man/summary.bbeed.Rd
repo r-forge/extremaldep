@@ -45,7 +45,7 @@
 \seealso{\code{\link{plot.bbeed}}.}
 
 \examples{
-\dontrun{
+\donttest{
 
 # This reproduces some of the results showed in Fig. 1 (Marcon, 2016).
 set.seed(1890)
