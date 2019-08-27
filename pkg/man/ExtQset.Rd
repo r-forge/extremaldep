@@ -159,7 +159,8 @@ yT <- gfun*(1-w) # y-axis of Basic set
 ### Graphical representation
 ###
 
-par(mfrow=c(2,3), mar=c(3, 3, 0.5, 0.2), mgp=c(2,.8,0))
+op <- par(mfrow=c(2,3), mar=c(3, 3, 0.5, 0.2), mgp=c(2,.8,0))
+on.exit(par(op))
 
 # Plot 1: Density of Exponent measure
 
@@ -205,7 +206,6 @@ for(j in 1:3){
   lines(Q.EDhK[[paste("xn_hat",j,sep="")]], Q.EDhK[[paste("yn_hat",j,sep="")]], lty=2, lwd=2)
 }
 
-par(mfrow=c(1,1),mar=c(5.1,4.1,4.1,2.1), mgp=c(3,1,0))
 
 }
 }
