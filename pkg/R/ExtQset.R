@@ -132,8 +132,10 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
       meanacc[j] = mean(mcmc$acc.vec[round(j/2) :j])
     }
     
-    par(mfrow=c(2,3))
-    par(mar=c(4.4,4.8,0.5,0.5))
+    oldpar1 <- par(mfrow=c(2,3))
+    on.exit(par(oldpar1))
+    oldpar2 <- par(mar=c(4.4,4.8,0.5,0.5))
+    on.exit(par(oldpar2))
     plot( cbind(index, mcmc$sig1.vec[index]^2) , type="l", col=3, ylim=c(0, max(mcmc$sig1.vec^2)), ylab=expression(sigma[1]^2), xlab="Iterations", cex.lab=1.8, cex.axis=1.8, lwd=2)
     abline(h=0, lwd=2)
     plot( cbind(index, mcmc$sig2.vec[index]^2) , type="l", col=3, ylim=c(0, max(mcmc$sig2.vec^2)), ylab=expression(sigma[2]^2), xlab="Iterations", cex.lab=1.8, cex.axis=1.8, lwd=2)
@@ -408,7 +410,6 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
     
   } # End frequentist estimation
   
-  on.exit(on.exit(par(mfrow=c(1,1),mar=c(5.1,4.1,4.1,2.1))))
 }
 
 ###

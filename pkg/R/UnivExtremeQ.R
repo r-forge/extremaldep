@@ -56,7 +56,8 @@ UniExtQ <- function(data, P=NULL, method="bayesian", U=NULL, cov=as.matrix(rep(1
 
     index <- c(1:2000,seq(2001,length(mcmc$sig.vec), by=100))
 
-    par(mar=c(4.4,4.8,0.5,0.5))
+    oldpar <- par(mar=c(4.4,4.8,0.5,0.5))
+    on.exit(par(oldpar))
     plot( cbind(index, mcmc$sig.vec[index]^2) , type="l", col=3, ylim=c(0, max(mcmc$sig.vec^2)), ylab=expression(tau^2), xlab="Iterations", cex.lab=1.8, cex.axis=1.8, lwd=2)
     abline(h=0, lwd=2)
     plot(cbind(index, meanacc[index]), type="l", col=2, ylim=c(0,1), ylab="Acceptance Probability", xlab="Iterations", cex.lab=1.8, cex.axis=1.8, lwd=2)
@@ -125,8 +126,6 @@ UniExtQ <- function(data, P=NULL, method="bayesian", U=NULL, cov=as.matrix(rep(1
     }
     
   }
-  
-  on.exit(par(mar=c(5.1,4.1,4.1,2.1)) )
 
   
 }

@@ -30,8 +30,10 @@ plot.bbeed <- function(x, type = c("summary", "returns", "A", "h", "pm", "k"),
   plot.returns <- function(y, probs, CEX=1.5,
                          labels=c(expression(y[1]),expression(y[2])), ...){
   
-  par(mar = c(1, 1, 0, 0), oma = c(3, 4, 0.5, 0.5))
-  par(mgp = c(1, 1, 0),cex.axis=CEX)
+  op1 <- par(mar = c(1, 1, 0, 0), oma = c(3, 4, 0.5, 0.5))
+  on.exit(par(op1))
+  op2 <- par(mgp = c(1, 1, 0),cex.axis=CEX)
+  on.exit(par(op2))
   
   if(is.vector(y)){
     plot(y,probs,type='l',col=2,lwd=2.5,ylim=range(probs,na.rm=T), ylab="", xlab="", ...)
@@ -61,7 +63,8 @@ plot.bbeed <- function(x, type = c("summary", "returns", "A", "h", "pm", "k"),
 
 plot.A <- function(w, summary.mcmc, CEX=1.5, ...){
   # summary.mcmc = output PostMCMC
-  par(cex.axis=CEX)
+  op3 <- par(cex.axis=CEX)
+  on.exit(par(op3))
   
   A_hat <- summary.mcmc$A.mean
   lowA <- summary.mcmc$A.low
@@ -86,7 +89,8 @@ fbplot_A <- function(A_post, A_true, wgrid, CEX=1.5){
   # is the matrix of Pickands from the final chains of the MCMC
   # which refer to those k in (q1, q3) of the posterior
   # A_true = True Pickands
-  par(oma = c(3, 4, 0.5, 0.5),mgp = c(1, 1, 0),cex.axis=CEX)
+  op4 <- par(oma = c(3, 4, 0.5, 0.5),mgp = c(1, 1, 0),cex.axis=CEX)
+  on.exit(par(op4))
   
   A_med <- fbplot(t(A_post),wgrid,xlim=c(0,1),ylim=c(0.5,1),
                   method='BD2',color='grey70',xlab='',ylab='',
@@ -111,7 +115,8 @@ plot.h <- function(w, summary.mcmc, CEX=1.5, ...){
                    
   # summary.mcmc = output summary.mcmc
   # pm = theorethical point masses, zero by default
-  par(cex.axis=CEX)
+  op5 <- par(cex.axis=CEX)
+  on.exit(par(op5))
   
   nw <- length(w)
   
@@ -152,7 +157,8 @@ fbplot_h <- function(pmcmc, h_true, wgrid, CEX=1.5){
   # is the matrix of Pickands from the final chains of the MCMC
   # which refer to those k in (q1, q3) of the posterior
   # A_true = True Pickands
-  par(oma = c(3, 4, 0.5, 0.5), mgp = c(1, 1, 0),cex.axis=CEX)
+  op6 <- par(oma = c(3, 4, 0.5, 0.5), mgp = c(1, 1, 0),cex.axis=CEX)
+  on.exit(par(op6))
   
   h_med <- fbplot(t(pmcmc$h_post),wgrid,xlim=c(0,1),ylim=c(0,max(h_true)+.5),
                   method='BD2',color='grey80',xlab='',ylab='',
@@ -176,7 +182,8 @@ fbplot_h <- function(pmcmc, h_true, wgrid, CEX=1.5){
 PriorVSPosterior.k <- function(mcmc, nsim, burn, CEX=1.5, ...){
   # mcmc = output bbeed
   
-  par(cex.axis=CEX)
+  op7 <- par(cex.axis=CEX)
+  on.exit(par(op7))
   
   prior.k <- mcmc$prior$k
   
@@ -213,7 +220,8 @@ PriorVSPosterior.k <- function(mcmc, nsim, burn, CEX=1.5, ...){
 
 PriorVSPosterior.pm <- function(mcmc, nsim, burn, CEX=1.5, ...){
 
-  par(cex.axis=CEX)
+  op8 <-par(cex.axis=CEX)
+  on.exit(par(op8))
   
   prior.pm <- mcmc$prior$pm
   chain.p0 <- mcmc$pm[burn:nsim,1]
@@ -262,17 +270,18 @@ if(type == "k"){
   PriorVSPosterior.k(mcmc=mcmc, nsim=nsim, burn=burn, CEX=CEX, ...)
 }
 if(type == "summary"){
-  par(mfrow=c(2,2), pty='s')
-  par(mar = c(4, 0, 0.5, 0), oma = c(3, 4, 0.5, 0.5))
-  par(mgp = c(1, 1, 0), cex.axis=CEX)
+  oldpar1 <- par(mfrow=c(2,2), pty='s')
+  on.exit(par(oldpar1))
+  oldpar2 <- par(mar = c(4, 0, 0.5, 0), oma = c(3, 4, 0.5, 0.5))
+  on.exit(par(oldpar2))
+  oldpar3 <- par(mgp = c(1, 1, 0), cex.axis=CEX)
+  on.exit(par(oldpar3))
   
   plot.A(w=x, summary.mcmc=summary.mcmc, ...)
   PriorVSPosterior.k(mcmc=mcmc, nsim=nsim, burn=burn, ...)
   plot.h(w=x, summary.mcmc=summary.mcmc, ...)
   PriorVSPosterior.pm(mcmc=mcmc, nsim=nsim, burn=burn, ...)
 }
-
-on.exit(par(mfrow=c(1,1), mar=c(5.1,4.1,4.1,2.1), oma=c(0, 0, 0, 0), mgp=c(3, 1, 0),cex.axis=1) )
 
 }
 ###################### END PLOT PRIOR VS POSTERIOR p0 ####################
