@@ -110,10 +110,11 @@ x <- ExtremalDep:::simplex(3)
 data <- evd::rmvevd(50, dep = 0.8, model = "log", d = 3, mar = c(1,1,1))
 
 op <- par(mfrow=c(1,3))
-on.exit(par(op))
 Amd <- beed(data, x, 3, "md", "emp", 18, plot=TRUE)
 Acfg <- beed(data, x, 3, "cfg", "emp", 18, plot=TRUE)
 Aht <- beed(data, x, 3, "ht", "emp", 18, plot=TRUE)
+
+par(op)
 }
 
 }

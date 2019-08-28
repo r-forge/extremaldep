@@ -102,7 +102,7 @@ sig0 <- 1
 # Bayesian approach:
 mcmc.name <- paste("mcmc",distribution,"_n", n, "_prob", prob, "_", pars.name,sep="")
 op <- par(mar=c(4.2,4.6,0.3,0.1))
-on.exit(par(op))
+
 assign(mcmc.name, UniExtQ(data=data, P=P, U=U, cov=cov, param0=param0, sig0=sig0,
 	   nsim=nsim))
 ### RUN UNTIL HERE AND SPECIFY BURN-IN PERIOD
@@ -154,7 +154,7 @@ abline(v=log(Q), lwd=2, lty=1)
 for(j in 1:length(P)){abline(v=mean(log(mcmc$Q.est[,j])), lwd=2, lty=2)}
 abline(v=log(q$Q.est), lwd=2, lty=3)
 
-
+par(op)
 
 }
 }
