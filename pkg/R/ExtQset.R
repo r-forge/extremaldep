@@ -132,10 +132,9 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
       meanacc[j] = mean(mcmc$acc.vec[round(j/2) :j])
     }
     
-    oldpar1 <- par(mfrow=c(2,3))
+    oldpar1 <- par(mfrow=c(2,3), mar=c(4.4,4.8,0.5,0.5))
     on.exit(par(oldpar1))
-    oldpar2 <- par(mar=c(4.4,4.8,0.5,0.5))
-    on.exit(par(oldpar2))
+
     plot( cbind(index, mcmc$sig1.vec[index]^2) , type="l", col=3, ylim=c(0, max(mcmc$sig1.vec^2)), ylab=expression(sigma[1]^2), xlab="Iterations", cex.lab=1.8, cex.axis=1.8, lwd=2)
     abline(h=0, lwd=2)
     plot( cbind(index, mcmc$sig2.vec[index]^2) , type="l", col=3, ylim=c(0, max(mcmc$sig2.vec^2)), ylab=expression(sigma[2]^2), xlab="Iterations", cex.lab=1.8, cex.axis=1.8, lwd=2)
@@ -380,9 +379,7 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
     Aest_proj <- beed(extdata, cbind(w, 1-w), 2, "md", "emp", d) 
     
     # Optimize the angular density:
-    options(warn=-1)
     Aest_mle <- constmle(fdata, d, w, start=Aest_proj$beta, type="rawdata", r0=r0)
-    options(warn=0)
     
     # Compute the angular density:
     hhat <- sapply(1:nw, function(i, w, beta) dh(w[i], beta), w, Aest_mle$beta)

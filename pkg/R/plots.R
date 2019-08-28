@@ -30,10 +30,8 @@ plot.bbeed <- function(x, type = c("summary", "returns", "A", "h", "pm", "k"),
   plot.returns <- function(y, probs, CEX=1.5,
                          labels=c(expression(y[1]),expression(y[2])), ...){
   
-  op1 <- par(mar = c(1, 1, 0, 0), oma = c(3, 4, 0.5, 0.5))
+  op1 <- par(mar = c(1, 1, 0, 0), oma = c(3, 4, 0.5, 0.5), mgp = c(1, 1, 0), cex.axis=CEX)
   on.exit(par(op1))
-  op2 <- par(mgp = c(1, 1, 0),cex.axis=CEX)
-  on.exit(par(op2))
   
   if(is.vector(y)){
     plot(y,probs,type='l',col=2,lwd=2.5,ylim=range(probs,na.rm=T), ylab="", xlab="", ...)
@@ -270,12 +268,9 @@ if(type == "k"){
   PriorVSPosterior.k(mcmc=mcmc, nsim=nsim, burn=burn, CEX=CEX, ...)
 }
 if(type == "summary"){
-  oldpar1 <- par(mfrow=c(2,2), pty='s')
+  oldpar1 <- par(mfrow=c(2,2), pty='s', mar = c(4, 0, 0.5, 0), 
+  				 oma = c(3, 4, 0.5, 0.5), mgp = c(1, 1, 0), cex.axis=CEX)
   on.exit(par(oldpar1))
-  oldpar2 <- par(mar = c(4, 0, 0.5, 0), oma = c(3, 4, 0.5, 0.5))
-  on.exit(par(oldpar2))
-  oldpar3 <- par(mgp = c(1, 1, 0), cex.axis=CEX)
-  on.exit(par(oldpar3))
   
   plot.A(w=x, summary.mcmc=summary.mcmc, ...)
   PriorVSPosterior.k(mcmc=mcmc, nsim=nsim, burn=burn, ...)
