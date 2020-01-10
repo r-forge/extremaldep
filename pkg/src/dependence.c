@@ -53,6 +53,8 @@ void chistup(double *omega, double *nu, double *alpha, double *res)
   par2[4]=alphas[0];par2[5]=taus[1];
   // computes the upper tail dependence coefficient for the extremal skew-t model:
   res[0]=2-pest_int(par1)-pest_int(par2);
+    free(par1);
+    free(par2);
   return;
 }
 // Lower tail dependence coefficient for the extremal skew-t model:
@@ -88,6 +90,8 @@ void chistlo(double *omega, double *nu, double *alpha, double *res)
   par2[4]=alphas[0];par2[5]=-taus[1];
   // computes the tail dependence coefficient for the extremal skew-t model:
   res[0]=pest_int(par1)+pest_int(par2);
+    free(par1);
+    free(par2);
   return;
 }
 // Bivariate Pickand dependence function for the extremal skew-t model:
@@ -123,6 +127,8 @@ void bivpkst(double *x, double *omega, double *nu, double *alpha, double *res)
   par2[4]=alphas[0];par2[5]=taus[1];
   // computes the trivariate Pickand dependence function for the extremal skew-t model:
   res[0]=x[0]*pest_int(par1)+(1-x[0])*pest_int(par2);
+    free(par1);
+    free(par2);
   return;
 }
 // Trivariate Pickand dependence function for the extremal skew-t model:
@@ -197,6 +203,9 @@ void trivpkst(double *x, double *omega, double *nu, double *alpha, double *res)
   par3[8]=nu1;par3[9]=alphas[4];par3[10]=alphas[5];par3[11]=taus[2];
   // computes the trivariate Pickand dependence function for the extremal skew-t model:
   res[0]=x[0]*pmest_int(par1)+x[1]*pmest_int(par2)+x[2]*pmest_int(par3);
+    free(par1);
+    free(par2);
+    free(par3);
   return;
 }
 

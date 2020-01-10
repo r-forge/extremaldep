@@ -182,24 +182,30 @@ void pmesn3(double *xmin, double *xmax, double *par, double *val, double *err)
 // internal bivariate extended skew-normal cumulate density function:
 double pmesn_int(double *par)
 {
-    double xmin[2]={-1,-1}, xmax[2]={0,0}, *val, *err;
+    double res=0;
+    double xmin[2]={-1,-1}, xmax[2]={0,0}, *val=&res, *err;
     // set the result and error variables:
-    val=(double *) malloc(1*sizeof(double));
+    /* val=(double *) malloc(1*sizeof(double)); */
     err=(double *) malloc(1*sizeof(double));
     // compute the cumulative distribution function:
     adapt_integrate(1, dmesn_t, par, 2, xmin, xmax, 0, 0, 1e-8, val, err);
-    return val[0];
+    res=val[0];
+    free(err);
+    return res;
 }
 // internal trivariate extended skew-normal cumulate density function:
 double pmesn_int3(double *par)
 {
-    double xmin[3]={-1,-1,-1}, xmax[3]={0,0,0}, *val, *err;
+    double res=0;
+    double xmin[3]={-1,-1,-1}, xmax[3]={0,0,0}, *val=&res, *err;
     // set the result and error variables:
-    val=(double *) malloc(1*sizeof(double));
+    /* val=(double *) malloc(1*sizeof(double)); */
     err=(double *) malloc(1*sizeof(double));
     // compute the cumulative distribution function:
     adapt_integrate(1, dmesn_t3, par, 3, xmin, xmax, 0, 0, 1e-8, val, err);
-    return val[0];
+    res=val[0];
+    free(err);
+    return res;
 }
 
 
@@ -248,16 +254,21 @@ void pest(double *xmin, double *xmax, double *par, double *val, double *err)
 // internal extended skew-t cumulate density function
 double pest_int(double *par)
 {
-  double *xmin, *xmax, *val, *err;
+  double res=0;
+  double *xmin, *xmax, *val = &res, *err;
   // set the result and error variables:
-  val=(double *) malloc(1*sizeof(double));
+  //val=(double *) malloc(1*sizeof(double));
   err=(double *) malloc(1*sizeof(double));
   xmin=(double *) malloc(1*sizeof(double));
   xmax=(double *) malloc(1*sizeof(double));
   xmin[0]=-1; xmax[0]=0;
   // compute the cumulative distribution function:
   adapt_integrate(1, dest_t, par, 1, xmin, xmax, 0, 0, 1e-13, val, err);
-  return val[0];
+  res=val[0];
+  free(err);
+  free(xmin);
+  free(xmax);
+  return res;
 }
 // bivariate t probability density function:
 double dmt_int(double nu, double omr2, double Q, double std)
@@ -320,8 +331,7 @@ double dmt_int3(double nu, double Q, double det)
 {
   double res=0, hnu=0.5*nu, hnu1=hnu+1.5;
   //computes the bivariate t density:
-  res=gammafn(hnu1)*pow(nu*M_PI,-1.5)/gammafn(hnu)/sqrt(det)*
-    pow(1+Q/nu,-hnu1);
+  res=gammafn(hnu1)*pow(nu*M_PI,-1.5)/gammafn(hnu)/sqrt(det)*pow(1+Q/nu,-hnu1);
   return res;
 }
 // trivariate extended skew-t probability density function:
@@ -359,7 +369,7 @@ void dmest_t3(unsigned ndim, const double *x, void *fdata, unsigned fdim, double
 {
   double *par, a[3], mu[3], omega[9], nu=0, alpha[3], y[3], tau=0;
   //set variables:
-   
+
   par=(double *) fdata;
   a[0]=par[0];a[1]=par[1];a[2]=par[2];
   mu[0]=par[3];mu[1]=par[4];mu[2]=par[5];
@@ -401,24 +411,30 @@ void pmest3(double *xmin, double *xmax, double *par, double *val, double *err)
 // internal bivariate extended skew-t cumulate density function:
 double pmest_int(double *par)
 {
-  double xmin[2]={-1,-1}, xmax[2]={0,0}, *val, *err;
+  double res=0;
+  double xmin[2]={-1,-1}, xmax[2]={0,0}, *val=&res, *err;
   // set the result and error variables:
-  val=(double *) malloc(1*sizeof(double));
+  /* val=(double *) malloc(1*sizeof(double)); */
   err=(double *) malloc(1*sizeof(double));
   // compute the cumulative distribution function:
   adapt_integrate(1, dmest_t, par, 2, xmin, xmax, 0, 0, 1e-8, val, err);
-  return val[0];
+  res=val[0];
+  free(err);
+  return res;
 }
 // internal trivariate extended skew-t cumulate density function:
 double pmest_int3(double *par)
 {
-  double xmin[3]={-1,-1,-1}, xmax[3]={0,0,0}, *val, *err;
+  double res=0;
+  double xmin[3]={-1,-1,-1}, xmax[3]={0,0,0}, *val=&res, *err;
   // set the result and error variables:
-  val=(double *) malloc(1*sizeof(double));
+  /* val=(double *) malloc(1*sizeof(double)); */
   err=(double *) malloc(1*sizeof(double));
   // compute the cumulative distribution function:
   adapt_integrate(1, dmest_t3, par, 3, xmin, xmax, 0, 0, 1e-8, val, err);
-  return val[0];
+  res=val[0];
+  free(err);
+  return res;
 }
 
 /* END ------ SKEW-T FUNCTIONS -------------- */
@@ -460,6 +476,8 @@ void pmextst(double *x, double *omega, double *nu, double *alpha, double *res)
   par2[4]=alphas[0];par2[5]=taus[1];
   // computes the trivariate Pickand dependence function for the extremal skew-t model:
   res[0]=exp(-pest_int(par1)/x[0]-pest_int(par2)/x[1]);
+    free(par1);
+    free(par2);
   return;
 }
 // bivariate extremal skew-t probability density function:
@@ -531,6 +549,8 @@ void dmextst(double *x, double *omega, double *nu, double *alpha, double *res)
     (1+(1+beta*xb[1]*(ga1*pow(1+pow(u[1],2)/t[1],-pw)*w[1]*
 		      (alphas[0]-u[1]*y[1]/t[1])/(sp*ga2*pt2)-y[1]*nu2/(nu1*v[1]))) / *nu);
   res[0]=exp(V)*(dx1V*dx2V+d2V);
+    free(par1);
+    free(par2);
   return;
 }
 // bivariate extremal skew-t probability density function:
@@ -602,6 +622,8 @@ double dmextst_int(double *x, double *omega, double *nu, double *alpha)
     (1+(1+beta*xb[1]*(ga1*pow(1+pow(u[1],2)/t[1],-pw)*w[1]*
 		      (alphas[0]-u[1]*y[1]/t[1])/(sp*ga2*pt2)-y[1]*nu2/(nu1*v[1]))) / *nu);
   res=exp(V)*(dx1V*dx2V+d2V);
+  free(par1);
+  free(par2);
   return res;
 }
 
