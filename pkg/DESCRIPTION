@@ -1,6 +1,6 @@
 Package: ExtremalDep
-Version: 0.0.3-1
-Date: 2019-08-08
+Version: 0.0.3-2
+Date: 2020-01-10
 Title: Extremal Dependence Models
 Authors@R: c(person("Boris","Beranger", role = "aut", email="borisberanger@gmail.com"),
 	    person("Simone","Padoan", role = c("cre","aut"), email="simone.padoan@unibocconi.it"),
@@ -24,3 +24,4 @@ Repository/R-Forge/DateTimeStamp: 2019-08-12 22:22:37
 Date/Publication: 2019-08-12 22:22:37
 Packaged: 2019-08-12 22:35:08 UTC; rforge
 Depends: R (>= 2.10)
+URL: http://faculty.unibocconi.it/simonepadoan
