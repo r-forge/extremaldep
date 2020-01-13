@@ -1,5 +1,5 @@
 Package: ExtremalDep
-Version: 0.0.3-2
+Version: 0.0.3-3
 Date: 2020-01-10
 Title: Extremal Dependence Models
 Authors@R: c(person("Boris","Beranger", role = "aut", email="borisberanger@gmail.com"),
