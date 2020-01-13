@@ -345,7 +345,7 @@ double dmest_int3(double x[3], double mu[3], double omega[9], double nu, double 
   //set variables:
   z[0]=(x[0]-mu[0])/so1;
   z[1]=(x[1]-mu[1])/so2;
-  z[2]=(x[2]-mu[3])/so3;
+  z[2]=(x[2]-mu[2])/so3;
   //define correlations:
   rho12=omega[1]/(so1*so2);
   rho13=omega[2]/(so1*so3);
