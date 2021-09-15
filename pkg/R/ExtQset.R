@@ -218,7 +218,7 @@ ExtQset <- function(data, P=NULL, method="bayesian", U=NULL,
       
     }
     
-    return( list.append(mget(ls(pattern = "Qset_P")), ghat=ghat, Shat=Shat, nuShat=nuShat, burn=burn))
+    return( c(mget(ls(pattern = "Qset_P")), list(ghat=ghat, Shat=Shat, nuShat=nuShat, burn=burn)))
     
   } # end Bayesian estimation  
   
