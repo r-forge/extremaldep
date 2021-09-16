@@ -29,6 +29,5 @@ importFrom("gtools", "permutations")
 importFrom("nloptr", "nloptr")
 importFrom("utils", "setTxtProgressBar", "txtProgressBar", "tail")
 importFrom("mvtnorm", "rmvnorm", "rmvt")
-importFrom("rlist", "list.append")
 importFrom("fda", "fbplot")
 
