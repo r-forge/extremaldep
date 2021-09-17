@@ -35,32 +35,32 @@
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 }
 
 \examples{
 ### Extremal-t
 
-\donttest{
+if (interactive()){
 ## Bivariate
 r_extr_mod("Extremalt", n=5, par=c(0.5,2))
 }
 
-\donttest{
+if (interactive()){
 ## Trivariate
 r_extr_mod("Extremalt", n=5, par=c(0.5,0.6,0.4,2))
 }
 
 ### Extremal Skew-t
 
-\donttest{
+if (interactive()){
 ## Bivariate
 r_extr_mod("Skewt", n=5, par=c(0.5,-1,1,2))
 }
 
-\donttest{
+if (interactive()){
 ## Trivariate
 r_extr_mod("Skewt", n=5, par=c(0.5,0.6,0.4,-2,-2,5,2))
 }

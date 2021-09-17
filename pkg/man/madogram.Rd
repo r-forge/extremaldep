@@ -62,9 +62,9 @@ Otherwise it refers to marginal parametric GEV theorethical distributions (\code
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 

@@ -53,9 +53,9 @@ prob4 <- pt(q=1, df=1)
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 }
 
 \keyword{distribution}

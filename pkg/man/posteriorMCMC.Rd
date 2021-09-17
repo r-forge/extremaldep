@@ -64,9 +64,9 @@ posteriorMCMC(Nsim, Nbin=0, Hpar, MCpar, dat, par.start=NULL,
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 }
 
 
@@ -89,7 +89,7 @@ Hpar.di <- list(mean.alpha=0, sd.alpha=3)
 Hpar.et <- list(mean.rho=0, mean.mu=3,sd.rho=3, sd.mu=3)
 
 ## Using the PNS dataset
-\donttest{
+if (interactive()){
 est.pb.PNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNS, seed=14342, model='Pairwise')
 est.pb.PNS$emp.mean
 est.pb.PNS$emp.sd
@@ -113,7 +113,7 @@ est.et.PNS$BIC
 
 ## Using the NSN dataset
 
-\donttest{
+if (interactive()){
 est.pb.NSN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, NSN, seed=14342, model='Pairwise')
 est.pb.NSN$emp.mean
 est.pb.NSN$emp.sd
@@ -137,7 +137,7 @@ est.et.NSN$BIC
 
 ## Using the PNN dataset
 
-\donttest{
+if (interactive()){
 
 est.pb.PNN <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNN, seed=14342, model='Pairwise')
 est.pb.PNN$emp.mean
@@ -169,7 +169,7 @@ est.et.PNN$BIC
 
 # Using the PNNS dataset
 
-\donttest{
+if (interactive()){
 
 est.pb.PNNS <- posteriorMCMC(Nsim, Nbin, Hpar.pb, MCpar, PNNS, seed=14342, model='Pairwise')
 est.pb.PNNS$BIC

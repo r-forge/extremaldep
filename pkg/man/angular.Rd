@@ -34,9 +34,9 @@ angular(data, model, n, dep, asy, alpha, beta, df, seed, k, nsim, plot=TRUE, nw=
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
@@ -54,7 +54,7 @@ angular(data, model, n, dep, asy, alpha, beta, df, seed, k, nsim, plot=TRUE, nw=
 
 ## Figure 1 - symmetric logistic
 
-\donttest{
+if (interactive()){
 # Strong dependence
 a <- angular(model='log', n=50, dep=0.3, seed=4321, k=20, nsim=10000)
 # Mild dependence
@@ -65,7 +65,7 @@ c <- angular(model='log', n=50, dep=0.9, seed=4334, k=6, nsim=10000)
 
 ## Figure 2 - Asymmetric logistic
 
-\donttest{
+if (interactive()){
 # Strong dependence
 d <- angular(model='alog', n=25, dep=0.3, asy=c(.3,.8), seed=43121465, k=20, nsim=10000)
 # Mild dependence

@@ -97,16 +97,17 @@ return(list(pm=spm, eta=seta, k=sk, accepted=accepted/nsim,
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
+
 
 \seealso{\code{\link{summary.bbeed}}}
 
 \examples{
-\donttest{
+if (interactive()){
 
 # This reproduces some of the results showed in Fig. 1 (Marcon, 2016).
 set.seed(1890)

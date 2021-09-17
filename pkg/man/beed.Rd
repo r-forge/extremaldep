@@ -71,9 +71,9 @@ With the estimated polynomial coefficients, the extremal coefficient, i.e. \eqn{
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
@@ -103,7 +103,7 @@ lines(x[,1], Acfg$A, lty = 1, col = 2)
 # Trivariate case
 ##################################
 
-\donttest{
+if (interactive()){
 
 x <- ExtremalDep:::simplex(3)
 

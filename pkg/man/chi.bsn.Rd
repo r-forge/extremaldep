@@ -34,23 +34,23 @@
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 }
 
 \examples{
 
 ### Upper tail dependence
 
-\donttest{
-chi.bsn(u=0.9,corr=0.5, shape=c(1,-2), tail="upper")	
+if (interactive()){
+chi.bsn(u=0.9,corr=0.5, shape=c(1,-2), tail="upper")
 }
 
 ### Lower tail dependence
 
-\donttest{
-chi.bsn(u=0.9, corr=0.5, shape=c(1,-2), tail="lower")	
+if (interactive()){
+chi.bsn(u=0.9, corr=0.5, shape=c(1,-2), tail="lower")
 }
 
 }

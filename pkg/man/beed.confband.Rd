@@ -47,9 +47,9 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
@@ -65,7 +65,7 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
 
 
 \examples{
-\donttest{
+if (interactive()){
 
 x <- ExtremalDep:::simplex(2)
 data <- rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))

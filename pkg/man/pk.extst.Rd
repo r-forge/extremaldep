@@ -21,9 +21,9 @@
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 }
 
 \examples{
@@ -33,8 +33,8 @@
 pk.extst(x=c(0.5,0.5), param=c(0.4,-2,4,3))
 
 ### Pickands dependence function for three-dimensional distribution
-\donttest{
-pk.extst(x=c(0.2,0.4,0.4), param=c(0.4,0.3,0.7,3,-1,0,2))	
+if (interactive()){
+pk.extst(x=c(0.2,0.4,0.4), param=c(0.4,0.3,0.7,3,-1,0,2))
 }
 
 }

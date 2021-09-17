@@ -44,9 +44,9 @@ where \eqn{B(x|a,b)}{B(x|a,b)} denotes the cumulative distribution function of a
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
@@ -55,7 +55,7 @@ where \eqn{B(x|a,b)}{B(x|a,b)} denotes the cumulative distribution function of a
 }
 
 \examples{
-\donttest{
+if (interactive()){
 
 	# This reproduces some of the results shown in Fig. 1 (Marcon, 2016).
 	set.seed(1890)

@@ -42,30 +42,30 @@
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://faculty.unibocconi.it/simonepadoan};
+	\url{http://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{http://www.borisberanger.com};
+	\url{https://www.borisberanger.com/};
 }
 
 \examples{
 
 ### Husler-Reiss
 
-\donttest{
+if (interactive()){
 exponent_extr_mod(model="hr", z=c(2,3), param=1.2, dist=FALSE)
 exponent_extr_mod(model="hr", z=c(2,3,1), param=c(1.2,1,1.4), dist=TRUE)
 }
 
 ### Extremal-t
 
-\donttest{
+if (interactive()){
 exponent_extr_mod(model="Extremalt", z=c(0.1,2), param=c(0.5,2), dist=FALSE)
 exponent_extr_mod(model="Extremalt", z=c(0.1,2,3), param=c(0.5,0.4,0.9,2), dist=TRUE)
 }
 
 ### Extremal Skew-t
 
-\donttest{
+if (interactive()){
 exponent_extr_mod(model="Skewt", z=c(0.1,2), param=c(0.5,0,0,2), dist=FALSE)
 exponent_extr_mod(model="Skewt", z=c(0.1,2,3), param=c(0.5,0.4,0.9,0,0,0,2), dist=TRUE)
 exponent_extr_mod(model="Skewt", z=c(0.1,2,3), param=c(0.5,0.4,0.9,1,10,-5,2), dist=TRUE)
