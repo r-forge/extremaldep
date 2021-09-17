@@ -6,8 +6,8 @@ Authors@R: c(person("Boris","Beranger", role = "aut", email="borisberanger@gmail
 	    person("Simone","Padoan", role = c("cre","aut"), email="simone.padoan@unibocconi.it", comment = c(ORCID = "0000-0002-0417-7570")),
 	    person("Giulia", "Marcon", role = "aut", email="giuliamarcongm@gmail.com"),
 	    person("Steven G.", "Johnson", role = "ctb", comment = "Author of included cubature fragments"))
-Author: Boris Beranger [aut],
-  Simone Padoan [cre, aut],
+Author: Boris Beranger [aut] (<https://orcid.org/0000-0002-7944-3925>),
+  Simone Padoan [cre, aut] (<https://orcid.org/0000-0002-0417-7570>),
   Giulia Marcon [aut],
   Steven G. Johnson [ctb] (Author of included cubature fragments)
 Maintainer: Simone Padoan <simone.padoan@unibocconi.it>
