@@ -97,7 +97,7 @@ return(list(pm=spm, eta=seta, k=sk, accepted=accepted/nsim,
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://mypage.unibocconi.it/simonepadoan/};
+	\url{https://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
 	\url{https://www.borisberanger.com/};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}

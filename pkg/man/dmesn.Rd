@@ -66,7 +66,7 @@ prob4 <- pmesn(x=c(1,1,1), scale=sigma2)
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{http://mypage.unibocconi.it/simonepadoan/};
+	\url{https://mypage.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
 	\url{https://www.borisberanger.com/};
 }

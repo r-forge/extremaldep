@@ -41,7 +41,7 @@
 	Cooley et al (2010). Only the \eqn{100}{100} data points with the largest radial components
 	were kept.
 	}
-\source{\url{http://airquality.co.uk}}
+\source{\url{https://uk-air.defra.gov.uk/}}
 \references{
 
 	Cooley, D.,Davis, R. A., and Naveau, P. (2010).
