@@ -25,6 +25,13 @@ extern void pmesn3(void *, void *, void *, void *, void *);
 extern void pmest(void *, void *, void *, void *, void *);
 extern void pmest3(void *, void *, void *, void *, void *);
 extern void doCubature(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+/*----------------------------------------------------------------
+File name: Distributions.c
+ ---------------------------------------------------------------*/
+
+extern void Dist2Dist(double *data, double *eloc, double *escale, double *eshape, int *ndata, int *nsite, double *ploc, double *pscale, double *pshape, int *type, double *res);
+extern void GevLogLik(double *data, int *ndata, double *par, double *res);
+
 
 static const R_CMethodDef CEntries[] = {
     {"chistup",    (DL_FUNC) &chistup,    4},
@@ -49,6 +56,9 @@ static const R_CMethodDef CEntries[] = {
     {"pmest",      (DL_FUNC) &pmest,      5},
     {"pmest3",     (DL_FUNC) &pmest3,     5},
     {"doCubature", (DL_FUNC) &doCubature, 8},
+    /* ------------- Distributions.c ------*/
+    {"Dist2Dist",  (DL_FUNC) &Dist2Dist, 11},
+    {"GevLogLik",  (DL_FUNC) &GevLogLik,  4},
     {NULL, NULL, 0}
 };
 

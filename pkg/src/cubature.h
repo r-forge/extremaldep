@@ -123,6 +123,16 @@ extern "C"
   void llHRmax(double *x, double *lambda, int *n, double *res);
   double ExtremalT(double *data, double df, double rho);
   void llETmax(double *x, double *par, int *n, double *res);
+
+/*----------------------------------------------------------------
+File name: CompRandFld.c
+Description: procedures for the computation of useful distributions
+Start
+ ---------------------------------------------------------------*/
+
+  extern double dgev(double x, double loc, double scale, double shape);
+  extern double pgev(double x, double loc, double scale, double shape);
+  extern double qgev(double x, double loc, double scale, double shape);
     
 #ifdef __cplusplus
 }  /* extern "C" */
