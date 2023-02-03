@@ -439,7 +439,30 @@ double pmest_int3(double *par)
 
 /* END ------ SKEW-T FUNCTIONS -------------- */
 
+/* START ------ HUSLER-REISS FUNCTIONS -------------- */
 
+// bivariate Husler-Reiss cumulative distribution function:
+void pHuslerReiss(double *x, double *lambda, double *res)
+{
+  double y[2], lxy, a=*lambda;
+  lxy=log(x[1]/x[0])/(2*a);
+  y[0]=a+lxy;
+  y[1]=a-lxy;
+  
+  res[0]=exp(-pnorm(y[0],0,1,1,0)/x[0]-pnorm(y[1],0,1,1,0)/x[1]);
+    
+  return;
+}
+// bivariate Husler-Reiss probability density function:
+void dHuslerReiss(double *x, double *lambda, double *res)
+{
+  double y[2], a=*lambda;
+  y[0]=x[0]; y[1]=x[1];
+  *res=HuslerReiss(a,y);
+    
+  return;
+}
+/* END ------ HUSLER-REISS FUNCTIONS -------------- */
 
 /* START ------ EXTREMAL SKEW-T FUNCTIONS -------------- */
 

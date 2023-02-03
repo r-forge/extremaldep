@@ -43,20 +43,21 @@ void llextst(double *x, int *n, double *omega, double *nu, double *alpha, double
   // Pairwise likelihood for the Husler-Reiss model:
 double HuslerReiss(double a, double *xx)
 {
-  double ao2=0.0, ax2=0.0, axy=0.0, ay2=0.0, d2V=0.0;
+  //double ao2=0.0, ax2=0.0, axy=0.0, ay2=0.0, d2V=0.0;
+  double ax2=0.0, axy=0.0, ay2=0.0, d2V=0.0;
   double dx=0.0, dxV=0.0, dy=0.0, dyV=0.0, lyx=0.0, px=0.0;
   double x=xx[0],y=xx[1];
   double py=0.0, V=0.0, x2=0.0, y2=0.0, w=0.0, z=0.0;
 
-  ao2=0.5*a;
-  axy=a*x*y;
+  //ao2=0.5*a;
+  axy=2*a*x*y;
   x2=pow(x,2);
   y2=pow(y,2);
-  ax2=a*x2;
-  ay2=a*y2;
-  lyx=log(y/x)/a;
-  z=ao2+lyx;
-  w=ao2-lyx;
+  ax2=2*a*x2;
+  ay2=2*a*y2;
+  lyx=log(y/x)/(2*a);
+  z=a+lyx;
+  w=a-lyx;
   px=pnorm(z,0,1,1,0);
   py=pnorm(w,0,1,1,0);
   dx=dnorm(z,0,1,0);

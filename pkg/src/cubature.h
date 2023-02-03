@@ -57,7 +57,7 @@ extern "C"
   typedef void (*integrand) (unsigned ndim, const double *x, void *,
 			   unsigned fdim, double *fval);
 
-    
+
 /* Integrate the function f from xmin[dim] to xmax[dim], with at most
   maxEval function evaluations (0 for no limit), until the given
   absolute or relative error is achieved.  val returns the integral,
@@ -69,7 +69,7 @@ extern "C"
                         unsigned dim, const double *xmin, const double *xmax,
                         unsigned maxEval, double reqAbsError, double reqRelError,
                         double *val, double *err);
-    
+
   // univariate Skew-normal functions:
   double desn_int(double x, double mu, double omega, double alpha, double tau);
   void desn_t(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval);
@@ -120,6 +120,8 @@ extern "C"
   double d1x_dt(double x, double df);
 
   double HuslerReiss(double a, double *x);
+  void pHuslerReiss(double *x, double *lambda, double *res);
+  void dHuslerReiss(double *x, double *lambda, double *res);
   void llHRmax(double *x, double *lambda, int *n, double *res);
   double ExtremalT(double *data, double df, double rho);
   void llETmax(double *x, double *par, int *n, double *res);
@@ -133,12 +135,9 @@ Start
   extern double dgev(double x, double loc, double scale, double shape);
   extern double pgev(double x, double loc, double scale, double shape);
   extern double qgev(double x, double loc, double scale, double shape);
-    
+
 #ifdef __cplusplus
 }  /* extern "C" */
 #endif /* __cplusplus */
 
 #endif /* CUBATURE_H */
-
-
-
