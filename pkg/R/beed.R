@@ -28,7 +28,7 @@
 # est = c('md','cfg','ht','pick') choses the method for the initial estimate ###
 # k is the order of polynomials                                              ###
 # d is the dimension of data                                                 ###
-# beta is the vector of coefficient for the Bernstei representation.         ###
+# beta is the vector of coefficient for the Bernstein representation.        ###
 #   If it's missing, it is estimated                                         ###
 ################################################################################ 
 
@@ -167,7 +167,7 @@ beed <- function(data, x, d=3, est = c("ht","cfg","md","pick"),
     }
   }
   
-  # mulivariate case
+  # multivariate case
   else{
     zero1 <- which(rs>1)
     zero0 <- which(rs==0)
@@ -381,10 +381,14 @@ bp2d <- function(w, k)
 ########################################################################
 # Define a multivariate Unit-Simplex                                 ###
 # Input: n is the length of the one-dimension simplex                ###
-# simplex returns a matrix of the d-dimensional Simplex              ###                           ###
+# simplex returns a matrix of the d-dimensional Simplex              ###
 ########################################################################
 
 simplex <- function(d, n=50, a=0, b=1){
+  if(d<2){stop("'d' must be an integer taking minimum value 2")}
+  if(n<2){stop("'n' must be an integer taking minimum value 2")}
+  if(a >=b){stop("'a' must be smaller than 'b'")}
+  if(a <0){stop("'a' must be positive")}
   w <- seq(a, b, length = n)
   if(d==2) return(cbind(w,1-w))
   else{
@@ -392,8 +396,7 @@ simplex <- function(d, n=50, a=0, b=1){
     os <- which(rowSums(ww)>1)
     x <- cbind(ww, 1 - rowSums(ww))
     x <- x[-os,]
-    colnames(x) = paste("x", 1:d, sep="")
+    colnames(x) = paste("w", 1:d, sep="")
     return(as.matrix(x))
   }
 }
-

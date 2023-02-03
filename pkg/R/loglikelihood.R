@@ -97,8 +97,13 @@ constmle <- function(data, k, w, start=NULL, type="maxima", r0=NULL, q=NULL){
     C <- pseudo$w*A1
     A1.s <- (A - C[,1])*(A + C[,2]) / pseudo$den[,2]
     A2.s <- A2*pseudo$w2[,1]/pseudo$r
-    llik <- lG + log(A1.s+A2.s) - log(pseudo$den[,1])
-    llik <- -sum(llik)
+    if(any((A1.s+A2.s)<0)){
+      llik <- 1e10
+    }else{
+      llik <- lG + log(A1.s+A2.s) - log(pseudo$den[,1])
+      llik <- -sum(llik)  
+    }
+    
     if(is.na(llik)) llik <- 1e10
     return(llik)
   }
@@ -111,9 +116,14 @@ constmle <- function(data, k, w, start=NULL, type="maxima", r0=NULL, q=NULL){
     h <- (k-1)*c(bpb2 %*% diff(eta))
     # check if it is the same to dh in CODE_Simulation...
     # is it faster?
-    llik <- log(h)
-    llik <- -sum(llik)
-    if(is.na(llik)) llik <- 1e10
+    if(any(h<0)){
+      llik <- 1e100
+    }else{
+      llik <- log(h)
+      llik <- -sum(llik)      
+    }
+  
+    if(is.na(llik)) llik <- 1e100
     return(llik)
   }
   
