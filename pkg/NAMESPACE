@@ -1,24 +1,25 @@
-export(alik, AngDensPlot, angular, beed.boot, beed.confband, beed, chi.bsn, chi.extst,
-	dens_extr_mod, dens, desn, pesn, dest, pest, dmesn, pmesn, dmest,
- 	pmest, excess_pr_extr_mod, exponent_extr_mod, fit_pclik_extr_mod, madogram, 
-	pk.extst, posteriorMCMC, prior, proposal, r_extr_mod,
-	bbeed, returns, summary.bbeed, UniExtQ, ExtQset, ellipse)
+export(angular, beed.boot, beed.confband, beed,
+	desn, pesn, dest, pest, dmesn, pmesn, dmest, pmest, 
+	dim_ExtDep, dExtDep, pExtDep, rExtDep,
+	fExtDep, fExtDep.np, pFailure, trans2UFrechet, trans2GEV, dGEV, pGEV, qGEV, fGEV, 
+	madogram, rExtDepSpat, fExtDepSpat,
+	index.ExtDep, plot_ExtDep, plot_ExtDep.np,
+	diagnostics, returns, summary_ExtDep, ExtQ, ellipse, simplex)
 
-S3method(summary, "bbeed")
-S3method(plot, "bbeed")
 
 useDynLib(ExtremalDep, .registration = TRUE)
 
 
 importFrom("sn", "qsn", "rmst")
-importFrom("grDevices", "heat.colors", "gray")
+importFrom("grDevices", "heat.colors", "gray", "adjustcolor", "colorRampPalette")
 importFrom("graphics", "contour", "image", "lines", "points", "abline",
            "polygon", "segments", "text", "curve", "hist", "mtext", "par", 
 	   "plot", "axis", "legend")
 importFrom("stats", "df", "qf", "dnorm", "dt", "ecdf", "integrate", "optim",
            "pnorm", "pt", "quantile", "rnorm", "runif", "dunif", "uniroot",
            "var", "rpois", "dpois", "rbeta", "dbeta", "dnbinom", "pexp", 
-	   "qchisq", "pbeta", "qnorm", "cov", "rnbinom")
+	   "qchisq", "pbeta", "qnorm", "cov", "rnbinom",  "approxfun", "dist", 
+	   "na.omit", "rexp", "density")
 importFrom("evd", "rbvevd", "abvnonpar", "amvnonpar", "pfrechet", "pgumbel", 
 	   "pgev", "abvevd", "hbvevd")
 importFrom("numDeriv", "jacobian", "hessian")
@@ -26,7 +27,9 @@ importFrom("quadprog", "solve.QP")
 importFrom("copula", "An", "An.biv")
 importFrom("gtools", "permutations")
 importFrom("nloptr", "nloptr")
-importFrom("utils", "setTxtProgressBar", "txtProgressBar", "tail")
+importFrom("utils", "setTxtProgressBar", "txtProgressBar", "tail", "combn", "head")
 importFrom("mvtnorm", "rmvnorm", "rmvt")
 importFrom("fda", "fbplot")
-
+importFrom("parallel", "makeCluster")
+importFrom("doParallel", "registerDoParallel")
+importFrom("foreach", "foreach", "%dopar%")
