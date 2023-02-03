@@ -47,9 +47,9 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{https://mypage.unibocconi.it/simonepadoan/};
+	\url{https://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{https://www.borisberanger.com/};
+	\url{https://www.borisberanger.com};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
@@ -65,10 +65,10 @@ This routine relies on the bootstrap routine (see \code{\link{beed.boot}}).
 
 
 \examples{
-if (interactive()){
+\donttest{
 
-x <- ExtremalDep:::simplex(2)
-data <- rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))
+x <- simplex(2)
+data <- evd::rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))
 
 # Note you should consider 500 bootstrap replications.
 # In order to obtain fastest results we used 50!

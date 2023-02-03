@@ -71,9 +71,9 @@ With the estimated polynomial coefficients, the extremal coefficient, i.e. \eqn{
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{https://mypage.unibocconi.it/simonepadoan/};
+	\url{https://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{https://www.borisberanger.com/};
+	\url{https://www.borisberanger.com};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
@@ -89,7 +89,7 @@ With the estimated polynomial coefficients, the extremal coefficient, i.e. \eqn{
 
 \examples{
 
-x <- ExtremalDep:::simplex(2)
+x <- simplex(2)
 data <- evd::rbvevd(50, dep = 0.4, model = "log", mar1 = c(1,1,1))
 
 Amd <- beed(data, x, 2, "md", "emp", 20, plot=TRUE)
@@ -103,9 +103,9 @@ lines(x[,1], Acfg$A, lty = 1, col = 2)
 # Trivariate case
 ##################################
 
-if (interactive()){
+\donttest{
 
-x <- ExtremalDep:::simplex(3)
+x <- simplex(3)
 
 data <- evd::rmvevd(50, dep = 0.8, model = "log", d = 3, mar = c(1,1,1))
 

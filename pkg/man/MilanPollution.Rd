@@ -1,4 +1,5 @@
 \name{MilanPollution}
+\alias{MilanPollution}
 \alias{Milan.winter}
 \alias{Milan.summer}
 

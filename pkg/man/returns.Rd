@@ -10,14 +10,17 @@
 }
 
 \usage{
-  returns(mcmc, summary.mcmc, y, plot=FALSE)
+returns(out, summary.mcmc, y, plot=FALSE, labels=NULL, 
+        data=NULL)
 }
 
 \arguments{
-  \item{mcmc}{The output of the \code{bbeed} function.}
-  \item{summary.mcmc}{The output of the \code{summary.bbeed} function.}
+  \item{out}{The output of the \code{\link{fExtDep.np}} function with \code{method="Bayesian"}.}
+  \item{summary.mcmc}{The output of the \code{\link{summary_ExtDep}} function.}
   \item{y}{A 2-column matrix of unobserved thresholds.}
-  \item{plot}{If \code{plot=TRUE}, then the \code{plot.bbeed} function is used.}
+  \item{plot}{A logical value; if \code{TRUE}, then the returns are plotted using \code{\link{plot_ExtDep.np}}.}
+  \item{labels}{As in \code{\link{plot_ExtDep.np}}. Required if \code{plot=TRUE}.}
+  \item{data}{As in \code{\link{plot_ExtDep.np}}. Required if \code{plot=TRUE}.}    
 }
 
 \details{
@@ -44,49 +47,92 @@ where \eqn{B(x|a,b)}{B(x|a,b)} denotes the cumulative distribution function of a
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{https://mypage.unibocconi.it/simonepadoan/};
+	\url{https://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{https://www.borisberanger.com/};
+	\url{https://www.borisberanger.com};
 	Giulia Marcon, \email{giuliamarcongm@gmail.com}
 }
 
 \references{
-  Marcon G., Padoan, S.A. and Antoniano-Villalobos I. (2016) Bayesian Inference for the Extremal Dependence. \emph{Electronic Journal of Statistics}, 10.2, 3310-3337.
+  Marcon, G., Padoan, S. A. and Antoniano-Villalobos, I. (2016).
+  Bayesian inference for the extremal dependence.
+  \emph{Electronic Journal of Statistics}, \bold{10}, 3310-3337.
 }
 
 \examples{
-if (interactive()){
 
-	# This reproduces some of the results shown in Fig. 1 (Marcon, 2016).
-	set.seed(1890)
-	data <- evd::rbvevd(n=100, dep=.6, asy=c(0.8,0.3), model="alog", mar1=c(1,1,1))
+#########################################################
+### Example 1 - daily log-returns between the GBP/USD ###
+###             and GBP/JPY exchange rates            ###
+#########################################################
 
-	nsim = 500000
-	burn = 400000
+if(interactive()){
 
-	mu.nbinom = 3.2
-	var.nbinom = 4.48
-	hyperparam <- list(a.unif=0, b.unif=.5, mu.nbinom=mu.nbinom, var.nbinom=var.nbinom)
-	k0 = 5
-	pm0 = list(p0=0.06573614, p1=0.3752118)
-	eta0 = ExtremalDep:::rcoef(k0, pm0)
+data(logReturns)
 
-	mcmc <- bbeed(data, pm0, eta0, k0, hyperparam, nsim,
-              prior.k = "nbinom", prior.pm = "unif")
+mm_gbp_usd <- ts(logReturns$USD, start=c(1991,3), end=c(2014,12), frequency=12)
+mm_gbp_jpy <- ts(logReturns$JPY, start=c(1991,3), end=c(2014,12), frequency=12)
 
-	w <- seq(0.001, .999, length=100)
-	summary.mcmc <- summary.bbeed(w, mcmc, burn, nsim, plot=TRUE)
+### Detect seasonality and trend in the time series of maxima:
+seas_usd <- stl(mm_gbp_usd, s.window="period")
+seas_jpy <- stl(mm_gbp_jpy, s.window="period")
 
-	plot.bbeed(type = "A", x=w, mcmc=mcmc, summary.mcmc, nsim=nsim, burn=burn)
-	plot.bbeed(type = "h", x=w, mcmc=mcmc, summary.mcmc, nsim=nsim, burn=burn)
-	plot.bbeed(type = "pm", x=w, mcmc=mcmc, summary.mcmc, nsim=nsim, burn=burn)
-	plot.bbeed(type = "k", x=w, mcmc=mcmc, summary.mcmc, nsim=nsim, burn=burn)
+### remove the seasonality and trend from the two series:
+mm_gbp_usd_filt <- mm_gbp_usd - rowSums(seas_usd$time.series[,-3])
+mm_gbp_jpy_filt <- mm_gbp_jpy - rowSums(seas_jpy$time.series[,-3])
 
-	y <- seq(10,100,2)
-	y <- as.matrix(expand.grid(y,y))
-	probs <- returns(mcmc = mcmc, summary.mcmc = summary.mcmc, y = y, plot = TRUE)
+### Estimation of margins and dependence
+
+mm_gbp <- cbind(as.vector(mm_gbp_usd_filt), as.vector(mm_gbp_jpy_filt))
+
+hyperparam <- list(mu.nbinom = 3.2, var.nbinom = 4.48)
+gbp_mar <- fExtDep.np(method="Bayesian", data=mm_gbp, par10=rep(0.1, 3), 
+                      par20=rep(0.1,3), sig10=0.0001, sig20=0.0001, k0=5,
+                      hyperparam = hyperparam, nsim=5e+4)
+
+gbp_mar_sum <- summary_ExtDep(mcmc=gbp_mar, burn=3e+4, plot=TRUE)
+
+mm_gbp_range <- apply(mm_gbp,2,quantile,c(0.9,0.995))
+
+y_gbp_usd <- seq(from=mm_gbp_range[1,1], to=mm_gbp_range[2,1], length=20)
+y_gbp_jpy <- seq(from=mm_gbp_range[1,2], to=mm_gbp_range[2,2], length=20)
+y <- as.matrix(expand.grid(y_gbp_usd, y_gbp_jpy, KEEP.OUT.ATTRS = FALSE))
+
+ret_marg <- returns(out=gbp_mar, summary.mcmc=gbp_mar_sum, y=y, plot=TRUE, 
+                    data=mm_gbp, labels=c("GBP/USD exchange rate", "GBP/JPY exchange rate"))
+
+}
+
+#########################################################
+### Example 2 - Reproducing some of the results shown ###
+###             in Marcon et al. (2016, Figure 1)     ###
+#########################################################
+
+if(interactive()){
+
+set.seed(1890)
+data <- evd::rbvevd(n=100, dep=0.6, asy=c(0.8,0.3), model="alog", mar1=c(1,1,1))
+
+hyperparam <- list(a.unif=0, b.unif=.5, mu.nbinom=3.2, var.nbinom=4.48)
+pm0 <- list(p0=0.06573614, p1=0.3752118)
+
+mcmc <- fExtDep.np(method="Bayesian", data=data, mar.fit=FALSE, k0=5,
+                   pm0=pm0, prior.k = "nbinom", prior.pm = "unif", 
+                   hyperparam=hyperparam, nsim=5e+5)
+
+w <- seq(0.001, 0.999, length=100)
+summary.mcmc <- summary_ExtDep(w, mcmc, burn=4e+5, plot=TRUE)
+
+plot_ExtDep.np(out=mcmc, type = "A", summary.mcmc=summary.mcmc)
+plot_ExtDep.np(out=mcmc, type = "h", summary.mcmc=summary.mcmc)
+plot_ExtDep.np(out=mcmc, type = "pm", summary.mcmc=summary.mcmc)
+plot_ExtDep.np(out=mcmc, type = "k", summary.mcmc=summary.mcmc)
+
+y <- seq(10,100,2)
+y <- as.matrix(expand.grid(y,y))
+probs <- returns(out=mcmc, summary.mcmc=summary.mcmc, y=y, plot=TRUE)
 
 }
 }
 
-\keyword{ models }% use one of  RShowDoc("KEYWORDS")
+\keyword{models}% use one of  RShowDoc("KEYWORDS")

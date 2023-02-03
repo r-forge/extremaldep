@@ -54,7 +54,7 @@ dens4 <- dmest(x=c(1,1,1), scale=sigma2, df=1)
 prob1 <- pmest(x=c(1,1), scale=sigma1, shape=shape1, extended=2, df=1)
 prob2 <- pmest(x=c(1,1), scale=sigma1, df=1)
 
-if (interactive()){
+\donttest{
 prob3 <- pmest(x=c(1,1,1), scale=sigma2, shape=shape2, extended=2, df=1)
 prob4 <- pmest(x=c(1,1,1), scale=sigma2, df=1)
 }
@@ -63,9 +63,9 @@ prob4 <- pmest(x=c(1,1,1), scale=sigma2, df=1)
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{https://mypage.unibocconi.it/simonepadoan/};
+	\url{https://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{https://www.borisberanger.com/};
+	\url{https://www.borisberanger.com};
 }
 
 \keyword{distribution}

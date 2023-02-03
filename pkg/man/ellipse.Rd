@@ -37,9 +37,9 @@
 
 \author{
 	Simone Padoan, \email{simone.padoan@unibocconi.it},
-	\url{https://mypage.unibocconi.it/simonepadoan/};
+	\url{https://faculty.unibocconi.it/simonepadoan/};
 	Boris Beranger, \email{borisberanger@gmail.com}
-	\url{https://www.borisberanger.com/};
+	\url{https://www.borisberanger.com};
 }
 
 \examples{
