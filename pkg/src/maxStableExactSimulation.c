@@ -440,9 +440,8 @@ void rextremalskewtexact(double *coord, int *nObs, int *nSite, int *dim,
     // Compute the scale matrix of the extremal function
     for (int l=0;l<neffSite;l++)
       for (int m=l;m<neffSite;m++)
-	scalemat[l + m * neffSite] = scalemat[m + l * neffSite] =
-	  (covmat[l + m * neffSite] - covmat[j + l * neffSite] * covmat[j + m * neffSite]) /
-	  (1.0 + *DoF) * mpj2;
+				scalemat[l + m * neffSite] = scalemat[m + l * neffSite] =
+				(covmat[l + m * neffSite] - covmat[j + l * neffSite] * covmat[j + m * neffSite]) / (1.0 + *DoF) * mpj2;
 
 	// Normalize to its correlation and save the standard deviations
 	// For shifted skew-t we need the scale matrix to be normalized

@@ -45,16 +45,6 @@
 #define MINF -1.0e15
 #define EPS DBL_EPSILON
 
-#ifndef CUBATURE_H
-#define CUBATURE_H
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif /* __cplusplus */
-
-
-
 /*----------------------------------------------------------------
 File name: simschlather.c
 Description: Simulation from Schlather max-stable model
@@ -191,9 +181,3 @@ Start
   void fft_factor(int n, int *pmaxf, int *pmaxp);
   Rboolean fft_work(double *a, double *b, int nseg, int n, int nspn, int isn,
   		              double *work, int *iwork);
-
-#ifdef __cplusplus
-}  /* extern "C" */
-#endif /* __cplusplus */
-
-#endif /* CUBATURE_H */
