@@ -28,9 +28,9 @@ and
 where \eqn{(v_1,v_2) \in R_+^2}{(v1,v2) \in R_+^2} and \eqn{u_1, u_2>0}{u1, u2>0}.
 
 Exceedances samples \eqn{y_{1,1}, \ldots, y_{n_1}}{y11, ..., yn1} and \eqn{y_{1,2}, \ldots, y_{n_2}}{y12, ..., yn2} are generating according to Algorithm 3 of Marcon et al. (2017) and the the estimates of the probability of falling in \eqn{A_u}{Au} and \eqn{B_u}{Bu} are given by
-\deqn{\hat{P}_{A_u} = \frac{1}{n}\sum{i=1}^n \mathbb{I}\left\{ y_{i,1}> u_1^* \textrm{ or } y_{i,2}> u_2^* \right\} }{P^Au = 1/n * \sum_{i=1}^n I{yi1 >u1*  or yi2 > u2*}}
+\deqn{\hat{P}_{A_u} = \frac{1}{n}\sum{i=1}^n I\left\{ y_{i,1}> u_1^* \textrm{ or } y_{i,2}> u_2^* \right\} }{P^Au = 1/n * \sum_{i=1}^n I{yi1 >u1*  or yi2 > u2*}}
 and
-\deqn{\hat{P}_{B_u} = \frac{1}{n}\sum{i=1}^n \mathbb{I}\left\{ y_{i,1}> u_1^* \textrm{ and } y_{i,2}> u_2^* \right\} }{P^Bu = 1/n * \sum_{i=1}^n I{yi1 >u1* and yi2 > u2*}.}
+\deqn{\hat{P}_{B_u} = \frac{1}{n}\sum{i=1}^n I\left\{ y_{i,1}> u_1^* \textrm{ and } y_{i,2}> u_2^* \right\} }{P^Bu = 1/n * \sum_{i=1}^n I{yi1 >u1* and yi2 > u2*}.}
 }
 
 \value{
