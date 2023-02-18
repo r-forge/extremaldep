@@ -69,6 +69,7 @@ rExtDepSpat(n, coord, model="SCH", cov.mod = "whitmat", grid = FALSE,
 \seealso{\code{\link{fExtDepSpat}} }
 
 \examples{
+if(interactive()){
 # Generate some locations
 set.seed(1)
 lat <- lon <- seq(from=-5, to=5, length=20)
@@ -82,7 +83,6 @@ z <- rExtDepSpat(1, sites, model="ET", cov.mod="powexp", DoF=1,
 fields::image.plot(lat, lon, matrix(z$vals,ncol=20) )
 
 # Example using the extremal skew-t
-if(interactive()){
 set.seed(3)
 z2 <- rExtDepSpat(1, sites, model="EST", cov.mod="powexp", DoF=5, 
                   nugget=0, range=3, smooth=1.5, alpha=c(0,5,5), 
