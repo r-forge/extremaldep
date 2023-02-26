@@ -49,6 +49,7 @@ rExtDep(n, model, par, angular=FALSE, mar=c(1,1,1), num, threshold,
 \seealso{\code{\link{dExtDep}}, \code{\link{pExtDep}}, \code{\link{fExtDep}}, \code{\link{fExtDep.np}} }
 
 \examples{
+if(interactive()){
 
 # Example using the trivariate Husler-Reiss
 set.seed(1)
@@ -64,6 +65,8 @@ data <- rExtDep(n=10, model="semi.bvevd", par=par$beta,
 set.seed(3)
 data <- rExtDep(n=10, model="semi.bvexceed", par=par$beta, 
                 threshold=c(0.2, 0.4), exceed.type="and")
+                
+}                
 }
 
 \keyword{models}

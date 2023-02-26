@@ -72,17 +72,20 @@ if(interactive()){
 ###############################
 ### Bivariate Husler-Reiss ###
 ###############################            
+
+if(interactive()){
+  PN <- na.omit(Leeds.frechet[,1:2])
+  PN <- cbind(PN, rowSums(PN))
+  PN <- PN[order(PN[,3], decreasing = TRUE)[1:100],]
+  PN <- PN[,1:2]/PN[,3]
+
+  f.hr2 <- fExtDep(method="PPP", data=PN, model = "HR", par.start = 1)
+  plot_ExtDep(model="HR", par=f.hr2$par, log=FALSE, data=PN, style="hist")
+  plot_ExtDep(model="HR", par=f.hr2$par, log=FALSE, data=PN, style="ticks") 
+  plot_ExtDep(object="pickands", model="HR", par=f.hr2$par) 
+
+}
             
-PN <- na.omit(Leeds.frechet[,1:2])
-PN <- cbind(PN, rowSums(PN))
-PN <- PN[order(PN[,3], decreasing = TRUE)[1:100],]
-PN <- PN[,1:2]/PN[,3]
-
-f.hr2 <- fExtDep(method="PPP", data=PN, model = "HR", par.start = 1)
-plot_ExtDep(model="HR", par=f.hr2$par, log=FALSE, data=PN, style="hist")
-plot_ExtDep(model="HR", par=f.hr2$par, log=FALSE, data=PN, style="ticks") 
-plot_ExtDep(object="pickands", model="HR", par=f.hr2$par) 
-
 }
 
 \keyword{models}
