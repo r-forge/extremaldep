@@ -238,7 +238,7 @@ trans2GEV <- function(data, pars){
     orig.mat <- FALSE
     data <- matrix(data, ncol=1)
     d <- 1
-  }else if(is.matrix){
+  }else if(is.matrix(data)){
     d <- ncol(data)  
   }else{
     stop("'data' must be a vector or a matrix.")
