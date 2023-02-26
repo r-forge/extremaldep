@@ -48,7 +48,7 @@ void rbrownexact(double *coord, int *nObs, int *nSite, int *dim,
 
   /* Compute the Cholesky decomposition of the covariance matrix once for all */
   int info = 0;
-  F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+  F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
   if (info != 0)
     error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -89,7 +89,9 @@ void rbrownexact(double *coord, int *nObs, int *nSite, int *dim,
 	for (int l=0;l<neffSite;l++)
 	  gp[l] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+
+      FCONE FCONE FCONE);
 
 	double dummy = gp[j];
 	for (int l=0;l<neffSite;l++)
@@ -214,7 +216,7 @@ void rextremaltexact(double *coord, int *nObs, int *nSite, int *dim,
 
       // Compute the Cholesky decomposition of this matrix
       int info = 0;
-      F77_CALL(dpotrf)("U", &neffSite, scalemat, &neffSite, &info);
+      F77_CALL(dpotrf)("U", &neffSite, scalemat, &neffSite, &info FCONE);
 
       if (info != 0)
         error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -227,7 +229,8 @@ void rextremaltexact(double *coord, int *nObs, int *nSite, int *dim,
 	  // Uses only the upper triangle of scalemat, but output uses
 	  // whole of scalemat as the eigenvector matrix
 	  int info = 0;
-      F77_CALL(dsyev)("V", "U", &neffSite, scalemat, &neffSite, evals, wkvec, &lwork, &info);
+      F77_CALL(dsyev)("V", "U", &neffSite, scalemat, &neffSite, evals, wkvec, &lwork, &info
+        FCONE FCONE);
 
       if (info != 0)
         error("error code %d from Lapack routine '%s'", info, "dsyev");
@@ -274,7 +277,8 @@ void rextremaltexact(double *coord, int *nObs, int *nSite, int *dim,
 	*/
 
     if(*cholsky == 1) {
-	    F77_CALL(dtrmv)("U", "T", "N", &neffSite, scalemat, &neffSite, gp, &oneInt);
+	    F77_CALL(dtrmv)("U", "T", "N", &neffSite, scalemat, &neffSite, gp, &oneInt
+        FCONE FCONE FCONE);
 	} else {
 		R_smult(scalemat, gp, &neffSite, &oneInt, &neffSite, gp2);
 		for (int l=0;l<neffSite;l++) gp[l] = gp2[l];
@@ -468,7 +472,7 @@ void rextremalskewtexact(double *coord, int *nObs, int *nSite, int *dim,
       // Compute the Cholesky decomposition of this matrix
 	  // Uses only the upper triangle
       int info = 0;
-      F77_CALL(dpotrf)("U", &neffSite, scalemat, &neffSite, &info);
+      F77_CALL(dpotrf)("U", &neffSite, scalemat, &neffSite, &info FCONE);
 
       if (info != 0)
         error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -481,7 +485,8 @@ void rextremalskewtexact(double *coord, int *nObs, int *nSite, int *dim,
 	  // Uses only the upper triangle of scalemat, but output uses
 	  // whole of scalemat as the eigenvector matrix
 	  int info = 0;
-      F77_CALL(dsyev)("V", "U", &neffSite, scalemat, &neffSite, evals, wkvec, &lwork, &info);
+      F77_CALL(dsyev)("V", "U", &neffSite, scalemat, &neffSite, evals, wkvec, &lwork, &info
+         FCONE FCONE);
 
       if (info != 0)
         error("error code %d from Lapack routine '%s'", info, "dsyev");
@@ -509,7 +514,8 @@ void rextremalskewtexact(double *coord, int *nObs, int *nSite, int *dim,
 	    gp[l] = norm_rand();
 
 	  if(*cholsky == 1) {
-	    F77_CALL(dtrmv)("U", "T", "N", &neffSite, scalemat, &neffSite, gp, &oneInt);
+	    F77_CALL(dtrmv)("U", "T", "N", &neffSite, scalemat, &neffSite, gp, &oneInt
+        FCONE FCONE FCONE);
 	  } else {
 	    R_smult(scalemat, gp, &neffSite, &oneInt, &neffSite, gp2);
 		for (int l=0;l<neffSite;l++) gp[l] = gp2[l];
@@ -637,7 +643,7 @@ void rschlatherexact(double *coord, int *nObs, int *nSite, int *dim,
 
     // Compute the Cholesky decomposition of this matrix
     int info = 0;
-    F77_CALL(dpotrf)("U", &neffSite, scalemat, &neffSite, &info);
+    F77_CALL(dpotrf)("U", &neffSite, scalemat, &neffSite, &info FCONE);
 
     if (info != 0)
       error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -656,7 +662,8 @@ void rschlatherexact(double *coord, int *nObs, int *nSite, int *dim,
 	for (int l=0;l<neffSite;l++)
 	  gp[l] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, scalemat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, scalemat, &neffSite, gp, &oneInt
+     FCONE FCONE FCONE);
 
     double scale = sqrt(2.0 / rchisq(2.0));
 	for (int l=0;l<neffSite;l++)
@@ -741,7 +748,7 @@ void rgeomexact(double *coord, int *nObs, int *nSite, int *dim,
 
   /* Compute the Cholesky decomposition of the covariance matrix once for all */
   int info = 0;
-  F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+  F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
   if (info != 0)
     error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -800,7 +807,8 @@ void rgeomexact(double *coord, int *nObs, int *nSite, int *dim,
 	for (int l=0;l<neffSite;l++)
 	  gp[l] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt 
+    FCONE FCONE FCONE);
 
 	double dummy = gp[j];
 	for (int l=0;l<neffSite;l++)

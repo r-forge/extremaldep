@@ -211,7 +211,7 @@ void R_smult(double *A, double *B, int *m, int *n, int *p, double *C)
 	Rprintf("\n");
     */
 
-	F77_CALL(dgemm)("N","N",m,n,p,&one,A,m,B,p,&zero,C,m);
+	F77_CALL(dgemm)("N","N",m,n,p,&one,A,m,B,p,&zero,C,m FCONE FCONE);
 }
 
 
@@ -253,7 +253,7 @@ void R_xmult(double *A, double *B, int *m, int *n, int *p, double *C)
 	Rprintf("\n");
   */
 
-	F77_CALL(dgemm)("N","T",m,n,p,&one,A,m,B,n,&zero,C,m);
+	F77_CALL(dgemm)("N","T",m,n,p,&one,A,m,B,n,&zero,C,m FCONE FCONE);
 }
 
 

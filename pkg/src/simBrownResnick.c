@@ -70,7 +70,7 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 
 	/* Compute the Cholesky decomposition of the covariance matrix. */
 	int info = 0;
-	F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+	F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
 	if (info != 0)
 	  error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -79,7 +79,8 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 	for (int j=0; j<neffSite;j++)
 	  gp[j] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+		FCONE FCONE FCONE);
 
 	poisson += exp_rand();
 	double ipoisson = -log(poisson), thresh = *uBound + ipoisson;
@@ -103,7 +104,7 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 
     /* Compute the Cholesky decomposition of the covariance matrix. */
     int info = 0;
-    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
     if (info != 0)
       error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -124,7 +125,8 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 	for (int j=0; j<neffSite;j++)
 	  gp[j] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+		FCONE FCONE FCONE);
 
 	poisson += exp_rand();
 	double ipoisson = -log(poisson), thresh = *uBound + ipoisson;
@@ -146,7 +148,7 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 
     /* Compute the Cholesky decomposition of the covariance matrix. */
     int info = 0;
-    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
     if (info != 0)
       error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -167,7 +169,8 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 	for (int j=0; j<neffSite;j++)
 	  gp[j] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+		FCONE FCONE FCONE);
 
 	poisson += exp_rand();
 	double ipoisson = -log(poisson);
@@ -186,7 +189,7 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 
     /* Compute the Cholesky decomposition of the covariance matrix. */
     int info = 0;
-    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
     if (info != 0)
       error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -202,7 +205,8 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 	for (int j=0; j<neffSite;j++)
 	  gp[j] = norm_rand();
 
-	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+		 FCONE FCONE FCONE);
 
 	// Translation of the process
 	int origIdx = runif(0, neffSite);
@@ -240,7 +244,7 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 
     /* Compute the Cholesky decomposition of the covariance matrix. */
     int info = 0;
-    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
     if (info != 0)
       error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -273,7 +277,8 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 	  for (int j=0; j<neffSite;j++)
 	    gp[j] = norm_rand();
 
-	  F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	  F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+	  	 FCONE FCONE FCONE);
 
 	  // Translation of the process
 	  double verticalShift = gp[origIdx];
@@ -304,7 +309,7 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 
     /* Compute the Cholesky decomposition of the covariance matrix. */
     int info = 0;
-    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info);
+    F77_CALL(dpotrf)("U", &neffSite, covmat, &neffSite, &info FCONE);
 
     if (info != 0)
       error("error code %d from Lapack routine '%s'", info, "dpotrf");
@@ -335,7 +340,8 @@ void rbrowndirect(double *coord, double *bounds, int *nObs, int *nSite,
 	  for (int j=0; j<neffSite;j++)
 	    gp[j] = norm_rand();
 
-	  F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt);
+	  F77_CALL(dtrmv)("U", "T", "N", &neffSite, covmat, &neffSite, gp, &oneInt
+	  	 FCONE FCONE FCONE);
 
 	  // Translation of the process
 	  double verticalShift = gp[origIdx];
